@@ -1,0 +1,16 @@
+[
+  {
+    "submission_id": "834319c1-396c-4c98-9a7a-f56f0269ad10",
+    "channel": "sheets",
+    "status": "delivered",
+    "simulated": 1,
+    "attempts": 1
+  },
+  {
+    "submission_id": "834319c1-396c-4c98-9a7a-f56f0269ad10",
+    "channel": "telegram",
+    "status": "unknown",
+    "simulated": 1,
+    "attempts": 1
+  }
+]

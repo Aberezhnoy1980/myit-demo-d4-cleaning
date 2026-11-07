@@ -1,0 +1,36 @@
+{
+  "checks": {
+    "restart_does_not_resend": true,
+    "same_bot_token_rotation_does_not_resend": true,
+    "sheets_simulation_preserves_live_telegram": true,
+    "mixed_receipt_falsely_denies_real_sends": false,
+    "sheets_note_is_scoped": true
+  },
+  "telegram_http_calls": 1,
+  "transport": "MockTransport only; network forbidden",
+  "channels": [
+    {
+      "channel": "sheets",
+      "status": "delivered",
+      "simulated": 1,
+      "mode": "test"
+    },
+    {
+      "channel": "telegram",
+      "status": "live_delivered",
+      "simulated": 0,
+      "mode": "live"
+    }
+  ],
+  "rendered": {
+    "title": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Google Sheets не подключены.",
+    "notes": [
+      "Номер запроса: ace8ef0c-8b07-4ed3-865f-f2a31ab9e2da",
+      "Это подтверждение локального сохранения. Состояние внешней доставки указано выше; цена и время выезда не согласованы.",
+      "Квитанция доступна до 21:36 (1 час после сохранения). После перезагрузки страницы доступ к ней теряется.",
+      "Проверенных фотографий: 1",
+      "Google Sheets: тестовый режим. Реальная отправка по этому каналу не выполнялась."
+    ]
+  },
+  "finding": "P2 закрыта: тестовое пояснение относится к Sheets, подтверждение Telegram сохранено."
+}

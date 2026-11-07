@@ -1,0 +1,19 @@
+{
+  "submission_id": "ea70d762-e66f-4a02-b723-da7cc17fc55f",
+  "jobs": [
+    {
+      "channel": "sheets",
+      "status": "not_connected",
+      "simulated": false,
+      "attempts": 0
+    },
+    {
+      "channel": "telegram",
+      "status": "live_delivered",
+      "simulated": false,
+      "attempts": 1
+    }
+  ],
+  "live_enabled": false,
+  "port_4344_open": false
+}

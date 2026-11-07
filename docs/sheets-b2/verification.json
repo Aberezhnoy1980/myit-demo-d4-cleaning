@@ -1,0 +1,97 @@
+{
+  "slice": "d4-tihiy-dom-sheets-b2-07",
+  "date": "2026-11-06",
+  "author_verification_only": true,
+  "tests": {
+    "total": 236,
+    "prior": 138,
+    "new_b2": 98,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 14.646,
+    "known_starlette_warning": 1,
+    "sheets_transport": "MockTransport only; socket/DNS denied in B2 tests and CLI harness",
+    "ui": "actual renderReceipt in Node VM with minimal DOM; no visual browser rerun"
+  },
+  "checks": {
+    "pip_check": "No broken requirements found",
+    "python_compile_exit": 0,
+    "javascript_syntax_exit": 0,
+    "synthetic_secret_markers_absent_from_evidence": true
+  },
+  "dependencies": {
+    "installed_approved_count": 24,
+    "all_exact_versions": true,
+    "bootstrap_only_extras": {
+      "pip": "24.0",
+      "setuptools": "65.5.0"
+    },
+    "new_installations": 0,
+    "requirements_lock_constraints_unchanged": true,
+    "google_sdk_installed": false,
+    "candidate_new_packages": 8,
+    "candidate_total": 32,
+    "candidate_metadata_only": true,
+    "older_google_auth_candidate_requires_explicit_review": true,
+    "real_sdk_oauth_or_hidden_retries_tested": false
+  },
+  "protected_paths": {
+    "docs/review-coordinator": {
+      "files": 41,
+      "unchanged": true
+    },
+    "data": {
+      "files": 4,
+      "unchanged": true
+    },
+    "backups": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "unchanged_selected_files": [
+    ".env.example",
+    "constraints-macos-py311.txt",
+    "public/app.js",
+    "public/assets/mark.svg",
+    "public/assets/sofa-1400.jpg",
+    "public/assets/sofa-700.jpg",
+    "public/index.html",
+    "public/style.css",
+    "requirements-lock-macos-py311.txt",
+    "requirements-server.txt",
+    "requirements-test.txt",
+    "server/image_worker.py",
+    "server/photos.py",
+    "server/store.py",
+    "server/telegram.py",
+    "server/telegram_config.py",
+    "tests/test_restore.py",
+    "tests/test_server.py",
+    "tests/test_telegram.py"
+  ],
+  "changed_existing_manifest_files": [
+    ".gitignore",
+    "README.md",
+    "docs/integration.md",
+    "docs/live-resources.md",
+    "docs/report.md",
+    "docs/server-dependencies.md",
+    "server/delivery.py",
+    "server/manage.py",
+    "server/model.py",
+    "tools/manifest.py"
+  ],
+  "boundaries": {
+    "real_secret_files_read": false,
+    "real_secret_files_written": false,
+    "google_oauth_sheets_drive_calls": 0,
+    "telegram_api_calls": 0,
+    "google_resources_created": false,
+    "public_metadata_only_network_reads": true,
+    "server_started_outside_tests": false,
+    "independent_acceptance_claimed": false,
+    "git_commit_push_deploy": false
+  }
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "sofa",
+    "events": [
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "Enter",
+        "value": ""
+      },
+      {
+        "key": "Tab",
+        "value": ""
+      }
+    ]
+  },
+  {
+    "id": "size",
+    "events": [
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "Enter",
+        "value": ""
+      },
+      {
+        "key": "Tab",
+        "value": ""
+      }
+    ]
+  },
+  {
+    "id": "material",
+    "events": [
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "ArrowDown",
+        "value": ""
+      },
+      {
+        "key": "Enter",
+        "value": ""
+      },
+      {
+        "key": "Tab",
+        "value": ""
+      }
+    ]
+  }
+]

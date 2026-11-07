@@ -1,0 +1,66 @@
+{
+  "slice": "d4-tihiy-dom-telegram-b1-06",
+  "date": "2026-11-06",
+  "author_verification_only": true,
+  "tests": {
+    "total": 138,
+    "prior": 135,
+    "new_regressions": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 11.103,
+    "known_starlette_warning": 1,
+    "ui_execution": "actual renderReceipt in Node VM with minimal DOM; no browser"
+  },
+  "regression_cases": [
+    "Telegram live_delivered + simulated Sheets",
+    "Telegram live_unknown + simulated Sheets",
+    "both channels test only"
+  ],
+  "checks": {
+    "pip_check": "No broken requirements found",
+    "python_compile_exit": 0,
+    "javascript_syntax_exit": 0,
+    "synthetic_secret_marker_absent_from_junit": true
+  },
+  "dependencies": {
+    "approved_count": 24,
+    "all_exact_versions": true,
+    "bootstrap_only_extras": {
+      "pip": "24.0",
+      "setuptools": "65.5.0"
+    },
+    "new_installations": 0,
+    "all_requirements_lock_constraints_unchanged": true
+  },
+  "protected_paths": {
+    "docs/review-coordinator": {
+      "files": 31,
+      "unchanged": true
+    },
+    "data": {
+      "files": 2,
+      "unchanged": true
+    },
+    "backups": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "changed_existing_manifest_files": [
+    "README.md",
+    "docs/integration.md",
+    "docs/report.md",
+    "public/app.js",
+    "tests/test_telegram.py"
+  ],
+  "all_other_previously_manifested_files_unchanged": true,
+  "boundaries": {
+    "real_secret_files_read": false,
+    "telegram_api_calls": 0,
+    "google_calls": 0,
+    "visual_browser_retest_performed": false,
+    "independent_acceptance_claimed": false
+  }
+}

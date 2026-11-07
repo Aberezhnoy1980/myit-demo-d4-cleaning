@@ -1,0 +1,7 @@
+{
+  "packages": 33,
+  "new": 9,
+  "linux_wheels_compatible": 33,
+  "requirements_issues": [],
+  "method": "independent evaluation of supplied metadata; no install/resolver/runtime"
+}

@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-06",
+  "work": "/var/folders/3b/djf2lgj121d5rrykdmkl5sh40000gq/T/d4-server-review-Xetrfc",
+  "results": [
+    {
+      "name": "overflow 360",
+      "pass": true
+    },
+    {
+      "name": "overflow 390",
+      "pass": true
+    },
+    {
+      "name": "overflow 600",
+      "pass": true
+    },
+    {
+      "name": "overflow 768",
+      "pass": true
+    },
+    {
+      "name": "overflow 1024",
+      "pass": true
+    },
+    {
+      "name": "overflow 1440",
+      "pass": true
+    },
+    {
+      "name": "lost response did commit",
+      "pass": true
+    },
+    {
+      "name": "uncertain result honest",
+      "pass": true
+    },
+    {
+      "name": "restart same id",
+      "pass": true
+    },
+    {
+      "name": "no duplicate after restart",
+      "pass": true
+    },
+    {
+      "name": "private receipt correct",
+      "pass": true
+    },
+    {
+      "name": "private path /data/registry.sqlite3",
+      "pass": true
+    },
+    {
+      "name": "private path /backups/a.sqlite3",
+      "pass": true
+    },
+    {
+      "name": "private path /.env",
+      "pass": true
+    },
+    {
+      "name": "private path /server/app.py",
+      "pass": true
+    },
+    {
+      "name": "CLI backup",
+      "pass": true
+    },
+    {
+      "name": "prefix submit works",
+      "pass": true
+    },
+    {
+      "name": "valid CLI restore",
+      "pass": true
+    },
+    {
+      "name": "no pageerror",
+      "pass": true,
+      "data": []
+    }
+  ]
+}

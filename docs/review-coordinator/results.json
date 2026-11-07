@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-06",
+  "results": [
+    {
+      "name": "available option Прямой",
+      "pass": false,
+      "data": [
+        {
+          "label": "Выберите форму",
+          "value": ""
+        },
+        {
+          "label": "Угловой",
+          "value": "Угловой"
+        },
+        {
+          "label": "Модульный",
+          "value": "Модульный"
+        }
+      ]
+    },
+    {
+      "name": "available option Два места",
+      "pass": false,
+      "data": [
+        {
+          "label": "Сколько мест?",
+          "value": ""
+        },
+        {
+          "label": "Три места",
+          "value": "Три места"
+        },
+        {
+          "label": "Четыре и больше",
+          "value": "Четыре и больше"
+        },
+        {
+          "label": "Не знаю",
+          "value": "Не знаю"
+        }
+      ]
+    },
+    {
+      "name": "available option Ткань / рогожка",
+      "pass": false,
+      "data": [
+        {
+          "label": "Выберите материал",
+          "value": ""
+        },
+        {
+          "label": "Велюр / бархат",
+          "value": "Велюр / бархат"
+        },
+        {
+          "label": "Кожа / экокожа",
+          "value": "Кожа / экокожа"
+        },
+        {
+          "label": "Не знаю",
+          "value": "Не знаю"
+        }
+      ]
+    },
+    {
+      "name": "overflow 360",
+      "pass": true
+    },
+    {
+      "name": "overflow 390",
+      "pass": true
+    },
+    {
+      "name": "overflow 600",
+      "pass": true
+    },
+    {
+      "name": "overflow 768",
+      "pass": true
+    },
+    {
+      "name": "overflow 1024",
+      "pass": true
+    },
+    {
+      "name": "overflow 1440",
+      "pass": true
+    },
+    {
+      "name": "six empty field errors",
+      "pass": true
+    },
+    {
+      "name": "error focus",
+      "pass": true
+    },
+    {
+      "name": "real contact rejected",
+      "pass": true
+    },
+    {
+      "name": "honest result",
+      "pass": true
+    },
+    {
+      "name": "fields retained",
+      "pass": true
+    },
+    {
+      "name": "remove photo",
+      "pass": true
+    },
+    {
+      "name": "broken photo rejected",
+      "pass": true
+    },
+    {
+      "name": "no pageerror",
+      "pass": true,
+      "data": []
+    }
+  ]
+}

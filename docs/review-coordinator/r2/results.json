@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-06",
+  "results": [
+    {
+      "name": "option exists sofa",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Прямой",
+      "pass": false,
+      "data": {
+        "value": ""
+      }
+    },
+    {
+      "name": "option exists size",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Два места",
+      "pass": false,
+      "data": {
+        "value": ""
+      }
+    },
+    {
+      "name": "option exists material",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Ткань / рогожка",
+      "pass": false,
+      "data": {
+        "value": ""
+      }
+    },
+    {
+      "name": "photo Tab focus",
+      "pass": true
+    },
+    {
+      "name": "Enter file chooser",
+      "pass": true
+    },
+    {
+      "name": "single hidden native picker",
+      "pass": true
+    },
+    {
+      "name": "upload visible focus",
+      "pass": true
+    },
+    {
+      "name": "filled result honest",
+      "pass": true
+    },
+    {
+      "name": "no invalid fields",
+      "pass": true
+    },
+    {
+      "name": "result focus",
+      "pass": true
+    },
+    {
+      "name": "return keeps selected values",
+      "pass": true
+    },
+    {
+      "name": "overflow 360",
+      "pass": true
+    },
+    {
+      "name": "overflow 390",
+      "pass": true
+    },
+    {
+      "name": "overflow 600",
+      "pass": true
+    },
+    {
+      "name": "overflow 768",
+      "pass": true
+    },
+    {
+      "name": "overflow 1024",
+      "pass": true
+    },
+    {
+      "name": "overflow 1440",
+      "pass": true
+    },
+    {
+      "name": "empty six errors",
+      "pass": true
+    },
+    {
+      "name": "error summary focus",
+      "pass": true
+    },
+    {
+      "name": "no pageerror",
+      "pass": true,
+      "data": []
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "slice": "d4-tihiy-dom-telegram-b1-05",
+  "date": "2026-11-06",
+  "author_verification_only": true,
+  "tests": {
+    "total": 135,
+    "prior": 72,
+    "telegram_b1": 63,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 11.268,
+    "known_starlette_warning": 1,
+    "transport": "httpx.MockTransport only; socket/DNS denied in B1 tests and child CLI"
+  },
+  "checks": {
+    "pip_check": "No broken requirements found",
+    "python_compile_exit": 0,
+    "javascript_syntax_exit": 0,
+    "synthetic_secret_marker_absent_from_evidence": true
+  },
+  "dependencies": {
+    "approved_count": 24,
+    "all_exact_versions": true,
+    "httpx": "0.28.1",
+    "bootstrap_only_extras": {
+      "pip": "24.0",
+      "setuptools": "65.5.0"
+    },
+    "new_installations": 0,
+    "unchanged_lock_and_constraints": true
+  },
+  "protected_paths": {
+    "docs/review-coordinator": {
+      "files": 27,
+      "unchanged": true
+    },
+    "data": {
+      "files": 2,
+      "unchanged": true
+    },
+    "backups": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "unchanged_source_files": [
+    "constraints-macos-py311.txt",
+    "public/assets/mark.svg",
+    "public/assets/sofa-1400.jpg",
+    "public/assets/sofa-700.jpg",
+    "public/style.css",
+    "requirements-lock-macos-py311.txt",
+    "server/image_worker.py",
+    "server/photos.py",
+    "tests/test_restore.py"
+  ],
+  "boundaries": {
+    "real_secret_files_read": false,
+    "telegram_api_calls": 0,
+    "google_calls": 0,
+    "new_resources": false,
+    "live_test_performed": false,
+    "visual_browser_retest_performed": false,
+    "server_started_outside_tests": false,
+    "independent_acceptance_claimed": false
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "slice": "d4-tihiy-dom-sheets-deps-08",
+  "date": "2026-11-07",
+  "documentation_only": true,
+  "author_verification_only": true,
+  "baseline": {
+    "accepted_slice": "d4-tihiy-dom-sheets-b2-07",
+    "accepted_manifest_files": 104,
+    "accepted_manifest_sha256": "9eb44e493bcd1b2115425d19dcfd9066e499a0f379b221dcef041a7c31cfcfe0",
+    "prior_independent_tests": 236,
+    "tests_rerun_this_revision": false
+  },
+  "source_preservation": {
+    "checked_code_config_files": 35,
+    "all_byte_identical": true,
+    "changed_preexisting_files": [
+      "docs/server-dependencies.md",
+      "docs/sheets-b2/dependencies.md",
+      "docs/sheets-b2/proposed-additions.txt",
+      "docs/sheets-b2/proposed-environment.txt"
+    ],
+    "other_preexisting_files_unchanged": 100
+  },
+  "protected_paths": {
+    "docs/review-coordinator": {
+      "files": 45,
+      "unchanged": true
+    },
+    "data": {
+      "files": 4,
+      "unchanged": true
+    },
+    "backups": {
+      "files": 4,
+      "unchanged": true
+    }
+  },
+  "installed_dependencies": {
+    "approved_count": 24,
+    "all_versions_unchanged": true,
+    "bootstrap_extras": {
+      "pip": "24.0",
+      "setuptools": "65.5.0"
+    },
+    "historical_lock_unchanged": true,
+    "new_installations": 0
+  },
+  "proposal": {
+    "runtime_packages": 33,
+    "added_packages": 9,
+    "latest_sdk": "2.62.1",
+    "latest_cryptography": "50.0.2",
+    "linux_wheels": 33,
+    "mac_intel_wheels": 32,
+    "mac_build_python_packages": 4,
+    "cargo_lock_packages": 40,
+    "metadata_only_not_runtime_lock": true,
+    "linux_recommended_not_prepared": true,
+    "mac_intel_upstream_unsupported": true,
+    "rsa_route_withdrawn": true
+  },
+  "boundaries": {
+    "environment_created": false,
+    "compiler_or_build_run": false,
+    "wheel_sdist_crates_image_downloaded": false,
+    "real_secret_files_read_or_written": false,
+    "google_telegram_api_calls": 0,
+    "public_docs_metadata_read": true,
+    "independent_acceptance_claimed": false
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "valid backup restores original record",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "invalid-schema database integrity ok",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "invalid schema rejected",
+    "passed": true,
+    "detail": "OperationalError: no such column: stamp"
+  },
+  {
+    "name": "working registry preserved after rejection",
+    "passed": false,
+    "detail": null
+  }
+]

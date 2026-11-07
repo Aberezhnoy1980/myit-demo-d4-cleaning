@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+!.env.sheets.example
+.secrets/
+*.credentials.json
+data/
+uploads/
+backups/
+*.sqlite*
+*.db
+.DS_Store
+node_modules/
+.pytest_cache/

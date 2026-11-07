@@ -1,0 +1,20 @@
+{
+  "lost_append_response": {
+    "passed": true,
+    "append_requests": 1,
+    "read_only_reconciliation": true,
+    "telegram_submission_photo_preserved": true
+  },
+  "lost_local_commit": {
+    "passed": true,
+    "append_requests": 1,
+    "read_only_reconciliation": true,
+    "telegram_submission_photo_preserved": true
+  },
+  "conflicting_reconciliation": {
+    "passed": true,
+    "append_requests": 1,
+    "read_only_reconciliation": true,
+    "telegram_submission_photo_preserved": true
+  }
+}

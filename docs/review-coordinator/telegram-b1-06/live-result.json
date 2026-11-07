@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-11-06T19:03:12.398168+00:00",
+  "telegram_cli_invocations": 1,
+  "automatic_retries": 0,
+  "receipt_key_saved": false,
+  "owner_confirmation": "pending",
+  "submission_id": "ea70d762-e66f-4a02-b723-da7cc17fc55f",
+  "local_http_status": 201,
+  "cli_exit_code": 0,
+  "cli_result": "message_created",
+  "receipt_http_status": 200,
+  "telegram_status": "live_delivered",
+  "telegram_mode": "live",
+  "sheets_status": "not_connected",
+  "receipt_confirms_creation": true,
+  "photo_count": 1,
+  "technical_result": "passed",
+  "live_enabled_after": false,
+  "server_process_stopped": true,
+  "finished_utc": "2026-11-06T19:03:15.932624+00:00"
+}

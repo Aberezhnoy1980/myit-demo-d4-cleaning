@@ -1,0 +1,32 @@
+[
+  {
+    "name": "valid backup restores original record",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "invalid-schema database integrity ok",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "invalid schema rejected",
+    "passed": true,
+    "detail": "ValueError: Incompatible D4 backup schema"
+  },
+  {
+    "name": "working registry preserved after rejection",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "all rows and photo bytes unchanged",
+    "passed": true,
+    "detail": null
+  },
+  {
+    "name": "original receipt still works and unchanged",
+    "passed": true,
+    "detail": null
+  }
+]

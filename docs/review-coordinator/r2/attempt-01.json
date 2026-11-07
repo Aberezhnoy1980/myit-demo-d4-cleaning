@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-06",
+  "results": [
+    {
+      "name": "option exists sofa",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Прямой",
+      "pass": false
+    },
+    {
+      "name": "option exists size",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Два места",
+      "pass": false
+    },
+    {
+      "name": "option exists material",
+      "pass": true
+    },
+    {
+      "name": "keyboard selects Ткань / рогожка",
+      "pass": false
+    },
+    {
+      "name": "photo Tab focus",
+      "pass": true
+    },
+    {
+      "name": "Enter file chooser",
+      "pass": true
+    },
+    {
+      "name": "single hidden native picker",
+      "pass": true
+    },
+    {
+      "name": "upload visible focus",
+      "pass": true
+    },
+    {
+      "name": "filled result honest",
+      "pass": false
+    },
+    {
+      "name": "no invalid fields",
+      "pass": false
+    },
+    {
+      "name": "result focus",
+      "pass": false
+    },
+    {
+      "name": "runner",
+      "pass": false,
+      "data": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#return')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"return\" type=\"button\">Вернуться к форме ↑</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /Users/alex/myit/demo/Landing/d4-cleaning/docs/review-coordinator/revision-review.mjs:19:29"
+    }
+  ]
+}

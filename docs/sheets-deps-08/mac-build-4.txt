@@ -1,0 +1,5 @@
+# PROPOSAL ONLY: isolated experimental builder, never install in accepted D4 venv.
+maturin==1.14.1
+setuptools==84.2.1
+cffi==2.1.1
+pycparser==3.12

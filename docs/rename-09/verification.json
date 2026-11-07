@@ -1,0 +1,80 @@
+{
+  "slice": "d4-divan-v-poryadke-rename-09",
+  "date": "2026-11-07",
+  "author_verification_only": true,
+  "baseline": {
+    "prior_slice": "d4-tihiy-dom-sheets-deps-08",
+    "prior_manifest_files": 112,
+    "prior_manifest_sha256": "b7b790fa0e036f18786dff7b2d5d26c6e60f4baf95d00b891667dfb835ef5253"
+  },
+  "rename": {
+    "name": "Диван в порядке",
+    "descriptor": "Химчистка диванов",
+    "public_changes_exactly_approved_replacements": true,
+    "old_name_absent_from_public": true,
+    "accessible_brand_matches": 1,
+    "css_changed": false
+  },
+  "browser": {
+    "widths": [
+      360,
+      390,
+      768,
+      1440
+    ],
+    "no_horizontal_overflow": true,
+    "name_one_line_all_widths": true,
+    "brand_navigation_overlap": false,
+    "cta_to_request_passed": [
+      390,
+      1440
+    ],
+    "keyboard_outline": "solid 3px",
+    "screenshots": {
+      "hero-390.jpg": [
+        390,
+        844
+      ],
+      "hero-360.jpg": [
+        360,
+        800
+      ],
+      "hero-768.jpg": [
+        768,
+        1024
+      ],
+      "hero-1440.jpg": [
+        1440,
+        900
+      ]
+    },
+    "console_warnings_errors": [],
+    "preview": "static public only",
+    "preview_stopped": true,
+    "viewport_reset_and_tab_closed": true
+  },
+  "preservation": {
+    "unchanged_selected_code_config_files": 33,
+    "all_identical": true,
+    "reviewer_files": 47,
+    "reviewer_unchanged": true,
+    "changed_preexisting_files": [
+      "README.md",
+      "docs/portfolio.md",
+      "public/index.html"
+    ],
+    "other_preexisting_files_unchanged": 109,
+    "private_data_read_or_hashed": false,
+    "historical_author_reports_screenshots_and_slice_ids_preserved": true
+  },
+  "boundaries": {
+    "full_backend_tests_rerun": false,
+    "backend_started": false,
+    "real_form_saved": false,
+    "real_secrets_or_data_accessed": false,
+    "telegram_google_calls": 0,
+    "new_installations": 0,
+    "git_or_publication": false,
+    "independent_acceptance_claimed": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "reviewer_files_unchanged": 22,
+  "data_files_unchanged": 2,
+  "backups_files_unchanged": 4,
+  "slice": "d4-tihiy-dom-server-04",
+  "date": "2026-11-06",
+  "tests_passed": 72,
+  "new_restore_tests": 21,
+  "approved_versions_unchanged": 24,
+  "lock_unchanged": true,
+  "public_files_unchanged": 6,
+  "modified_previous_files": [
+    "README.md",
+    "docs/acceptance.md",
+    "docs/report.md",
+    "docs/server-03/acceptance.md",
+    "server/manage.py",
+    "server/store.py"
+  ],
+  "lock_sha256": "dd06d59be29b8b9820e51459e3ffd30b11f689deaaa60f6c20bd58508cc0b19d",
+  "production_data_used_for_restore_tests": false
+}

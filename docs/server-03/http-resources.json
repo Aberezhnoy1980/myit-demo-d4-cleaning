@@ -1,0 +1,39 @@
+{
+  "method": "Измерение фактически выданных тел HTTP, не браузерный cold-load/Web Vitals.",
+  "resources": [
+    {
+      "resource": "index.html",
+      "status": 200,
+      "body_bytes": 10781
+    },
+    {
+      "resource": "style.css",
+      "status": 200,
+      "body_bytes": 12106
+    },
+    {
+      "resource": "app.js",
+      "status": 200,
+      "body_bytes": 11736
+    },
+    {
+      "resource": "assets/mark.svg",
+      "status": 200,
+      "body_bytes": 352
+    },
+    {
+      "resource": "assets/sofa-700.jpg",
+      "status": 200,
+      "body_bytes": 94295
+    },
+    {
+      "resource": "assets/sofa-1400.jpg",
+      "status": 200,
+      "body_bytes": 320528
+    }
+  ],
+  "mobile_700_body_bytes": 129270,
+  "desktop_1400_body_bytes": 355503,
+  "all_bodies_bytes": 449798,
+  "js_gzip_estimate_bytes": 3967
+}
