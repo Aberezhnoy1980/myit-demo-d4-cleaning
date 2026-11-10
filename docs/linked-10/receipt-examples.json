@@ -1,0 +1,370 @@
+{
+  "waiting": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 381a1226-b25f-4f1a-a445-ef2b0372a127",
+      "Telegram: Тестовый режим. Ожидает результата.",
+      "Google Sheets: Тестовый режим. Ожидает результата."
+    ],
+    "response": {
+      "submission_id": "381a1226-b25f-4f1a-a445-ef2b0372a127",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_queued",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Ожидает результата."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_queued",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Ожидает результата."
+        }
+      ]
+    }
+  },
+  "first": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 381a1226-b25f-4f1a-a445-ef2b0372a127",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Запись подтверждена сверкой всех девяти полей."
+    ],
+    "response": {
+      "submission_id": "381a1226-b25f-4f1a-a445-ef2b0372a127",
+      "created": 1794316190.645289,
+      "receipt_expires": 1794319790.645289,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "second": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: c394cad4-a685-4f36-9152-cbf27607cd62",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Запись подтверждена сверкой всех девяти полей."
+    ],
+    "response": {
+      "submission_id": "c394cad4-a685-4f36-9152-cbf27607cd62",
+      "created": 1794316190.8819911,
+      "receipt_expires": 1794319790.8819911,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "telegram_forbidden": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 83b03917-f0f8-4f4b-8a98-d75440bb02cc",
+      "Telegram: Тестовый режим. Доставка не состоялась. Повтора не будет.",
+      "Google Sheets: Тестовый режим. Запись подтверждена сверкой всех девяти полей."
+    ],
+    "response": {
+      "submission_id": "83b03917-f0f8-4f4b-8a98-d75440bb02cc",
+      "created": 1794316191.1220894,
+      "receipt_expires": 1794319791.1220894,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        }
+      ]
+    }
+  },
+  "sheets_forbidden": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 8bfffa9a-093e-417f-9e01-6d74ff8ce11b",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Доставка не состоялась. Повтора не будет."
+    ],
+    "response": {
+      "submission_id": "8bfffa9a-093e-417f-9e01-6d74ff8ce11b",
+      "created": 1794316191.3008175,
+      "receipt_expires": 1794319791.3008175,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "oauth_rate_limit": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 2b9153be-5ec8-4003-b511-f177ee240faa",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Доставка не состоялась. Повтора не будет."
+    ],
+    "response": {
+      "submission_id": "2b9153be-5ec8-4003-b511-f177ee240faa",
+      "created": 1794316191.8631933,
+      "receipt_expires": 1794319791.8631933,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "timeout_after_write": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: b08f443d-d3fc-4851-8b78-802cc31fa821",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Результат неизвестен. Автоматического повтора нет."
+    ],
+    "response": {
+      "submission_id": "b08f443d-d3fc-4851-8b78-802cc31fa821",
+      "created": 1794316192.0815926,
+      "receipt_expires": 1794319792.0815926,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_unknown",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Результат неизвестен. Автоматического повтора нет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "readback_mismatch": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 643b3fc4-f3f0-48a9-bed6-727111a8b1fa",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Результат неизвестен. Автоматического повтора нет."
+    ],
+    "response": {
+      "submission_id": "643b3fc4-f3f0-48a9-bed6-727111a8b1fa",
+      "created": 1794316192.245271,
+      "receipt_expires": 1794319792.245271,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_unknown",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Результат неизвестен. Автоматического повтора нет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "interrupted": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 84f52299-03a3-4cb6-a918-5fb68a4a5117",
+      "Telegram: Тестовый режим. Доставка не состоялась. Повтора не будет.",
+      "Google Sheets: Тестовый режим. Результат неизвестен. Автоматического повтора нет."
+    ],
+    "response": {
+      "submission_id": "84f52299-03a3-4cb6-a918-5fb68a4a5117",
+      "created": 1794316192.3237374,
+      "receipt_expires": 1794319792.3237374,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_unknown",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Результат неизвестен. Автоматического повтора нет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        }
+      ]
+    }
+  },
+  "telegram_rate_limit": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 893b93ab-1ef3-4114-85ce-2500ae742c4f",
+      "Telegram: Тестовый режим. Доставка не состоялась. Повтора не будет.",
+      "Google Sheets: Тестовый режим. Запись подтверждена сверкой всех девяти полей."
+    ],
+    "response": {
+      "submission_id": "893b93ab-1ef3-4114-85ce-2500ae742c4f",
+      "created": 1794316191.4562154,
+      "receipt_expires": 1794319791.4562154,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        }
+      ]
+    }
+  },
+  "sheets_rate_limit": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: c072142a-2482-425b-96c9-b36e0f795834",
+      "Telegram: Тестовый режим. Создание сообщения подтверждено. Прочтение человеком не подтверждено.",
+      "Google Sheets: Тестовый режим. Доставка не состоялась. Повтора не будет."
+    ],
+    "response": {
+      "submission_id": "c072142a-2482-425b-96c9-b36e0f795834",
+      "created": 1794316191.637678,
+      "receipt_expires": 1794319791.637678,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "mock_failed",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "mock_delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    }
+  },
+  "legacy_sheets": {
+    "display": [
+      "Запрос сохранён",
+      "Номер запроса: 89eb8d0d-6e96-40cf-ad97-8736d456e7f9",
+      "Telegram: Тестовый режим. Ожидает результата.",
+      "Google Sheets: Тестовый режим. Успех записи сымитирован. Чтение и сверка строки не выполнялись."
+    ],
+    "response": {
+      "submission_id": "89eb8d0d-6e96-40cf-ad97-8736d456e7f9",
+      "created": 1794316192.462414,
+      "receipt_expires": 1794319792.462414,
+      "photos": 1,
+      "message": "Сохранено в демо-реестре, доставка не подключена.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "delivered",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Успех записи сымитирован. Чтение и сверка строки не выполнялись."
+        },
+        {
+          "channel": "telegram",
+          "status": "pending",
+          "simulated": 1,
+          "mode": "test",
+          "message": "Ожидает результата."
+        }
+      ]
+    }
+  }
+}

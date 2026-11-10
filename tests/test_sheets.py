@@ -494,11 +494,19 @@ vm.createContext(context);vm.runInContext(fn+';renderReceipt(data);',context);
 process.stdout.write(JSON.stringify({title:nodes['#result-title'].textContent,notes:nodes['#receipt-details'].children.map(n=>n.textContent)}));
 '''
     result=subprocess.run(['node','-e',script,str(ROOT/'public/app.js')],input=json.dumps(receipt),text=True,capture_output=True,check=True,timeout=10)
-    ui=json.loads(result.stdout);assert ui['title']==receipt['message']
-    assert 'Google Sheets не подключены' not in ui['title'] and 'Реальных отправок нет' not in json.dumps(ui,ensure_ascii=False)
-    notes=[n for n in ui['notes'] if 'тестовый режим' in n]
-    assert len(notes)==(1 if telegram_state=='test' else 0)
-    if notes:assert notes[0].startswith('Telegram:')
+    ui = json.loads(result.stdout)
+    assert ui['title'] == 'Запрос сохранён'
+    assert ui['notes'][1].startswith('Telegram: ')
+    assert ('Тестовый режим' in ui['notes'][1]) == (telegram_state == 'test')
+    if telegram_state == 'live_unknown':
+        assert 'Результат неизвестен' in ui['notes'][1]
+    else:
+        assert 'Создание сообщения подтверждено' in ui['notes'][1]
+    assert ui['notes'][2].startswith('Google Sheets: ')
+    if sheets_state == 'live_unknown':
+        assert 'Результат неизвестен' in ui['notes'][2]
+    else:
+        assert 'Запись подтверждена сверкой всех девяти полей' in ui['notes'][2]
 
 
 def test_sdk_presence_alone_does_not_enable_live(monkeypatch):

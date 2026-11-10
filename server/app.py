@@ -6,6 +6,7 @@ import sqlite3
 
 from fastapi import FastAPI, Request
 from pydantic import ValidationError
+from starlette.background import BackgroundTask
 from starlette.concurrency import run_in_threadpool
 from starlette.datastructures import UploadFile
 from starlette.exceptions import HTTPException
@@ -15,7 +16,10 @@ from starlette.staticfiles import StaticFiles
 
 from .model import Failure, Lead, MIB, ROOT, Settings
 from .photos import decode_photo
+from .sheets import SheetsAdapter, send_one as send_sheet
+from .sheets_auth import SDKAuthorization
 from .store import Store, fingerprint
+from .telegram import TelegramAdapter, send_one as send_telegram
 
 
 def fail_response(error):
@@ -78,7 +82,31 @@ async def bounded_form(request):
     return await parsed.form(max_files=3, max_fields=6, max_part_size=8192)
 
 
-def create_app(settings=None):
+def deliver_test_submission(store, sid, adapters):
+    for channel, send, adapter in (
+        ('telegram', send_telegram, adapters[0]),
+        ('sheets', send_sheet, adapters[1]),
+    ):
+        try:
+            send(store, sid, adapter)
+        except Exception:
+            # Ошибка канала не меняет ответ о сохранении и не прерывает второй канал.
+            pass
+        try:
+            store.settle_test_delivery(sid, channel)
+        except (sqlite3.Error, OSError):
+            # Следующий запуск завершит оставшийся processing как unknown.
+            pass
+
+
+def create_app(settings=None, *, test_delivery=None):
+    if test_delivery is not None:
+        telegram, sheets = test_delivery
+        if (not isinstance(telegram, TelegramAdapter) or not telegram.offline
+                or not isinstance(sheets, SheetsAdapter) or not sheets.offline
+                or not isinstance(sheets.authorization, SDKAuthorization)):
+            raise ValueError('Для связанного прогона нужны подставные Telegram, Sheets и OAuth-транспорты.')
+        test_delivery = (telegram, sheets)
     settings = settings or Settings()
     store = Store(settings)
 
@@ -88,6 +116,7 @@ def create_app(settings=None):
         with (settings.data_dir / '.server.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             store.initialize()
+            store.settle_test_delivery()
             store.cleanup(apply=True)
             async def cleanup_loop():
                 while True:
@@ -117,7 +146,8 @@ def create_app(settings=None):
 
     @site.get('/api/health')
     async def health():
-        return {'mode': 'local-synthetic', 'storage': 'sqlite', 'delivery': 'not_connected'}
+        return {'mode': 'local-synthetic', 'storage': 'sqlite',
+                'delivery': 'test' if test_delivery else 'not_connected'}
 
     @site.post('/api/submissions')
     async def submit(request: Request):
@@ -162,8 +192,15 @@ def create_app(settings=None):
                 clean = []
                 for content, mime in originals:
                     clean.append(await run_in_threadpool(decode_photo, content, mime))
-                accepted = await run_in_threadpool(store.save, key, body_hash, lead, clean)
-                return JSONResponse(accepted, status_code=200 if accepted['replayed'] else 201)
+                accepted = await run_in_threadpool(
+                    store.save, key, body_hash, lead, clean,
+                    **({'test_delivery': True} if test_delivery else {}),
+                )
+                background = None
+                if test_delivery and not accepted['replayed']:
+                    background = BackgroundTask(deliver_test_submission, store, accepted['submission_id'], test_delivery)
+                return JSONResponse(accepted, status_code=200 if accepted['replayed'] else 201,
+                                    background=background)
             finally:
                 await form.close()
         except Failure as error:

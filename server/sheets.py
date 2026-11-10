@@ -1,4 +1,4 @@
-"""B2 офлайн-контракт. Реальный OAuth/транспорт закрыт до разрешённого SDK-этапа."""
+"""Контракт B2 с подставным транспортом и офлайн-проверкой Google SDK."""
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import json
@@ -12,6 +12,7 @@ import uuid
 import httpx
 
 from .model import Failure, Lead
+from .sheets_auth import SDKAuthorization
 from .sheets_config import ConfigurationError, MAX_ROW, SheetsConfig
 from .telegram import no_http_logs
 
@@ -77,7 +78,8 @@ def row_for_submission(store, sid, connection):
 
 class SheetsAdapter:
     def __init__(self, config: SheetsConfig, authorization, *, transport):
-        if (not isinstance(transport, httpx.MockTransport) or not isinstance(authorization, OfflineAuthorization)
+        if (not isinstance(transport, httpx.MockTransport)
+                or not isinstance(authorization, (OfflineAuthorization, SDKAuthorization))
                 or not config.spreadsheet_id or authorization.account != config.service_account):
             raise ConfigurationError('B2 требует явные искусственную авторизацию и MockTransport согласованного ресурса.')
         self.config = config
@@ -88,12 +90,7 @@ class SheetsAdapter:
     def __repr__(self):
         return 'SheetsAdapter(offline=True)'
 
-    def _request(self, client, method, cell_range, *, body=None, append=False):
-        # Даже bearer/SDK-исключения могут включать закодированные секреты: не возвращать их текст.
-        try:
-            token = self.authorization.token()
-        except Exception:
-            raise _Stop('failed', 'authorization_unavailable') from None
+    def _request(self, client, token, method, cell_range, *, body=None, append=False):
         path = '/v4/spreadsheets/' + self.config.spreadsheet_id + '/values/' + quote(cell_range, safe='')
         params = {'valueInputOption': 'RAW', 'insertDataOption': 'INSERT_ROWS'} if append else {
             'majorDimension': 'ROWS', 'valueRenderOption': 'UNFORMATTED_VALUE'}
@@ -138,8 +135,8 @@ class SheetsAdapter:
     def _range(value, start, end):
         return value in {f'Leads!A{start}:I{end}', f"'Leads'!A{start}:I{end}"}
 
-    def _read(self, client, start, end):
-        data = self._request(client, 'GET', f'Leads!A{start}:I{end}')
+    def _read(self, client, token, start, end):
+        data = self._request(client, token, 'GET', f'Leads!A{start}:I{end}')
         values = data.get('values', [])
         if (not self._range(data.get('range'), start, end) or data.get('majorDimension') != 'ROWS'
                 or not isinstance(values, list) or len(values) > end - start + 1):
@@ -159,11 +156,15 @@ class SheetsAdapter:
         append_accepted = False
         with no_http_logs():
             try:
+                try:
+                    token = self.authorization.token()
+                except Exception:
+                    raise _Stop('failed', 'authorization_unavailable') from None
                 with httpx.Client(transport=self._transport, timeout=_TIMEOUT, trust_env=False,
                                   follow_redirects=False) as client:
-                    if self._read(client, 1, 1) != [HEADERS]:
+                    if self._read(client, token, 1, 1) != [HEADERS]:
                         raise _Stop('failed', 'header_mismatch')
-                    rows = self._read(client, 2, MAX_ROW)
+                    rows = self._read(client, token, 2, MAX_ROW)
                     matches = [r for r in rows if r[0] == row[0]]
                     if matches:
                         if len(matches) == 1 and matches[0] == row:
@@ -176,7 +177,7 @@ class SheetsAdapter:
                         raise _Stop('failed', 'capacity_or_layout')
                     target = len(rows) + 2
                     wrote = True
-                    data = self._request(client, 'POST', f'Leads!A1:I{MAX_ROW}',
+                    data = self._request(client, token, 'POST', f'Leads!A1:I{MAX_ROW}',
                                          body={'majorDimension': 'ROWS', 'values': [row]}, append=True)
                     append_accepted = True
                     updates = data.get('updates')
@@ -186,7 +187,7 @@ class SheetsAdapter:
                             or any(type(updates.get(key)) is not int or updates[key] != value for key, value in
                                    {'updatedRows': 1, 'updatedColumns': 9, 'updatedCells': 9}.items())):
                         raise _Stop('unknown', 'invalid_append_ack')
-                    if self._read(client, target, target) != [row]:
+                    if self._read(client, token, target, target) != [row]:
                         raise _Stop('unknown', 'readback_mismatch')
                     return SheetsOutcome('delivered', 'row_confirmed')
             except _Stop as stop:
@@ -217,7 +218,8 @@ def send_one(store, sid, adapter, *, reconcile=False):
             meta = {}
         if not isinstance(meta, dict):
             meta = {}
-        if job['status'] == 'not_connected' and not job['simulated']:
+        if ((job['status'] == 'not_connected' and not job['simulated'])
+                or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
             if reconcile:
                 raise Failure(409, 'Сверка разрешена только для неизвестного результата Sheets.')
         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
@@ -258,7 +260,7 @@ def send_one(store, sid, adapter, *, reconcile=False):
     except Exception:
         outcome = SheetsOutcome('unknown', 'unconfirmed_operation')
     state = outcome.kind
-    if state == 'pending' and job['attempts'] + 1 >= 3:
+    if state == 'pending' and (job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
         state = 'failed'
     meta['reason'] = outcome.reason
     try:

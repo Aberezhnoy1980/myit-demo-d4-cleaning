@@ -110,21 +110,21 @@ function requestError(message) {
 }
 function renderReceipt(data) {
   summary.hidden=true;
-  document.querySelector('#result-title').textContent=data.message || 'Запрос сохранён в локальном демо-реестре.';
+  document.querySelector('#result-title').textContent='Запрос сохранён';
   const details=document.querySelector('#receipt-details');details.replaceChildren();
   const number=document.createElement('p');number.textContent='Номер запроса: '+data.submission_id;
-  const note=document.createElement('p');note.textContent='Это подтверждение локального сохранения. Состояние внешней доставки указано выше; цена и время выезда не согласованы.';
+  const note=document.createElement('p');note.textContent='Цена и время выезда требуют согласования.';
   const expiry=document.createElement('p');expiry.textContent='Квитанция доступна до '+new Date(data.receipt_expires*1000).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})+' (1 час после сохранения). После перезагрузки страницы доступ к ней теряется.';
-  details.append(number,note,expiry);
-  if (data.photos) {const photosNote=document.createElement('p');photosNote.textContent='Проверенных фотографий: '+data.photos;details.append(photosNote);}
-  const channelNames = {telegram:'Telegram', sheets:'Google Sheets'};
-  for (const channel of data.channels || []) {
-    if (channel.simulated) {
-      const test=document.createElement('p');
-      test.textContent=(channelNames[channel.channel] || 'Канал доставки')+': тестовый режим. Реальная отправка по этому каналу не выполнялась.';
-      details.append(test);
-    }
+  details.append(number);
+  for (const [id, name] of [['telegram', 'Telegram'], ['sheets', 'Google Sheets']]) {
+    const channel = (data.channels || []).find(item => item.channel === id);
+    const line = document.createElement('p');
+    const mode = channel?.simulated ? 'Тестовый режим. ' : '';
+    line.textContent = name + ': ' + mode + (channel?.message || 'Канал выключен.');
+    details.append(line);
   }
+  details.append(note,expiry);
+  if (data.photos) {const photosNote=document.createElement('p');photosNote.textContent='Проверенных фотографий: '+data.photos;details.append(photosNote);}
   result.hidden=false;result.focus();
 }
 document.querySelector('#refresh-receipt').addEventListener('click',async e=>{

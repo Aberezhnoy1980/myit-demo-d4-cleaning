@@ -12,7 +12,7 @@ import time
 import uuid
 
 from .model import Failure
-from .delivery import delivery_message
+from .delivery import channel_message, delivery_message
 
 
 SCHEMA = '''
@@ -109,7 +109,20 @@ class Store:
     @staticmethod
     def delivery_rows(connection, sid):
         rows = connection.execute('SELECT channel,status,simulated FROM deliveries WHERE submission_id=? ORDER BY channel', (sid,)).fetchall()
-        return [dict(row) | {'mode': 'test' if row['simulated'] else ('live' if row['status'].startswith('live_') else 'not_connected')} for row in rows]
+        return [dict(row) | {
+            'mode': 'test' if row['simulated'] else ('live' if row['status'].startswith('live_') else 'not_connected'),
+            'message': channel_message(row),
+        } for row in rows]
+
+    def settle_test_delivery(self, sid=None, channel=None):
+        """Под блокировкой реестра завершает прерванные тестовые задания."""
+        with self.connection() as c:
+            c.execute("""
+                UPDATE deliveries
+                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed' ELSE 'mock_unknown' END
+                WHERE simulated = 1 AND status IN ('mock_queued', 'mock_processing')
+                  AND (? IS NULL OR submission_id = ?) AND (? IS NULL OR channel = ?)
+            """, (sid, sid, channel, channel))
 
     def acceptance(self, row, replay=False, channels=None):
         channels = channels or []
@@ -117,7 +130,7 @@ class Store:
                 'receipt_expires': row['receipt_expires'], 'replayed': replay,
                 'message': delivery_message(channels), 'channels': channels}
 
-    def save(self, key, body_hash, lead, photos):
+    def save(self, key, body_hash, lead, photos, *, test_delivery=False):
         now = self.settings.clock()
         with self.connection() as c:
             c.execute('BEGIN IMMEDIATE')
@@ -136,8 +149,11 @@ class Store:
                       (sid, key, body_hash, lead.model_dump_json(), now, receipt_key, now + self.settings.receipt_ttl))
             c.executemany('INSERT INTO photos VALUES(?,?,?)',
                           [(uuid.uuid4().hex + '.jpg', sid, p) for p in photos])
-            c.executemany('INSERT INTO deliveries(submission_id,channel) VALUES(?,?)',
-                          [(sid, 'telegram'), (sid, 'sheets')])
+            status = 'mock_queued' if test_delivery else 'not_connected'
+            c.executemany(
+                'INSERT INTO deliveries(submission_id,channel,status,simulated) VALUES(?,?,?,?)',
+                [(sid, channel, status, int(test_delivery)) for channel in ('telegram', 'sheets')],
+            )
             return self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(), channels=self.delivery_rows(c, sid))
 
     def receipt(self, sid, key):

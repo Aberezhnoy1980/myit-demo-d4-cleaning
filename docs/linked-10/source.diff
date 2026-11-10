@@ -1,0 +1,797 @@
+diff --git a/README.md b/README.md
+index 5857245..93a8a06 100644
+--- a/README.md
++++ b/README.md
+@@ -1,15 +1,15 @@
+ # D4 · «Диван в порядке»
+ 
+ Локальный стенд лендинга вымышленной химчистки диванов. Услуги не оказываются.
+-Срез `d4-divan-v-poryadke-rename-09`: согласованное имя «Диван в порядке», дескриптор «Химчистка диванов».
++Срез `d4-divan-v-poryadke-linked-10`: форма, два канала и раздельные статусы в квитанции.
++Имя «Диван в порядке» и дескриптор «Химчистка диванов» утверждены в срезе `d4-divan-v-poryadke-rename-09`.
+ Дизайн, пользовательский путь, SVG-знак и папка d4-cleaning сохранены. Прежнее имя «Тихий дом» и идентификаторы
+ прошлых срезов остаются историей; офлайн-код основы — принятый `d4-tihiy-dom-sheets-b2-07`.
+ Локальное сохранение SQLite, обработка фото и квитанции реализованы; серверный этап/restore и офлайн B2 приняты
+ координатором в проверенном объёме. Это не приёмка всего публичного D4.
+ Telegram B1 принят в проверенном объёме, один тест проведён координатором и подтверждён владельцем
+ ([свидетельство](docs/review-coordinator/telegram-b1-06/owner-confirmation.md)). Повторять Telegram для B2 запрещено.
+-В этом переименовании настоящие секреты/рабочий реестр не читались, Google/Telegram API не вызывались, пакеты не устанавливались.
+-Визуальное направление сохранено. Sheets live закрыт до отдельной реализации/приёмки официального SDK.
++Два канала проверяются в тестовом режиме на синтетических данных. Обычный запуск сохраняет заявку локально.
+ 
+ ## Запуск
+ 
+@@ -172,11 +172,15 @@ Connect/pool отказ до передачи: только ручной пов
+ План подтверждения, хранения и очистки — [docs/telegram-b1/acceptance.md](docs/telegram-b1/acceptance.md).
+ В этой передаче B2 команда выше с реальными ресурсами **не запускалась**.
+ 
+-## Sheets B2: только офлайн, SDK пока отсутствует
++## Sheets B2 и проверка связки
+ 
+-Пустая отдельная настройка — [.env.sheets.example](.env.sheets.example). Telegram `.env` и парсер не менялись.
+-В HTTP-приёме заявки и при старте отправок нет. Адаптер B2 принимает только явную искусственную авторизацию
+-и MockTransport; это не реализация настоящего OAuth. Прямой live-транспорт отсутствует.
++Тестовый режим включается через `create_app(settings, test_delivery=(telegram, sheets))`.
++Оба канала используют MockTransport, Sheets получает токен через google-auth с искусственным ключом
++и отдельным подставным OAuth-транспортом. Официальный SDK берётся из подготовленного окружения VM.
++Форма сохраняет заявку, фото и два задания одной транзакцией. После коммита HTTP-ответ даёт номер и статусы ожидания.
++Фоновый обработчик берёт два задания этой заявки. Кнопка «Проверить квитанцию» читает результат каждого канала.
++Повтор формы возвращает прежний номер. При старте прерванная тестовая обработка получает неопределённый статус.
++Сценарии и команды офлайн-проверки описаны в [протоколе связки](docs/linked-10/acceptance.md).
+ 
+ Строка A:I: submission_id, accepted_at_utc, sofa, size, material, description, synthetic_channel,
+ synthetic_contact, photo_count. UTC берётся из сохранённой заявки, значения RAW, формульный текст не преобразуется.
+@@ -217,7 +221,8 @@ node --check public/app.js
+ .venv/bin/python tools/measure_http.py --base http://127.0.0.1:4344/
+ ```
+ 
+-Протокол текущего среза — [docs/rename-09/acceptance.md](docs/rename-09/acceptance.md).
++Протокол текущего среза — [docs/linked-10/acceptance.md](docs/linked-10/acceptance.md).
++Проверка переименования — [docs/rename-09/acceptance.md](docs/rename-09/acceptance.md).
+ Принятый офлайн B2 — [docs/sheets-b2/acceptance.md](docs/sheets-b2/acceptance.md),
+ независимая проверка — [docs/review-coordinator/sheets-b2/acceptance.md](docs/review-coordinator/sheets-b2/acceptance.md).
+ Предыдущая правка смешанной квитанции — [docs/telegram-b1-06/acceptance.md](docs/telegram-b1-06/acceptance.md).
+@@ -226,10 +231,9 @@ node --check public/app.js
+ Предыдущие функциональные/браузерные проверки — [docs/server-03/acceptance.md](docs/server-03/acceptance.md).
+ Установки/lock — [docs/server-dependencies.md](docs/server-dependencies.md).
+ Ресурсы и минимальные доступы следующего live-этапа — [docs/live-resources.md](docs/live-resources.md).
+-Google/Telegram SDK не добавлены. В текущем B2 нет реальных отправок; прежний один тест Telegram подтверждён владельцем.
+-SDK/установка, Google-ресурсы/авторизация и один live-тест Sheets — отдельные решения. N4 целиком ещё не закрыт.
++Офлайн-связка использует установленные пакеты VM. Google-ресурсы, настоящая авторизация и live-тест Sheets согласуются отдельно.
+ 
+-Git/remote не созданы, размещения нет. Подготовка размещения и отката откладывается до согласования среды.
++База локального diff — `f0d3aa8dfcdf73698538a2957c89ae3260c67f68`. Git-фиксация и размещение согласуются отдельно.
+ Документация и доказательства — `docs/`. Самопроверка автора не заменяет независимой приёмки.
+ 
+ ## Идентификация
+diff --git a/public/app.js b/public/app.js
+index c8249b3..987fbd2 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -110,21 +110,21 @@ function requestError(message) {
+ }
+ function renderReceipt(data) {
+   summary.hidden=true;
+-  document.querySelector('#result-title').textContent=data.message || 'Запрос сохранён в локальном демо-реестре.';
++  document.querySelector('#result-title').textContent='Запрос сохранён';
+   const details=document.querySelector('#receipt-details');details.replaceChildren();
+   const number=document.createElement('p');number.textContent='Номер запроса: '+data.submission_id;
+-  const note=document.createElement('p');note.textContent='Это подтверждение локального сохранения. Состояние внешней доставки указано выше; цена и время выезда не согласованы.';
++  const note=document.createElement('p');note.textContent='Цена и время выезда требуют согласования.';
+   const expiry=document.createElement('p');expiry.textContent='Квитанция доступна до '+new Date(data.receipt_expires*1000).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})+' (1 час после сохранения). После перезагрузки страницы доступ к ней теряется.';
+-  details.append(number,note,expiry);
+-  if (data.photos) {const photosNote=document.createElement('p');photosNote.textContent='Проверенных фотографий: '+data.photos;details.append(photosNote);}
+-  const channelNames = {telegram:'Telegram', sheets:'Google Sheets'};
+-  for (const channel of data.channels || []) {
+-    if (channel.simulated) {
+-      const test=document.createElement('p');
+-      test.textContent=(channelNames[channel.channel] || 'Канал доставки')+': тестовый режим. Реальная отправка по этому каналу не выполнялась.';
+-      details.append(test);
+-    }
++  details.append(number);
++  for (const [id, name] of [['telegram', 'Telegram'], ['sheets', 'Google Sheets']]) {
++    const channel = (data.channels || []).find(item => item.channel === id);
++    const line = document.createElement('p');
++    const mode = channel?.simulated ? 'Тестовый режим. ' : '';
++    line.textContent = name + ': ' + mode + (channel?.message || 'Канал выключен.');
++    details.append(line);
+   }
++  details.append(note,expiry);
++  if (data.photos) {const photosNote=document.createElement('p');photosNote.textContent='Проверенных фотографий: '+data.photos;details.append(photosNote);}
+   result.hidden=false;result.focus();
+ }
+ document.querySelector('#refresh-receipt').addEventListener('click',async e=>{
+diff --git a/public/index.html b/public/index.html
+index 8f3b788..ec91765 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -54,7 +54,7 @@
+       <button class="button submit" type="submit" disabled>Сохранить тестовый запрос <span aria-hidden="true">↗</span></button><p class="fine submit-note">Демо: сохранение только на этом стенде.<br>Уведомления не отправляются автоматически.</p>
+       <p id="js-notice" class="error-summary">Для сохранения запроса нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас отправка недоступна.</p>
+       <p id="sending" class="fine" role="status" hidden>Проверяем фото и сохраняем запрос…</p>
+-      <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Сохранено в демо-реестре, доставка не подключена.</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><br><button type="button" id="return">Вернуться к форме ↑</button></div>
++      <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Запрос сохранён</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><br><button type="button" id="return">Вернуться к форме ↑</button></div>
+     </form>
+   </div>
+ </section>
+diff --git a/server/app.py b/server/app.py
+index c1d5eb4..eca58de 100644
+--- a/server/app.py
++++ b/server/app.py
+@@ -6,6 +6,7 @@ import sqlite3
+ 
+ from fastapi import FastAPI, Request
+ from pydantic import ValidationError
++from starlette.background import BackgroundTask
+ from starlette.concurrency import run_in_threadpool
+ from starlette.datastructures import UploadFile
+ from starlette.exceptions import HTTPException
+@@ -15,7 +16,10 @@ from starlette.staticfiles import StaticFiles
+ 
+ from .model import Failure, Lead, MIB, ROOT, Settings
+ from .photos import decode_photo
++from .sheets import SheetsAdapter, send_one as send_sheet
++from .sheets_auth import SDKAuthorization
+ from .store import Store, fingerprint
++from .telegram import TelegramAdapter, send_one as send_telegram
+ 
+ 
+ def fail_response(error):
+@@ -78,7 +82,31 @@ async def bounded_form(request):
+     return await parsed.form(max_files=3, max_fields=6, max_part_size=8192)
+ 
+ 
+-def create_app(settings=None):
++def deliver_test_submission(store, sid, adapters):
++    for channel, send, adapter in (
++        ('telegram', send_telegram, adapters[0]),
++        ('sheets', send_sheet, adapters[1]),
++    ):
++        try:
++            send(store, sid, adapter)
++        except Exception:
++            # Ошибка канала не меняет ответ о сохранении и не прерывает второй канал.
++            pass
++        try:
++            store.settle_test_delivery(sid, channel)
++        except (sqlite3.Error, OSError):
++            # Следующий запуск завершит оставшийся processing как unknown.
++            pass
++
++
++def create_app(settings=None, *, test_delivery=None):
++    if test_delivery is not None:
++        telegram, sheets = test_delivery
++        if (not isinstance(telegram, TelegramAdapter) or not telegram.offline
++                or not isinstance(sheets, SheetsAdapter) or not sheets.offline
++                or not isinstance(sheets.authorization, SDKAuthorization)):
++            raise ValueError('Для связанного прогона нужны подставные Telegram, Sheets и OAuth-транспорты.')
++        test_delivery = (telegram, sheets)
+     settings = settings or Settings()
+     store = Store(settings)
+ 
+@@ -88,6 +116,7 @@ def create_app(settings=None):
+         with (settings.data_dir / '.server.lock').open('a') as lock:
+             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+             store.initialize()
++            store.settle_test_delivery()
+             store.cleanup(apply=True)
+             async def cleanup_loop():
+                 while True:
+@@ -117,7 +146,8 @@ def create_app(settings=None):
+ 
+     @site.get('/api/health')
+     async def health():
+-        return {'mode': 'local-synthetic', 'storage': 'sqlite', 'delivery': 'not_connected'}
++        return {'mode': 'local-synthetic', 'storage': 'sqlite',
++                'delivery': 'test' if test_delivery else 'not_connected'}
+ 
+     @site.post('/api/submissions')
+     async def submit(request: Request):
+@@ -162,8 +192,15 @@ def create_app(settings=None):
+                 clean = []
+                 for content, mime in originals:
+                     clean.append(await run_in_threadpool(decode_photo, content, mime))
+-                accepted = await run_in_threadpool(store.save, key, body_hash, lead, clean)
+-                return JSONResponse(accepted, status_code=200 if accepted['replayed'] else 201)
++                accepted = await run_in_threadpool(
++                    store.save, key, body_hash, lead, clean,
++                    **({'test_delivery': True} if test_delivery else {}),
++                )
++                background = None
++                if test_delivery and not accepted['replayed']:
++                    background = BackgroundTask(deliver_test_submission, store, accepted['submission_id'], test_delivery)
++                return JSONResponse(accepted, status_code=200 if accepted['replayed'] else 201,
++                                    background=background)
+             finally:
+                 await form.close()
+         except Failure as error:
+diff --git a/server/delivery.py b/server/delivery.py
+index 37cbc60..f15202c 100644
+--- a/server/delivery.py
++++ b/server/delivery.py
+@@ -51,6 +51,24 @@ def step(store, channel, adapter):
+     return state
+ 
+ 
++def channel_message(job):
++    status = job['status']
++    state = status.removeprefix('mock_').removeprefix('live_')
++    if state == 'delivered':
++        if job['channel'] == 'sheets':
++            if status == 'delivered':
++                return 'Успех записи сымитирован. Чтение и сверка строки не выполнялись.'
++            return 'Запись подтверждена сверкой всех девяти полей.'
++        return 'Создание сообщения подтверждено. Прочтение человеком не подтверждено.'
++    if state == 'unknown' or status == 'live_processing':
++        return 'Результат неизвестен. Автоматического повтора нет.'
++    if state in {'queued', 'processing', 'pending'}:
++        return 'Ожидает результата.'
++    if state == 'failed':
++        return 'Доставка не состоялась. Повтора не будет.'
++    return 'Канал выключен.'
++
++
+ def delivery_message(jobs):
+     """Без provider IDs/получателя/секретов; mock никогда не подтверждает живую доставку."""
+     if not any(not j['simulated'] and j['status'].startswith('live_') for j in jobs):
+diff --git a/server/sheets.py b/server/sheets.py
+index e575319..bbad89a 100644
+--- a/server/sheets.py
++++ b/server/sheets.py
+@@ -1,4 +1,4 @@
+-"""B2 офлайн-контракт. Реальный OAuth/транспорт закрыт до разрешённого SDK-этапа."""
++"""Контракт B2 с подставным транспортом и офлайн-проверкой Google SDK."""
+ from dataclasses import dataclass, field
+ from datetime import datetime, timezone
+ import json
+@@ -12,6 +12,7 @@ import uuid
+ import httpx
+ 
+ from .model import Failure, Lead
++from .sheets_auth import SDKAuthorization
+ from .sheets_config import ConfigurationError, MAX_ROW, SheetsConfig
+ from .telegram import no_http_logs
+ 
+@@ -77,7 +78,8 @@ def row_for_submission(store, sid, connection):
+ 
+ class SheetsAdapter:
+     def __init__(self, config: SheetsConfig, authorization, *, transport):
+-        if (not isinstance(transport, httpx.MockTransport) or not isinstance(authorization, OfflineAuthorization)
++        if (not isinstance(transport, httpx.MockTransport)
++                or not isinstance(authorization, (OfflineAuthorization, SDKAuthorization))
+                 or not config.spreadsheet_id or authorization.account != config.service_account):
+             raise ConfigurationError('B2 требует явные искусственную авторизацию и MockTransport согласованного ресурса.')
+         self.config = config
+@@ -88,12 +90,7 @@ class SheetsAdapter:
+     def __repr__(self):
+         return 'SheetsAdapter(offline=True)'
+ 
+-    def _request(self, client, method, cell_range, *, body=None, append=False):
+-        # Даже bearer/SDK-исключения могут включать закодированные секреты: не возвращать их текст.
+-        try:
+-            token = self.authorization.token()
+-        except Exception:
+-            raise _Stop('failed', 'authorization_unavailable') from None
++    def _request(self, client, token, method, cell_range, *, body=None, append=False):
+         path = '/v4/spreadsheets/' + self.config.spreadsheet_id + '/values/' + quote(cell_range, safe='')
+         params = {'valueInputOption': 'RAW', 'insertDataOption': 'INSERT_ROWS'} if append else {
+             'majorDimension': 'ROWS', 'valueRenderOption': 'UNFORMATTED_VALUE'}
+@@ -138,8 +135,8 @@ class SheetsAdapter:
+     def _range(value, start, end):
+         return value in {f'Leads!A{start}:I{end}', f"'Leads'!A{start}:I{end}"}
+ 
+-    def _read(self, client, start, end):
+-        data = self._request(client, 'GET', f'Leads!A{start}:I{end}')
++    def _read(self, client, token, start, end):
++        data = self._request(client, token, 'GET', f'Leads!A{start}:I{end}')
+         values = data.get('values', [])
+         if (not self._range(data.get('range'), start, end) or data.get('majorDimension') != 'ROWS'
+                 or not isinstance(values, list) or len(values) > end - start + 1):
+@@ -159,11 +156,15 @@ class SheetsAdapter:
+         append_accepted = False
+         with no_http_logs():
+             try:
++                try:
++                    token = self.authorization.token()
++                except Exception:
++                    raise _Stop('failed', 'authorization_unavailable') from None
+                 with httpx.Client(transport=self._transport, timeout=_TIMEOUT, trust_env=False,
+                                   follow_redirects=False) as client:
+-                    if self._read(client, 1, 1) != [HEADERS]:
++                    if self._read(client, token, 1, 1) != [HEADERS]:
+                         raise _Stop('failed', 'header_mismatch')
+-                    rows = self._read(client, 2, MAX_ROW)
++                    rows = self._read(client, token, 2, MAX_ROW)
+                     matches = [r for r in rows if r[0] == row[0]]
+                     if matches:
+                         if len(matches) == 1 and matches[0] == row:
+@@ -176,7 +177,7 @@ class SheetsAdapter:
+                         raise _Stop('failed', 'capacity_or_layout')
+                     target = len(rows) + 2
+                     wrote = True
+-                    data = self._request(client, 'POST', f'Leads!A1:I{MAX_ROW}',
++                    data = self._request(client, token, 'POST', f'Leads!A1:I{MAX_ROW}',
+                                          body={'majorDimension': 'ROWS', 'values': [row]}, append=True)
+                     append_accepted = True
+                     updates = data.get('updates')
+@@ -186,7 +187,7 @@ class SheetsAdapter:
+                             or any(type(updates.get(key)) is not int or updates[key] != value for key, value in
+                                    {'updatedRows': 1, 'updatedColumns': 9, 'updatedCells': 9}.items())):
+                         raise _Stop('unknown', 'invalid_append_ack')
+-                    if self._read(client, target, target) != [row]:
++                    if self._read(client, token, target, target) != [row]:
+                         raise _Stop('unknown', 'readback_mismatch')
+                     return SheetsOutcome('delivered', 'row_confirmed')
+             except _Stop as stop:
+@@ -217,7 +218,8 @@ def send_one(store, sid, adapter, *, reconcile=False):
+             meta = {}
+         if not isinstance(meta, dict):
+             meta = {}
+-        if job['status'] == 'not_connected' and not job['simulated']:
++        if ((job['status'] == 'not_connected' and not job['simulated'])
++                or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
+             if reconcile:
+                 raise Failure(409, 'Сверка разрешена только для неизвестного результата Sheets.')
+         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
+@@ -258,7 +260,7 @@ def send_one(store, sid, adapter, *, reconcile=False):
+     except Exception:
+         outcome = SheetsOutcome('unknown', 'unconfirmed_operation')
+     state = outcome.kind
+-    if state == 'pending' and job['attempts'] + 1 >= 3:
++    if state == 'pending' and (job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
+         state = 'failed'
+     meta['reason'] = outcome.reason
+     try:
+diff --git a/server/store.py b/server/store.py
+index 7386478..7dcf30b 100644
+--- a/server/store.py
++++ b/server/store.py
+@@ -12,7 +12,7 @@ import time
+ import uuid
+ 
+ from .model import Failure
+-from .delivery import delivery_message
++from .delivery import channel_message, delivery_message
+ 
+ 
+ SCHEMA = '''
+@@ -109,7 +109,20 @@ class Store:
+     @staticmethod
+     def delivery_rows(connection, sid):
+         rows = connection.execute('SELECT channel,status,simulated FROM deliveries WHERE submission_id=? ORDER BY channel', (sid,)).fetchall()
+-        return [dict(row) | {'mode': 'test' if row['simulated'] else ('live' if row['status'].startswith('live_') else 'not_connected')} for row in rows]
++        return [dict(row) | {
++            'mode': 'test' if row['simulated'] else ('live' if row['status'].startswith('live_') else 'not_connected'),
++            'message': channel_message(row),
++        } for row in rows]
++
++    def settle_test_delivery(self, sid=None, channel=None):
++        """Под блокировкой реестра завершает прерванные тестовые задания."""
++        with self.connection() as c:
++            c.execute("""
++                UPDATE deliveries
++                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed' ELSE 'mock_unknown' END
++                WHERE simulated = 1 AND status IN ('mock_queued', 'mock_processing')
++                  AND (? IS NULL OR submission_id = ?) AND (? IS NULL OR channel = ?)
++            """, (sid, sid, channel, channel))
+ 
+     def acceptance(self, row, replay=False, channels=None):
+         channels = channels or []
+@@ -117,7 +130,7 @@ class Store:
+                 'receipt_expires': row['receipt_expires'], 'replayed': replay,
+                 'message': delivery_message(channels), 'channels': channels}
+ 
+-    def save(self, key, body_hash, lead, photos):
++    def save(self, key, body_hash, lead, photos, *, test_delivery=False):
+         now = self.settings.clock()
+         with self.connection() as c:
+             c.execute('BEGIN IMMEDIATE')
+@@ -136,8 +149,11 @@ class Store:
+                       (sid, key, body_hash, lead.model_dump_json(), now, receipt_key, now + self.settings.receipt_ttl))
+             c.executemany('INSERT INTO photos VALUES(?,?,?)',
+                           [(uuid.uuid4().hex + '.jpg', sid, p) for p in photos])
+-            c.executemany('INSERT INTO deliveries(submission_id,channel) VALUES(?,?)',
+-                          [(sid, 'telegram'), (sid, 'sheets')])
++            status = 'mock_queued' if test_delivery else 'not_connected'
++            c.executemany(
++                'INSERT INTO deliveries(submission_id,channel,status,simulated) VALUES(?,?,?,?)',
++                [(sid, channel, status, int(test_delivery)) for channel in ('telegram', 'sheets')],
++            )
+             return self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(), channels=self.delivery_rows(c, sid))
+ 
+     def receipt(self, sid, key):
+diff --git a/server/telegram.py b/server/telegram.py
+index 55fd514..3c6bc0e 100644
+--- a/server/telegram.py
++++ b/server/telegram.py
+@@ -1,4 +1,4 @@
+-"""Одна адресная sendPhoto. По умолчанию нет сети, секретов и автоматических отправок."""
++"""Одна адресная sendPhoto, включая тестовый вызов после сохранения."""
+ from contextlib import contextmanager
+ from dataclasses import dataclass, field
+ from io import BytesIO
+@@ -176,7 +176,8 @@ def send_one(store, submission_id, adapter):
+             meta = {}
+         if not isinstance(meta, dict):
+             meta = {}
+-        if job['status'] == 'not_connected' and job['simulated'] == 0:
++        if ((job['status'] == 'not_connected' and not job['simulated'])
++                or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
+             pass
+         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
+             if meta.get('binding') != adapter.config.binding:
+@@ -206,7 +207,7 @@ def send_one(store, submission_id, adapter):
+         outcome = TelegramOutcome('unknown', 'uncertain_transport')
+     state = outcome.kind
+     if state == 'retry':
+-        state = 'pending' if attempts < 3 else 'failed'
++        state = 'pending' if job['status'] != 'mock_queued' and attempts < 3 else 'failed'
+     meta['reason'] = outcome.reason
+     if outcome.message_id is not None:
+         meta['message_id'] = outcome.message_id  # приватная служебная квитанция, не клиентский ответ
+diff --git a/tests/test_sheets.py b/tests/test_sheets.py
+index ed4d1ba..c5b14c2 100644
+--- a/tests/test_sheets.py
++++ b/tests/test_sheets.py
+@@ -494,11 +494,19 @@ vm.createContext(context);vm.runInContext(fn+';renderReceipt(data);',context);
+ process.stdout.write(JSON.stringify({title:nodes['#result-title'].textContent,notes:nodes['#receipt-details'].children.map(n=>n.textContent)}));
+ '''
+     result=subprocess.run(['node','-e',script,str(ROOT/'public/app.js')],input=json.dumps(receipt),text=True,capture_output=True,check=True,timeout=10)
+-    ui=json.loads(result.stdout);assert ui['title']==receipt['message']
+-    assert 'Google Sheets не подключены' not in ui['title'] and 'Реальных отправок нет' not in json.dumps(ui,ensure_ascii=False)
+-    notes=[n for n in ui['notes'] if 'тестовый режим' in n]
+-    assert len(notes)==(1 if telegram_state=='test' else 0)
+-    if notes:assert notes[0].startswith('Telegram:')
++    ui = json.loads(result.stdout)
++    assert ui['title'] == 'Запрос сохранён'
++    assert ui['notes'][1].startswith('Telegram: ')
++    assert ('Тестовый режим' in ui['notes'][1]) == (telegram_state == 'test')
++    if telegram_state == 'live_unknown':
++        assert 'Результат неизвестен' in ui['notes'][1]
++    else:
++        assert 'Создание сообщения подтверждено' in ui['notes'][1]
++    assert ui['notes'][2].startswith('Google Sheets: ')
++    if sheets_state == 'live_unknown':
++        assert 'Результат неизвестен' in ui['notes'][2]
++    else:
++        assert 'Запись подтверждена сверкой всех девяти полей' in ui['notes'][2]
+ 
+ 
+ def test_sdk_presence_alone_does_not_enable_live(monkeypatch):
+diff --git a/tests/test_telegram.py b/tests/test_telegram.py
+index bc42c12..87050c4 100644
+--- a/tests/test_telegram.py
++++ b/tests/test_telegram.py
+@@ -229,18 +229,17 @@ process.stdout.write(JSON.stringify({title:nodes['#result-title'].textContent,no
+     rendered = subprocess.run(['node', '-e', script, str(ROOT / 'public/app.js')],
+                               input=json.dumps(receipt), text=True, capture_output=True, check=True, timeout=10)
+     ui = json.loads(rendered.stdout)
+-    assert ui['title'] == receipt['message']
+-    simulated_notes = [note for note in ui['notes'] if 'тестовый режим' in note]
+-    sheets_note = 'Google Sheets: тестовый режим. Реальная отправка по этому каналу не выполнялась.'
+-    telegram_note = 'Telegram: тестовый режим. Реальная отправка по этому каналу не выполнялась.'
+-    assert set(simulated_notes) == ({sheets_note, telegram_note} if telegram_state == 'test_only' else {sheets_note})
+-    assert 'Реальных отправок нет' not in '\n'.join(ui['notes'])
++    assert ui['title'] == 'Запрос сохранён'
++    assert ui['notes'][2] == 'Google Sheets: Тестовый режим. Успех записи сымитирован. Чтение и сверка строки не выполнялись.'
++    telegram_note = ui['notes'][1]
++    assert telegram_note.startswith('Telegram: ')
+     if telegram_state == 'live_delivered':
+-        assert 'создание сообщения' in ui['title'] and 'прочтение человеком не подтверждено' in ui['title']
++        assert 'Создание сообщения подтверждено' in telegram_note
++        assert 'Прочтение человеком не подтверждено' in telegram_note
+     elif telegram_state == 'live_unknown':
+-        assert 'неизвестен' in ui['title'] and 'не повторяйте' in ui['title']
++        assert 'неизвестен' in telegram_note and 'Автоматического повтора нет' in telegram_note
+     else:
+-        assert 'доставка не подключена' in ui['title']
++        assert 'Тестовый режим. Создание сообщения подтверждено' in telegram_note
+ 
+ 
+ @pytest.mark.parametrize('error,kind', [(httpx.ConnectError,'pending'),(httpx.ConnectTimeout,'pending'),(httpx.PoolTimeout,'pending'),
+diff --git a/server/sheets_auth.py b/server/sheets_auth.py
+new file mode 100644
+index 0000000..59a93f9
+--- /dev/null
++++ b/server/sheets_auth.py
+@@ -0,0 +1,54 @@
++"""Офлайн-авторизация Sheets через официальный Google SDK."""
++import re
++
++import httpx
++
++from .sheets_config import ConfigurationError, SCOPE, TOKEN_URI, validate_service_account
++
++
++class SDKAuthorization:
++    def __init__(self, config, info, *, transport):
++        if not isinstance(transport, httpx.MockTransport):
++            raise ConfigurationError('Для проверки SDK требуется подставной OAuth-транспорт.')
++        validate_service_account(info, config)
++        try:
++            from google.oauth2 import service_account
++
++            self._credentials = service_account.Credentials.from_service_account_info(
++                info, scopes=[SCOPE], always_use_jwt_access=False,
++            )
++        except Exception:
++            raise ConfigurationError('Не удалось подготовить авторизацию Google SDK.') from None
++        self.account = config.service_account
++        self._transport = transport
++
++    def token(self):
++        """Один обмен для операции Sheets. SDK подписывает assertion сам."""
++        attempted = False
++        try:
++            with httpx.Client(transport=self._transport, timeout=5, trust_env=False,
++                              follow_redirects=False) as client:
++                def request(url, method, body, headers, **kwargs):
++                    nonlocal attempted
++                    if attempted or url != TOKEN_URI or method != 'POST':
++                        raise ConfigurationError('OAuth-запрос отклонён.')
++                    attempted = True
++                    response = client.post(url, content=body, headers=headers)
++                    if response.status_code != 200 or len(response.content) > 65536:
++                        raise ConfigurationError('Не удалось получить токен Sheets.')
++                    return _TokenResponse(response.content)
++
++                self._credentials.refresh(request)
++            token = self._credentials.token
++            if not isinstance(token, str) or not re.fullmatch(r'[A-Za-z0-9._~+/=-]{1,8192}', token):
++                raise ConfigurationError('Некорректный ответ OAuth.')
++            return token
++        except Exception:
++            raise ConfigurationError('Авторизация Google SDK недоступна.') from None
++
++
++class _TokenResponse:
++    status = 200
++
++    def __init__(self, data):
++        self.data = data
+diff --git a/tests/test_linked_delivery.py b/tests/test_linked_delivery.py
+new file mode 100644
+index 0000000..3d9d1b0
+--- /dev/null
++++ b/tests/test_linked_delivery.py
+@@ -0,0 +1,239 @@
++"""Форма, два задания SQLite и настоящий Google SDK поверх подставных транспортов."""
++from email import policy
++from email.parser import BytesParser
++import json
++import socket
++import sys
++from urllib.parse import parse_qs
++import uuid
++
++from fastapi.testclient import TestClient
++import httpx
++import pytest
++
++from server import manage
++from server.app import create_app
++from server.model import Settings
++from server.sheets import SheetsAdapter, row_for_submission
++from server.sheets_auth import SDKAuthorization
++from server.sheets_config import SCOPE, TOKEN_URI
++from server.store import Store
++from server.telegram import TelegramAdapter
++from test_server import fields, get_receipt, picture, send
++from test_sheets import MARKER, Table, cfg, error
++from test_telegram import config as telegram_config, response as telegram_response
++
++
++@pytest.fixture(scope='module')
++def sdk_key():
++    pytest.importorskip('google.oauth2.service_account')
++    from cryptography.hazmat.primitives import serialization
++    from cryptography.hazmat.primitives.asymmetric import rsa
++
++    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
++    pem = key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
++                            serialization.NoEncryption()).decode('ascii')
++    public_key = key.public_key().public_bytes(serialization.Encoding.PEM,
++                                              serialization.PublicFormat.SubjectPublicKeyInfo)
++    return pem, public_key
++
++
++@pytest.fixture(autouse=True)
++def no_network(monkeypatch):
++    def deny(*args, **kwargs):
++        raise AssertionError('External sockets forbidden')
++    monkeypatch.setattr(socket, 'getaddrinfo', deny)
++    monkeypatch.setattr(socket.socket, 'connect', deny)
++
++
++def prepare_channels(settings, sdk_key, table, *, telegram_status=200, oauth_status=200):
++    from google.auth import jwt
++
++    sheets_config = cfg()
++    telegram_calls = []
++    oauth_calls = []
++
++    def oauth(request):
++        assert str(request.url) == TOKEN_URI and request.method == 'POST'
++        oauth_calls.append(request.method)
++        data = parse_qs(request.content.decode('ascii'))
++        assert data['grant_type'] == ['urn:ietf:params:oauth:grant-type:jwt-bearer']
++        claims = jwt.decode(data['assertion'][0], {'d4-linked': sdk_key[1]}, audience=TOKEN_URI)
++        assert claims['iss'] == sheets_config.service_account and claims['scope'] == SCOPE
++        return httpx.Response(oauth_status, json={'access_token': MARKER, 'expires_in': 3600})
++
++    def telegram(request):
++        parts = BytesParser(policy=policy.default).parsebytes(
++            b'MIME-Version: 1.0\r\nContent-Type: ' + request.headers['content-type'].encode('ascii')
++            + b'\r\n\r\n' + request.content
++        )
++        form = {part.get_param('name', header='content-disposition'): part.get_payload(decode=True)
++                for part in parts.iter_parts()}
++        caption = form['caption'].decode('utf-8')
++        sid = caption.splitlines()[0].split()[-1]
++        telegram_calls.append(sid)
++        assert 'demo@example.test' not in caption and 'Тестовый след чая' not in caption
++        assert all(text in caption for text in ('Прямой', 'Два места', 'Ткань / рогожка'))
++        with Store(settings).connection() as connection:
++            photo = connection.execute('SELECT content FROM photos WHERE submission_id=?', (sid,)).fetchone()
++        assert photo and form['photo'] == photo[0] and photo[0].startswith(b'\xff\xd8')
++        return telegram_response(telegram_status)
++
++    authorization = SDKAuthorization(sheets_config, {
++        'type': 'service_account', 'client_email': sheets_config.service_account,
++        'token_uri': TOKEN_URI, 'private_key_id': 'd4-linked', 'private_key': sdk_key[0],
++    }, transport=httpx.MockTransport(oauth))
++    return (
++        TelegramAdapter(telegram_config(), transport=httpx.MockTransport(telegram)),
++        SheetsAdapter(sheets_config, authorization, transport=httpx.MockTransport(table)),
++    ), telegram_calls, oauth_calls
++
++
++def states(receipt):
++    return {job['channel']: job['status'] for job in receipt['channels']}
++
++
++def channel_message(receipt, channel):
++    return next(job['message'] for job in receipt['channels'] if job['channel'] == channel)
++
++
++def write_examples(tmp_path, **receipts):
++    (tmp_path / 'receipt-examples.json').write_text(
++        json.dumps(receipts, ensure_ascii=False, indent=2), encoding='utf-8',
++    )
++
++
++def test_two_new_forms_send_once_and_replay_keeps_number(tmp_path, sdk_key):
++    settings = Settings(data_dir=tmp_path / 'registry', minute_limit=6)
++    table = Table()
++    with TestClient(create_app(settings), base_url='http://127.0.0.1') as client:
++        old = send(client).json()
++        assert set(states(old).values()) == {'not_connected'}
++    adapters, messages, oauth = prepare_channels(settings, sdk_key, table)
++    app = create_app(settings, test_delivery=adapters)
++    photo = [('photos', ('original.png', picture(exif=True), 'image/png'))]
++    keys = [str(uuid.uuid4()), str(uuid.uuid4())]
++    with TestClient(app, base_url='http://127.0.0.1') as client:
++        submissions = []
++        for key in keys:
++            posted = send(client, key, photos=photo)
++            assert posted.status_code == 201
++            accepted = posted.json()
++            assert set(states(accepted).values()) == {'mock_queued'}
++            submissions.append(accepted)
++        receipts = [get_receipt(client, accepted).json() for accepted in submissions]
++        assert all(set(states(receipt).values()) == {'mock_delivered'} for receipt in receipts)
++        assert all(channel_message(receipt, 'sheets') == 'Запись подтверждена сверкой всех девяти полей.'
++                   for receipt in receipts)
++        assert set(states(get_receipt(client, old).json()).values()) == {'not_connected'}
++        for key, accepted in zip(keys, submissions):
++            replay = send(client, key, photos=photo)
++            assert replay.status_code == 200 and replay.json()['replayed']
++            assert replay.json()['submission_id'] == accepted['submission_id']
++    ids = [item['submission_id'] for item in submissions]
++    assert messages == ids and oauth == ['POST', 'POST']
++    assert table.append_count == 2 and [row[0] for row in table.rows] == ids
++    assert table.calls == ['header', 'scan', 'append', 'readback'] * 2
++    with app.state.store.connection() as connection:
++        expected = [row_for_submission(app.state.store, sid, connection) for sid in ids]
++    assert table.rows == expected
++    assert all(len(row) == 9 and row[7] == 'demo@example.test' for row in table.rows)
++    with TestClient(create_app(settings, test_delivery=adapters), base_url='http://127.0.0.1') as client:
++        replay = send(client, keys[0], photos=photo)
++        assert replay.status_code == 200 and replay.json()['replayed']
++        assert replay.json()['submission_id'] == ids[0]
++        assert states(get_receipt(client, submissions[0]).json()) == states(receipts[0])
++    assert messages == ids and table.append_count == 2 and len(oauth) == 2
++    pending_example = {key: submissions[0][key] for key in ('submission_id', 'channels')}
++    write_examples(tmp_path, waiting=pending_example, first=receipts[0], second=receipts[1])
++
++
++@pytest.mark.parametrize(('fault', 'telegram_state', 'sheet_state', 'writes'), [
++    ('telegram_forbidden', 'mock_failed', 'mock_delivered', 1),
++    ('sheets_forbidden', 'mock_delivered', 'mock_failed', 0),
++    ('telegram_rate_limit', 'mock_failed', 'mock_delivered', 1),
++    ('sheets_rate_limit', 'mock_delivered', 'mock_failed', 0),
++    ('oauth_rate_limit', 'mock_delivered', 'mock_failed', 0),
++    ('timeout_after_write', 'mock_delivered', 'mock_unknown', 1),
++    ('readback_mismatch', 'mock_delivered', 'mock_unknown', 1),
++])
++def test_independent_outcomes_survive_restart(tmp_path, sdk_key, fault, telegram_state, sheet_state, writes):
++    settings = Settings(data_dir=tmp_path / 'registry')
++    table = Table()
++    if fault == 'sheets_forbidden':
++        table.faults['header'] = error(403)
++    if fault == 'sheets_rate_limit':
++        table.faults['header'] = error(429, retry=45)
++    if fault == 'timeout_after_write':
++        def timeout_after_write(request, sheet):
++            assert len(sheet.rows) == 1
++            raise httpx.ReadTimeout('Synthetic response lost after append')
++        table.faults['append'] = timeout_after_write
++    if fault == 'readback_mismatch':
++        def changed_field(request, sheet):
++            row = sheet.rows[-1][:-1] + ['2']
++            return httpx.Response(200, json={'range': 'Leads!A2:I2', 'majorDimension': 'ROWS', 'values': [row]})
++        table.faults['readback'] = changed_field
++    telegram_status = {'telegram_forbidden': 403, 'telegram_rate_limit': 429}.get(fault, 200)
++    adapters, messages, oauth = prepare_channels(
++        settings, sdk_key, table, telegram_status=telegram_status,
++        oauth_status=429 if fault == 'oauth_rate_limit' else 200,
++    )
++    key = str(uuid.uuid4())
++    with TestClient(create_app(settings, test_delivery=adapters), base_url='http://127.0.0.1') as client:
++        result = send(client, key)
++        assert result.status_code == 201
++        accepted = result.json()
++        receipt = get_receipt(client, accepted).json()
++        assert states(receipt) == {'telegram': telegram_state, 'sheets': sheet_state}
++    with TestClient(create_app(settings, test_delivery=adapters), base_url='http://127.0.0.1') as client:
++        assert send(client, key).json()['submission_id'] == accepted['submission_id']
++        assert get_receipt(client, accepted).json() == receipt
++    assert messages == [accepted['submission_id']] and oauth == ['POST']
++    assert table.append_count == writes
++    if fault == 'oauth_rate_limit':
++        assert table.calls == []
++    if fault in {'telegram_rate_limit', 'sheets_rate_limit'}:
++        channel = fault.removesuffix('_rate_limit')
++        assert channel_message(receipt, channel) == 'Доставка не состоялась. Повтора не будет.'
++        assert table.calls == (['header'] if channel == 'sheets' else ['header', 'scan', 'append', 'readback'])
++    write_examples(tmp_path, **{fault: receipt})
++
++
++def test_restart_settles_interrupted_test_jobs_without_replay(tmp_path, sdk_key):
++    settings = Settings(data_dir=tmp_path / 'registry')
++    table = Table()
++    adapters, messages, oauth = prepare_channels(settings, sdk_key, table)
++    store = Store(settings)
++    store.initialize()
++    from server.model import Lead
++    from server.store import fingerprint
++
++    key = str(uuid.uuid4())
++    lead = Lead.model_validate(fields())
++    original = picture()
++    accepted = store.save(key, fingerprint(lead, [(original, 'image/png')]), lead,
++                          [picture('JPEG')], test_delivery=True)
++    with store.connection() as connection:
++        connection.execute("UPDATE deliveries SET status='mock_processing' WHERE channel='sheets'")
++    with TestClient(create_app(settings, test_delivery=adapters), base_url='http://127.0.0.1') as client:
++        assert send(client, key).json()['submission_id'] == accepted['submission_id']
++        receipt = get_receipt(client, accepted).json()
++    assert states(receipt) == {'telegram': 'mock_failed', 'sheets': 'mock_unknown'}
++    assert not messages and not oauth and not table.calls
++    write_examples(tmp_path, interrupted=receipt)
++
++
++def test_legacy_sheets_simulate_receipt_reports_imitation(tmp_path, monkeypatch, capsys):
++    settings = Settings(data_dir=tmp_path / 'registry')
++    with TestClient(create_app(settings), base_url='http://127.0.0.1') as client:
++        accepted = send(client).json()
++    monkeypatch.setattr(manage, 'Settings', lambda: settings)
++    monkeypatch.setattr(sys, 'argv', ['manage', 'simulate', '--channel', 'sheets', '--scenario', 'success'])
++    manage.main()
++    assert 'Локальная имитация: delivered' in capsys.readouterr().out
++    with TestClient(create_app(settings), base_url='http://127.0.0.1') as client:
++        receipt = get_receipt(client, accepted).json()
++    assert states(receipt)['sheets'] == 'delivered'
++    assert channel_message(receipt, 'sheets') == 'Успех записи сымитирован. Чтение и сверка строки не выполнялись.'
++    write_examples(tmp_path, legacy_sheets=receipt)

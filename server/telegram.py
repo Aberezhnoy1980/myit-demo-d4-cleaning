@@ -1,4 +1,4 @@
-"""Одна адресная sendPhoto. По умолчанию нет сети, секретов и автоматических отправок."""
+"""Одна адресная sendPhoto, включая тестовый вызов после сохранения."""
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from io import BytesIO
@@ -176,7 +176,8 @@ def send_one(store, submission_id, adapter):
             meta = {}
         if not isinstance(meta, dict):
             meta = {}
-        if job['status'] == 'not_connected' and job['simulated'] == 0:
+        if ((job['status'] == 'not_connected' and not job['simulated'])
+                or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
             pass
         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
             if meta.get('binding') != adapter.config.binding:
@@ -206,7 +207,7 @@ def send_one(store, submission_id, adapter):
         outcome = TelegramOutcome('unknown', 'uncertain_transport')
     state = outcome.kind
     if state == 'retry':
-        state = 'pending' if attempts < 3 else 'failed'
+        state = 'pending' if job['status'] != 'mock_queued' and attempts < 3 else 'failed'
     meta['reason'] = outcome.reason
     if outcome.message_id is not None:
         meta['message_id'] = outcome.message_id  # приватная служебная квитанция, не клиентский ответ

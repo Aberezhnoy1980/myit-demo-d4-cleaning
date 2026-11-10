@@ -1,0 +1,16 @@
+10.11.2026 · D4-Debian12 · офлайн-приёмка среза d4-divan-v-poryadke-linked-10, ревизия 2
+База f0d3aa8dfcdf73698538a2957c89ae3260c67f68
+Сетевой кабель выключен на время прогона. Источник строк ниже — последовательный порт VM.
+
+D4_LINKED_BEGIN
+D4_LINKED_ARCHIVE_COPIED
+D4_LINKED_MEDIA_UNMOUNTED
+D4_LINKED_SOURCE b6c6c4c8efeaeed79da0ef57d91e70c90275802906d5104bfa475df561da02d4
+D4_LINKED_NET lo-only SDK=2.62.1 Python=3.11.2
+D4_LINKED_PYTEST_BEGIN
+246 passed, 1 warning in 21.69s
+D4_LINKED_COUNTS existing=236 linked=10 skipped=0
+D4_LINKED_OK
+D4_LINKED_EXIT 0
+
+Проверка с хоста: VM выключена, ISO извлечён, прежние настройки COM1 и сетевого кабеля восстановлены.

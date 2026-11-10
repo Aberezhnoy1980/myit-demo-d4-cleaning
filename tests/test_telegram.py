@@ -229,18 +229,17 @@ process.stdout.write(JSON.stringify({title:nodes['#result-title'].textContent,no
     rendered = subprocess.run(['node', '-e', script, str(ROOT / 'public/app.js')],
                               input=json.dumps(receipt), text=True, capture_output=True, check=True, timeout=10)
     ui = json.loads(rendered.stdout)
-    assert ui['title'] == receipt['message']
-    simulated_notes = [note for note in ui['notes'] if 'тестовый режим' in note]
-    sheets_note = 'Google Sheets: тестовый режим. Реальная отправка по этому каналу не выполнялась.'
-    telegram_note = 'Telegram: тестовый режим. Реальная отправка по этому каналу не выполнялась.'
-    assert set(simulated_notes) == ({sheets_note, telegram_note} if telegram_state == 'test_only' else {sheets_note})
-    assert 'Реальных отправок нет' not in '\n'.join(ui['notes'])
+    assert ui['title'] == 'Запрос сохранён'
+    assert ui['notes'][2] == 'Google Sheets: Тестовый режим. Успех записи сымитирован. Чтение и сверка строки не выполнялись.'
+    telegram_note = ui['notes'][1]
+    assert telegram_note.startswith('Telegram: ')
     if telegram_state == 'live_delivered':
-        assert 'создание сообщения' in ui['title'] and 'прочтение человеком не подтверждено' in ui['title']
+        assert 'Создание сообщения подтверждено' in telegram_note
+        assert 'Прочтение человеком не подтверждено' in telegram_note
     elif telegram_state == 'live_unknown':
-        assert 'неизвестен' in ui['title'] and 'не повторяйте' in ui['title']
+        assert 'неизвестен' in telegram_note and 'Автоматического повтора нет' in telegram_note
     else:
-        assert 'доставка не подключена' in ui['title']
+        assert 'Тестовый режим. Создание сообщения подтверждено' in telegram_note
 
 
 @pytest.mark.parametrize('error,kind', [(httpx.ConnectError,'pending'),(httpx.ConnectTimeout,'pending'),(httpx.PoolTimeout,'pending'),

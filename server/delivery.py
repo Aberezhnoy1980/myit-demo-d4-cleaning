@@ -51,6 +51,24 @@ def step(store, channel, adapter):
     return state
 
 
+def channel_message(job):
+    status = job['status']
+    state = status.removeprefix('mock_').removeprefix('live_')
+    if state == 'delivered':
+        if job['channel'] == 'sheets':
+            if status == 'delivered':
+                return 'Успех записи сымитирован. Чтение и сверка строки не выполнялись.'
+            return 'Запись подтверждена сверкой всех девяти полей.'
+        return 'Создание сообщения подтверждено. Прочтение человеком не подтверждено.'
+    if state == 'unknown' or status == 'live_processing':
+        return 'Результат неизвестен. Автоматического повтора нет.'
+    if state in {'queued', 'processing', 'pending'}:
+        return 'Ожидает результата.'
+    if state == 'failed':
+        return 'Доставка не состоялась. Повтора не будет.'
+    return 'Канал выключен.'
+
+
 def delivery_message(jobs):
     """Без provider IDs/получателя/секретов; mock никогда не подтверждает живую доставку."""
     if not any(not j['simulated'] and j['status'].startswith('live_') for j in jobs):
