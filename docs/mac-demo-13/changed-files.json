@@ -1,0 +1,92 @@
+{
+  "slice": "d4-divan-v-poryadke-mac-demo-13",
+  "base": "8e176107f79ce7741381ce769827bddf1ca1651b",
+  "baseline_manifest_sha256": "9268aa45bf44423fc17a86f62f81dad67c61cc6a5d8f72fc0ce1da9ebefa79e8",
+  "source_files": [
+    {
+      "path": "README.md",
+      "before_sha256": "f4508fbf5d83fca292d72b9740faf4a0a9d74c45aa61ee684e5aa4d2997c1448",
+      "after_sha256": "4a569144ffd3a366d09586a797f6235764406cd72ee111101b1aca819d218b38"
+    },
+    {
+      "path": "public/app.js",
+      "before_sha256": "f7e8d5023da5316cd881b65410ed8c425d2bd2b9d9dd7883c4c9be627131159c",
+      "after_sha256": "10a1656cfc914d216de3960aabb53c6b3f336135f66d1966bd28e4b42adf5a2d"
+    },
+    {
+      "path": "public/index.html",
+      "before_sha256": "bed8508b94263f9dc7b91da4d593052dd46cbc7fd34784ff83c8af62e929233c",
+      "after_sha256": "1ab6211a9696f3cdbcd6d757df306bfaeb2bc381947a6fb123b0b7f3110b6c04"
+    },
+    {
+      "path": "server/app.py",
+      "before_sha256": "387dba60f56d76946a8679c7c743c939c8a8d0d3c0d4e07f6d2eb8ac3ee5bbd4",
+      "after_sha256": "d24c50557960bfb8c066aa25711731d437f1ed9af194212e96a6a25ce4a07006"
+    },
+    {
+      "path": "server/closed.py",
+      "before_sha256": "e2471fa4daf8e51604078e1dd17298167bf70a6159464f76e03a34cc17a6e3ca",
+      "after_sha256": "2029fbac0117022ae278bcf5e56606aa2d40024a69dcaebc0c4a1d044e5f2ee5"
+    },
+    {
+      "path": "server/mac_auth.py",
+      "before_sha256": null,
+      "after_sha256": "d9dba4d523161478adbd90947826734dc0c87f8bc9fbcc197d896626a2480b2d"
+    },
+    {
+      "path": "server/sheets.py",
+      "before_sha256": "3f85baadc47ab82e8f296d8c05a86c9e51bc00f0451998dfc4514f62d642c314",
+      "after_sha256": "d78394bbf3c10e6f64781f4058d816fac3ac42472c847debb4a2cd032a2ef133"
+    },
+    {
+      "path": "tests/test_mac_demo.py",
+      "before_sha256": null,
+      "after_sha256": "effced8e2d2d20fb446b8dd3a1bacfd480f431098c73cee8ac5b737f523f8494"
+    },
+    {
+      "path": "tests/test_public_demo.py",
+      "before_sha256": null,
+      "after_sha256": "45ef3550b8c046ff7581a324597a18fce5f4cdece93b776ebb5d0b7773b3ce59"
+    },
+    {
+      "path": "tools/run.py",
+      "before_sha256": "98cffc186d3e2ceec11a673313e7f8f7a32e5d4a9c1170404b006320735d83a9",
+      "after_sha256": "3eb51119afc78ef9d98dfa1b1c31f0ee87f1e18bbecc7675804c9869a3085b7f"
+    },
+    {
+      "path": "tools/serve.py",
+      "before_sha256": "0e7594ffd213b485a78d6b532d6e6d24379c260ddc6a103bb21592c8746f0fb0",
+      "after_sha256": "67f564f340e4a26b726f6479dd201561747d59876493c2dd16acf084649eff70"
+    }
+  ],
+  "evidence_files": [
+    "docs/mac-demo-13/baseline/snapshot.json",
+    "docs/mac-demo-13/baseline/status-before.txt",
+    "docs/mac-demo-13/baseline/visual-12-accepted.tar.gz",
+    "docs/mac-demo-13/browser-adapters.json",
+    "docs/mac-demo-13/browser-check.mjs",
+    "docs/mac-demo-13/browser-harness.py",
+    "docs/mac-demo-13/browser-results.json",
+    "docs/mac-demo-13/changed-files.json",
+    "docs/mac-demo-13/environment.json",
+    "docs/mac-demo-13/receipt-examples.json",
+    "docs/mac-demo-13/recording-plan.md",
+    "docs/mac-demo-13/review.md",
+    "docs/mac-demo-13/screenshots/mac-before-action-390.jpg",
+    "docs/mac-demo-13/screenshots/mac-offline-receipt-1440.jpg",
+    "docs/mac-demo-13/screenshots/mac-offline-receipt-390.jpg",
+    "docs/mac-demo-13/screenshots/ordinary-receipt-390.jpg",
+    "docs/mac-demo-13/screenshots/public-result-1440.jpg",
+    "docs/mac-demo-13/screenshots/public-result-360.jpg",
+    "docs/mac-demo-13/screenshots/public-result-390.jpg",
+    "docs/mac-demo-13/screenshots/public-result-768.jpg",
+    "docs/mac-demo-13/screenshots/public-short-result-1440.jpg",
+    "docs/mac-demo-13/screenshots/public-short-result-390.jpg",
+    "docs/mac-demo-13/source.diff",
+    "docs/mac-demo-13/status-after.txt",
+    "docs/mac-demo-13/test-results.txt",
+    "docs/mac-demo-13/tested-files.json",
+    "docs/mac-demo-13/tests.xml"
+  ],
+  "shared_manifest": "docs/manifest.sha256"
+}

@@ -1,0 +1,189 @@
+{
+  "notice": "Только искусственные данные и подставные ответы, реальные отправки не выполнялись.",
+  "scenarios": {
+    "oauth429": {
+      "submission_id": "d4e132f7-3130-4b44-982e-bf09a5939e40",
+      "created": 1794399482.765291,
+      "receipt_expires": 1794403082.765291,
+      "photos": 1,
+      "message": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Операция Google Sheets завершилась отказом.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_failed",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    },
+    "sheets403": {
+      "submission_id": "81119d94-25ed-4d6c-ad47-965832befa08",
+      "created": 1794399480.9164412,
+      "receipt_expires": 1794403080.9164412,
+      "photos": 1,
+      "message": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Операция Google Sheets завершилась отказом.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_failed",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    },
+    "sheets429": {
+      "submission_id": "18451b26-43c9-407f-9348-cf3f86087116",
+      "created": 1794399481.6652842,
+      "receipt_expires": 1794403081.6652842,
+      "photos": 1,
+      "message": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Операция Google Sheets завершилась отказом.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_failed",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Доставка не состоялась. Повтора не будет."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    },
+    "sheets_timeout": {
+      "submission_id": "aa707466-f807-4b20-968f-5ce7cca4b932",
+      "created": 1794399482.398088,
+      "receipt_expires": 1794403082.398088,
+      "photos": 1,
+      "message": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Результат записи Google Sheets неизвестен; повтор append запрещён, доступна только сверка чтением.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_unknown",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Результат неизвестен. Автоматического повтора нет."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    },
+    "success": {
+      "submission_id": "cbf2d97e-41cc-4f27-9f1d-675c0bcdab1f",
+      "created": 1794399479.975518,
+      "receipt_expires": 1794403079.975518,
+      "photos": 1,
+      "message": "Запрос сохранён. Telegram подтвердил создание сообщения; прочтение человеком не подтверждено. Строка Google Sheets подтверждена чтением всех девяти значений.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Создание сообщения подтверждено. Прочтение человеком не подтверждено."
+        }
+      ]
+    },
+    "telegram403": {
+      "submission_id": "a1bbf76b-30cf-4673-8f8b-dae0ab581c33",
+      "created": 1794399480.339815,
+      "receipt_expires": 1794403080.339815,
+      "photos": 1,
+      "message": "Запрос сохранён. Отправка в Telegram завершилась отказом. Строка Google Sheets подтверждена чтением всех девяти значений.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_failed",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Доставка не состоялась. Повтора не будет."
+        }
+      ]
+    },
+    "telegram429": {
+      "submission_id": "6c189642-4924-456c-90e2-f0772c3aaa96",
+      "created": 1794399481.281641,
+      "receipt_expires": 1794403081.281641,
+      "photos": 1,
+      "message": "Запрос сохранён. Отправка в Telegram завершилась отказом. Строка Google Sheets подтверждена чтением всех девяти значений.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_failed",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Доставка не состоялась. Повтора не будет."
+        }
+      ]
+    },
+    "telegram_timeout": {
+      "submission_id": "0518e748-e957-488e-9f73-c8a312b381f0",
+      "created": 1794399482.015881,
+      "receipt_expires": 1794403082.015881,
+      "photos": 1,
+      "message": "Запрос сохранён. Результат отправки в Telegram неизвестен; не повторяйте её без проверки. Строка Google Sheets подтверждена чтением всех девяти значений.",
+      "channels": [
+        {
+          "channel": "sheets",
+          "status": "live_delivered",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Запись подтверждена сверкой всех девяти полей."
+        },
+        {
+          "channel": "telegram",
+          "status": "live_unknown",
+          "simulated": 0,
+          "mode": "live",
+          "message": "Результат неизвестен. Автоматического повтора нет."
+        }
+      ]
+    }
+  }
+}

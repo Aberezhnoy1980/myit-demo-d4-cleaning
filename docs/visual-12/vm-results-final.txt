@@ -1,0 +1,15 @@
+11.11.2026 · D4 visual-12 · финальный срез с галереей
+266 passed, 1 warning in 16.89s
+D4_VISUAL_BEGIN
+D4_VISUAL_SOURCE 6b66f0150b599ac227057c5c307ca35ccd278b83acb4f09763b780b3f1f86a60
+D4_VISUAL_NET lo-only SDK=2.62.1 Python=3.11.2
+D4_VISUAL_GUEST Debian 12 d4-debian12
+D4_VISUAL_NOTICE 2/2 passed
+D4_VISUAL_GUARD 2/2 passed
+D4_VISUAL_COUNTS 266/266 skipped=0
+D4_VISUAL_OK
+D4_VISUAL_EXIT 0
+
+Запросы внешней сети заблокированы сетевым пространством с единственным интерфейсом lo.
+Кабель VM отключался на время прогона. VM до и после проверки выключена.
+Параметры привода, COM1 и кабеля восстановлены.

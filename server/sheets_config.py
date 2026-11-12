@@ -65,10 +65,10 @@ def parse_config(text):
                         values.get('D4_SHEETS_KEY_FILE', ''), values.get('D4_SHEETS_SHEET', 'Leads'), live == '1')
 
 
-def read_private(path, limit=4096):
-    """Только будущий явно разрешённый файл. В B2 вызывается на временных искусственных файлах."""
+def read_private(path, limit=4096, *, dir_fd=None):
+    """Читает только заданный приватный обычный файл."""
     try:
-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=dir_fd)
         with os.fdopen(fd, 'rb') as file:
             meta = os.fstat(file.fileno())
             if (not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.getuid()

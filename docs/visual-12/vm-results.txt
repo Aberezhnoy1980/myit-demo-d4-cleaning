@@ -1,0 +1,14 @@
+11.11.2026 · D4-Debian12 · визуальный пакет D4
+266 passed, 1 warning in 14.54s
+D4_VISUAL_BEGIN
+D4_VISUAL_SOURCE 17f78fcd67a190fae484b95908d842a3f93b0c98a9333c0d9fe38475cbbccf87
+D4_VISUAL_NET lo-only SDK=2.62.1 Python=3.11.2
+D4_VISUAL_GUEST Debian 12 d4-debian12
+D4_VISUAL_NOTICE 2/2 passed
+D4_VISUAL_GUARD 2/2 passed
+D4_VISUAL_COUNTS 266/266 skipped=0
+D4_VISUAL_OK
+D4_VISUAL_EXIT 0
+
+Начальное состояние VM aborted, после проверки poweroff. Сетевой кабель отключался на время прогона.
+Привод, COM1 и сетевой кабель возвращены в прежние настройки.

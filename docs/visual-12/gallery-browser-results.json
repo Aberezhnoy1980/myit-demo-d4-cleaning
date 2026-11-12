@@ -1,0 +1,862 @@
+{
+  "date": "2026-11-11",
+  "browser": "Chrome/157.0.8103.39",
+  "mode": "Isolated Chrome profile, loopback preview with synthetic health, no delivery",
+  "emulation": {
+    "method": "CDP Emulation.setEmulatedMedia",
+    "ordinaryMotion": {
+      "reduce": false,
+      "scrollBehavior": "smooth",
+      "transition": "0.15s"
+    },
+    "reducedMotion": {
+      "reduce": true,
+      "scrollBehavior": "auto",
+      "transition": "0s",
+      "activeAnimations": 0
+    }
+  },
+  "widths": [
+    {
+      "width": 360,
+      "pageWidth": 360,
+      "gallery": {
+        "x": 20,
+        "y": 1032.484375,
+        "width": 320,
+        "height": 1630.125
+      },
+      "pairs": [
+        {
+          "title": "Светлый прямой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 39,
+              "top": 439.546875,
+              "right": 321,
+              "width": 282,
+              "source": "assets/straight-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-before-480.webp",
+              "natural": [
+                312,
+                208
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: светлый прямой диван с пятном чая и потемнением обивки"
+            },
+            {
+              "left": 39,
+              "top": 648.125,
+              "right": 321,
+              "width": 282,
+              "source": "assets/straight-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-after-480.webp",
+              "natural": [
+                312,
+                208
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же светлый диван в той же комнате, обивка чище, износ сохранён"
+            }
+          ]
+        },
+        {
+          "title": "Серый угловой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 39,
+              "top": 1040.984375,
+              "right": 321,
+              "width": 282,
+              "source": "assets/corner-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-before-480.webp",
+              "natural": [
+                312,
+                208
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: серый угловой диван с загрязнениями на сиденьях"
+            },
+            {
+              "left": 39,
+              "top": 1249.5625,
+              "right": 321,
+              "width": 282,
+              "source": "assets/corner-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-after-480.webp",
+              "natural": [
+                312,
+                208
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же серый угловой диван в той же комнате, очищенная обивка со следами износа"
+            }
+          ]
+        }
+      ],
+      "disclaimer": "Сгенерированные примеры для демонстрации. Реальный результат зависит от ткани и загрязнения.",
+      "reduce": true
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "gallery": {
+        "x": 20,
+        "y": 979.609375,
+        "width": 350,
+        "height": 1683.984375
+      },
+      "pairs": [
+        {
+          "title": "Светлый прямой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 39,
+              "top": 412.28125,
+              "right": 351,
+              "width": 312,
+              "source": "assets/straight-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-before-480.webp",
+              "natural": [
+                342,
+                228
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: светлый прямой диван с пятном чая и потемнением обивки"
+            },
+            {
+              "left": 39,
+              "top": 640.921875,
+              "right": 351,
+              "width": 312,
+              "source": "assets/straight-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-after-480.webp",
+              "natural": [
+                342,
+                228
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же светлый диван в той же комнате, обивка чище, износ сохранён"
+            }
+          ]
+        },
+        {
+          "title": "Серый угловой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 39,
+              "top": 1053.84375,
+              "right": 351,
+              "width": 312,
+              "source": "assets/corner-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-before-480.webp",
+              "natural": [
+                342,
+                228
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: серый угловой диван с загрязнениями на сиденьях"
+            },
+            {
+              "left": 39,
+              "top": 1282.484375,
+              "right": 351,
+              "width": 312,
+              "source": "assets/corner-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-after-480.webp",
+              "natural": [
+                342,
+                228
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же серый угловой диван в той же комнате, очищенная обивка со следами износа"
+            }
+          ]
+        }
+      ],
+      "disclaimer": "Сгенерированные примеры для демонстрации. Реальный результат зависит от ткани и загрязнения.",
+      "reduce": true
+    },
+    {
+      "width": 768,
+      "pageWidth": 768,
+      "gallery": {
+        "x": 24,
+        "y": 879.5,
+        "width": 720,
+        "height": 1226.453125
+      },
+      "pairs": [
+        {
+          "title": "Светлый прямой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 47,
+              "top": 370.890625,
+              "right": 378,
+              "width": 331,
+              "source": "assets/straight-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-before-480.webp",
+              "natural": [
+                337,
+                225
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: светлый прямой диван с пятном чая и потемнением обивки"
+            },
+            {
+              "left": 390,
+              "top": 370.890625,
+              "right": 721,
+              "width": 331,
+              "source": "assets/straight-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-after-480.webp",
+              "natural": [
+                337,
+                225
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же светлый диван в той же комнате, обивка чище, износ сохранён"
+            }
+          ]
+        },
+        {
+          "title": "Серый угловой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 47,
+              "top": 818.421875,
+              "right": 378,
+              "width": 331,
+              "source": "assets/corner-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-before-480.webp",
+              "natural": [
+                337,
+                225
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: серый угловой диван с загрязнениями на сиденьях"
+            },
+            {
+              "left": 390,
+              "top": 818.421875,
+              "right": 721,
+              "width": 331,
+              "source": "assets/corner-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-after-480.webp",
+              "natural": [
+                337,
+                225
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же серый угловой диван в той же комнате, очищенная обивка со следами износа"
+            }
+          ]
+        }
+      ],
+      "disclaimer": "Сгенерированные примеры для демонстрации. Реальный результат зависит от ткани и загрязнения.",
+      "reduce": true
+    },
+    {
+      "width": 1440,
+      "pageWidth": 1440,
+      "gallery": {
+        "x": 96,
+        "y": 869.5,
+        "width": 1248,
+        "height": 735.828125
+      },
+      "pairs": [
+        {
+          "title": "Светлый прямой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 119,
+              "top": 363.90625,
+              "right": 396,
+              "width": 277,
+              "source": "assets/straight-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-before-480.webp",
+              "natural": [
+                302,
+                202
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: светлый прямой диван с пятном чая и потемнением обивки"
+            },
+            {
+              "left": 408,
+              "top": 363.90625,
+              "right": 685,
+              "width": 277,
+              "source": "assets/straight-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/straight-after-480.webp",
+              "natural": [
+                302,
+                202
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же светлый диван в той же комнате, обивка чище, износ сохранён"
+            }
+          ]
+        },
+        {
+          "title": "Серый угловой диван",
+          "captions": [
+            "До",
+            "После"
+          ],
+          "figures": [
+            {
+              "left": 755,
+              "top": 363.90625,
+              "right": 1032,
+              "width": 277,
+              "source": "assets/corner-before-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-before-480.webp",
+              "natural": [
+                302,
+                202
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "До: серый угловой диван с загрязнениями на сиденьях"
+            },
+            {
+              "left": 1044,
+              "top": 363.90625,
+              "right": 1321,
+              "width": 277,
+              "source": "assets/corner-after-800.webp",
+              "currentSource": "http://127.0.0.1:4347/assets/corner-after-480.webp",
+              "natural": [
+                302,
+                202
+              ],
+              "complete": true,
+              "attributes": [
+                "800",
+                "535"
+              ],
+              "loading": "lazy",
+              "alt": "После: тот же серый угловой диван в той же комнате, очищенная обивка со следами износа"
+            }
+          ]
+        }
+      ],
+      "disclaimer": "Сгенерированные примеры для демонстрации. Реальный результат зависит от ткани и загрязнения.",
+      "reduce": true
+    }
+  ],
+  "resources": [
+    {
+      "path": "public/assets/straight-before-800.webp",
+      "status": 200,
+      "bytes": 78606,
+      "sha256": "20866ae319a411ceb3e826295432b7d2d0e6bd12a9a8ec8c183a59506a152539"
+    },
+    {
+      "path": "public/assets/straight-before-480.webp",
+      "status": 200,
+      "bytes": 24652,
+      "sha256": "951510495f7d980fa28238d453ba3c2539c5c0909c1e46af79a10e11b6054c46"
+    },
+    {
+      "path": "public/assets/straight-after-800.webp",
+      "status": 200,
+      "bytes": 84028,
+      "sha256": "c2716e7b812e1f335ec95db9d267b2e8aa879c6a7eb0d54582c003915aa09209"
+    },
+    {
+      "path": "public/assets/straight-after-480.webp",
+      "status": 200,
+      "bytes": 26292,
+      "sha256": "42d70d7ccb0364673ce0bdb9ccb59ad31f1cb6a5fd7f84e895875ec273bb6875"
+    },
+    {
+      "path": "public/assets/corner-before-800.webp",
+      "status": 200,
+      "bytes": 76510,
+      "sha256": "d55f7e7356bee0828c45bc7114004db6bb6c9c97b0f541a8253b3091093f57ba"
+    },
+    {
+      "path": "public/assets/corner-before-480.webp",
+      "status": 200,
+      "bytes": 22136,
+      "sha256": "65bd6e71b2a0133be5948165e8ae131e2109a6254dc9926d082ec1d6f4123995"
+    },
+    {
+      "path": "public/assets/corner-after-800.webp",
+      "status": 200,
+      "bytes": 81744,
+      "sha256": "353e1e980c3aabb1843d454a422c1dc44adc6dd2b7fee227e9f2be3ab20355ae"
+    },
+    {
+      "path": "public/assets/corner-after-480.webp",
+      "status": 200,
+      "bytes": 23816,
+      "sha256": "f42c38837471ecacfa5c0fcb2bd1889b5ca7f3fdf24571da0eb2e926d4c1bae8"
+    }
+  ],
+  "pageImageChecks": [
+    {
+      "width": 360,
+      "images": [
+        {
+          "source": "assets/mark.svg",
+          "complete": true,
+          "width": 48,
+          "height": 48
+        },
+        {
+          "source": "assets/sofa-1400.jpg",
+          "complete": true,
+          "width": 360,
+          "height": 540
+        },
+        {
+          "source": "assets/straight-before-800.webp",
+          "complete": true,
+          "width": 312,
+          "height": 208
+        },
+        {
+          "source": "assets/straight-after-800.webp",
+          "complete": true,
+          "width": 312,
+          "height": 208
+        },
+        {
+          "source": "assets/corner-before-800.webp",
+          "complete": true,
+          "width": 312,
+          "height": 208
+        },
+        {
+          "source": "assets/corner-after-800.webp",
+          "complete": true,
+          "width": 312,
+          "height": 208
+        },
+        {
+          "source": "assets/step-photo.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-request.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-visit.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-care.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/microfiber.svg",
+          "complete": true,
+          "width": 320,
+          "height": 240
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "images": [
+        {
+          "source": "assets/mark.svg",
+          "complete": true,
+          "width": 48,
+          "height": 48
+        },
+        {
+          "source": "assets/sofa-1400.jpg",
+          "complete": true,
+          "width": 390,
+          "height": 585
+        },
+        {
+          "source": "assets/straight-before-800.webp",
+          "complete": true,
+          "width": 342,
+          "height": 228
+        },
+        {
+          "source": "assets/straight-after-800.webp",
+          "complete": true,
+          "width": 342,
+          "height": 228
+        },
+        {
+          "source": "assets/corner-before-800.webp",
+          "complete": true,
+          "width": 342,
+          "height": 228
+        },
+        {
+          "source": "assets/corner-after-800.webp",
+          "complete": true,
+          "width": 342,
+          "height": 228
+        },
+        {
+          "source": "assets/step-photo.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-request.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-visit.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-care.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/microfiber.svg",
+          "complete": true,
+          "width": 320,
+          "height": 240
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "images": [
+        {
+          "source": "assets/mark.svg",
+          "complete": true,
+          "width": 48,
+          "height": 48
+        },
+        {
+          "source": "assets/sofa-1400.jpg",
+          "complete": true,
+          "width": 399,
+          "height": 599
+        },
+        {
+          "source": "assets/straight-before-800.webp",
+          "complete": true,
+          "width": 337,
+          "height": 225
+        },
+        {
+          "source": "assets/straight-after-800.webp",
+          "complete": true,
+          "width": 337,
+          "height": 225
+        },
+        {
+          "source": "assets/corner-before-800.webp",
+          "complete": true,
+          "width": 337,
+          "height": 225
+        },
+        {
+          "source": "assets/corner-after-800.webp",
+          "complete": true,
+          "width": 337,
+          "height": 225
+        },
+        {
+          "source": "assets/step-photo.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-request.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-visit.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-care.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/microfiber.svg",
+          "complete": true,
+          "width": 320,
+          "height": 240
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "images": [
+        {
+          "source": "assets/mark.svg",
+          "complete": true,
+          "width": 48,
+          "height": 48
+        },
+        {
+          "source": "assets/sofa-1400.jpg",
+          "complete": true,
+          "width": 748,
+          "height": 1123
+        },
+        {
+          "source": "assets/straight-before-800.webp",
+          "complete": true,
+          "width": 302,
+          "height": 202
+        },
+        {
+          "source": "assets/straight-after-800.webp",
+          "complete": true,
+          "width": 302,
+          "height": 202
+        },
+        {
+          "source": "assets/corner-before-800.webp",
+          "complete": true,
+          "width": 302,
+          "height": 202
+        },
+        {
+          "source": "assets/corner-after-800.webp",
+          "complete": true,
+          "width": 302,
+          "height": 202
+        },
+        {
+          "source": "assets/step-photo.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-request.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-visit.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/step-care.svg",
+          "complete": true,
+          "width": 320,
+          "height": 220
+        },
+        {
+          "source": "assets/microfiber.svg",
+          "complete": true,
+          "width": 320,
+          "height": 240
+        }
+      ]
+    }
+  ],
+  "browserResponses": [
+    {
+      "url": "http://127.0.0.1:4347/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/style.css",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/icons.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/sofa-1400.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/app.js",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/straight-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/straight-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/corner-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/step-request.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/corner-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/step-photo.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/step-visit.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/step-care.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4347/assets/microfiber.svg",
+      "status": 200
+    }
+  ],
+  "broken": [],
+  "errors": [],
+  "external": []
+}

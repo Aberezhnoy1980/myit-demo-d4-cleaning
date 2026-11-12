@@ -1,0 +1,13 @@
+{
+  "mode": "Offline artificial RSA key and httpx.MockTransport only",
+  "telegram_attempts": 1,
+  "oauth_requests": 1,
+  "sheets_appends": 1,
+  "sheets_calls": [
+    "header",
+    "scan",
+    "append",
+    "readback"
+  ],
+  "same_submission_id": true
+}

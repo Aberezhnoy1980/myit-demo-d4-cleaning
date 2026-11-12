@@ -1,0 +1,69 @@
+{
+  "slice": "d4-divan-v-poryadke-mac-demo-13-revision-2",
+  "base": "8e176107f79ce7741381ce769827bddf1ca1651b",
+  "previous_manifest_sha256": "bb5c0578ad3149a2ad75bab6ede1b38486fe33903336fb1c75c43ff4ae76db5b",
+  "source_files": [
+    {
+      "path": "README.md",
+      "before_sha256": "4a569144ffd3a366d09586a797f6235764406cd72ee111101b1aca819d218b38",
+      "after_sha256": "20892416c932ae30ed1edea80d355922ffad40817ba1ddd70015b8f719ed4189"
+    },
+    {
+      "path": "public/app.js",
+      "before_sha256": "10a1656cfc914d216de3960aabb53c6b3f336135f66d1966bd28e4b42adf5a2d",
+      "after_sha256": "577a2e8cc731371d8b1d61d4837c2873491045964130aefbfb35008b168d4b0a"
+    },
+    {
+      "path": "public/index.html",
+      "before_sha256": "1ab6211a9696f3cdbcd6d757df306bfaeb2bc381947a6fb123b0b7f3110b6c04",
+      "after_sha256": "a2785eb411096762e685de4fdfca57c9be3fa3e553d6c1b41764b3f0761ea466"
+    },
+    {
+      "path": "server/app.py",
+      "before_sha256": "d24c50557960bfb8c066aa25711731d437f1ed9af194212e96a6a25ce4a07006",
+      "after_sha256": "72bb31185a47c602b607bb6ee50314d3e913dec6078a2f595e127ebf5074038b"
+    },
+    {
+      "path": "tests/test_mac_demo.py",
+      "before_sha256": "effced8e2d2d20fb446b8dd3a1bacfd480f431098c73cee8ac5b737f523f8494",
+      "after_sha256": "a2894a5089dc203384ca161802250caa6ff2ab1f344c52152c6f9e610dac8b68"
+    },
+    {
+      "path": "tests/test_public_demo.py",
+      "before_sha256": "45ef3550b8c046ff7581a324597a18fce5f4cdece93b776ebb5d0b7773b3ce59",
+      "after_sha256": "9cc0fb8b502690c07f3ab8b2426da76ec2d5fb550dc93507a7e1244d4f0de194"
+    }
+  ],
+  "evidence_files": [
+    "docs/mac-demo-13/revision-2/baseline/manifest.sha256.txt",
+    "docs/mac-demo-13/revision-2/baseline/revision-1-sources.tar.gz",
+    "docs/mac-demo-13/revision-2/baseline/snapshot.json",
+    "docs/mac-demo-13/revision-2/browser-adapters.json",
+    "docs/mac-demo-13/revision-2/browser-check.mjs",
+    "docs/mac-demo-13/revision-2/browser-harness.py",
+    "docs/mac-demo-13/revision-2/browser-results.json",
+    "docs/mac-demo-13/revision-2/changed-files.json",
+    "docs/mac-demo-13/revision-2/fix.diff",
+    "docs/mac-demo-13/revision-2/review.md",
+    "docs/mac-demo-13/revision-2/screenshots/mac-before-action-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/mac-offline-receipt-1440.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/mac-offline-receipt-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/mac_demo_live-no-js-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/ordinary-no-js-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/ordinary-receipt-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-no-js-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-result-1440.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-result-360.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-result-390.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-result-768.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-short-result-1440.jpg",
+    "docs/mac-demo-13/revision-2/screenshots/public-short-result-390.jpg",
+    "docs/mac-demo-13/revision-2/source.diff",
+    "docs/mac-demo-13/revision-2/status-after.txt",
+    "docs/mac-demo-13/revision-2/test-results.txt",
+    "docs/mac-demo-13/revision-2/tested-files.json",
+    "docs/mac-demo-13/revision-2/tests.xml"
+  ],
+  "shared_manifest": "docs/manifest.sha256",
+  "unchanged_prior_manifest_files": 216
+}

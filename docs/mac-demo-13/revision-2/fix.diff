@@ -1,0 +1,179 @@
+diff --git a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,7 @@
+ # D4 · «Диван в порядке»
+ 
+ Локальный стенд лендинга вымышленной химчистки диванов. Услуги не оказываются.
+-Срез `d4-divan-v-poryadke-mac-demo-13`: отдельная разовая демонстрация на Mac и статическая публичная форма, этап 1 для независимого ревью.
++Срез `d4-divan-v-poryadke-mac-demo-13`, ревизия 2: согласованные пояснения хранения в публичном и серверных режимах, этап 1 для повторного независимого ревью.
+ Принятая основа — `closed-11`, ревизия 3, и визуальный `visual-12`.
+ Имя «Диван в порядке» и дескриптор «Химчистка диванов» утверждены в срезе `d4-divan-v-poryadke-rename-09`.
+ Дизайн, пользовательский путь, SVG-знак и папка d4-cleaning сохранены. Прежнее имя «Тихий дом» и идентификаторы
+@@ -14,13 +14,16 @@
+ 
+ ## Разовая демонстрация на Mac и публичная форма
+ 
+-[Протокол этапа 1](docs/mac-demo-13/review.md), [план запуска и съёмки](docs/mac-demo-13/recording-plan.md),
+-[исходный принятый срез](docs/mac-demo-13/baseline/snapshot.json), [инкрементальный diff](docs/mac-demo-13/source.diff).
++[Текущий протокол ревизии 2](docs/mac-demo-13/revision-2/review.md), [исправление относительно ревизии 1](docs/mac-demo-13/revision-2/fix.diff),
++[полный diff mac-demo-13](docs/mac-demo-13/revision-2/source.diff), [план запуска и съёмки](docs/mac-demo-13/recording-plan.md).
++[Протокол ревизии 1](docs/mac-demo-13/review.md) и [исходный принятый срез](docs/mac-demo-13/baseline/snapshot.json) сохранены как история.
+ Исторические свидетельства `closed-11` и `visual-12` сохранены побайтно.
+ 
+ Статические файлы `public/` теперь самостоятельно готовят текст демо-запроса в памяти страницы.
+ До действия указано: ни Telegram/Sheets, ни серверного сохранения нет. Фото можно проверить и удалить,
+-текст — скопировать отдельной кнопкой, без файлов. Перезагрузка очищает данные. Для локального просмотра:
++текст — скопировать отдельной кнопкой, без файлов. Перезагрузка очищает данные. Пояснения рядом с формой
++соответствуют режиму и при отключённом JavaScript: действия заблокированы, публичный вариант не обещает
++хранение до 24 часов; серверный объясняет локальное хранение после сохранения. Для локального просмотра:
+ 
+ ```sh
+ .venv/bin/python -B tools/serve.py --port 4351
+diff --git a/public/app.js b/public/app.js
+--- a/public/app.js
++++ b/public/app.js
+@@ -27,6 +27,9 @@
+ }
+ function showDeliveryNotice(mode) {
+   deliveryMode = mode;
++  document.querySelector('#demo-mode-title').textContent = 'Это локальный демонстрационный стенд.';
++  document.querySelector('#storage-note').textContent = 'После сохранения заявка и обработанные фото хранятся локально на этом стенде до 24 часов.';
++  document.querySelector('#submit-label').textContent = 'Сохранить тестовый запрос';
+   const live = mode === 'closed_live' || mode === 'mac_demo_live';
+   const summary = live ? 'Доставка в тестовый Telegram и тестовую Google-таблицу.'
+     : mode ? 'Сохранение локально, без внешних отправок.' : '';
+@@ -38,10 +41,12 @@
+       : 'Не удалось определить режим сохранения. Перезагрузите страницу.';
+ }
+ function showPublicNotice() {
++  document.querySelector('#demo-mode-title').textContent = 'Это публичная демонстрационная форма.';
++  document.querySelector('#storage-note').textContent = 'Данные и фото находятся только в памяти открытой страницы и теряются при её перезагрузке. Сохранения на сервере нет.';
+   document.querySelector('#hero-delivery-note').textContent = 'Демо: запрос можно подготовить в браузере. Отправок в Telegram и Google-таблицу нет.';
+-  document.querySelector('#aside-delivery-note').textContent = 'В публичном демо данные и фото остаются в открытой странице. Текст обращения можно скопировать.';
++  document.querySelector('#aside-delivery-note').textContent = 'Отправок в Telegram и Google-таблицу нет. Текст обращения можно скопировать.';
+   document.querySelector('#submit-note').textContent = 'Публичное демо. Нажатие подготовит текст обращения только в браузере. Отправок в Telegram или Google-таблицу и сохранения на сервере нет. Фото остаются в открытой странице.';
+-  submitButton.textContent = 'Подготовить демо-запрос';
++  document.querySelector('#submit-label').textContent = 'Подготовить демо-запрос';
+   document.getElementById('refresh-receipt').hidden = true;
+   document.querySelector('#copy-request').hidden = false;
+ }
+diff --git a/public/index.html b/public/index.html
+--- a/public/index.html
++++ b/public/index.html
+@@ -77,7 +77,7 @@
+ </section>
+ <section class="request-section" id="request" aria-labelledby="request-title">
+   <div class="request-layout wrap">
+-    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br> о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br> Три снимка расскажут больше,<br> чем длинное объяснение.</p><div class="request-note"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#home"></use></svg><p><strong>Что будет дальше</strong><br> В таком сервисе специалист уточнил бы детали и обсудил варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong>Это локальный демонстрационный стенд.</strong><br> Только вымышленные контакты и безопасные тестовые фото. Запрос хранится здесь до 24 часов. <span id="aside-delivery-note"></span></p></aside>
++    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br> о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br> Три снимка расскажут больше,<br> чем длинное объяснение.</p><div class="request-note"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#home"></use></svg><p><strong>Что будет дальше</strong><br> В таком сервисе специалист уточнил бы детали и обсудил варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong id="demo-mode-title">Это публичная демонстрационная форма.</strong><br> Только вымышленные контакты и безопасные тестовые фото. <span id="storage-note">Данные и фото находятся только в памяти открытой страницы и теряются при её перезагрузке. Сохранения на сервере нет.</span> <span id="aside-delivery-note">Отправок в Telegram и Google-таблицу нет.</span></p></aside>
+     <form id="lead-form" novalidate>
+       <div class="form-top"><h3>Запрос с фотографиями</h3><span>ДЕМО</span></div>
+       <p class="fine">Все поля обязательны. Если материал неизвестен, так и укажите.</p>
+@@ -93,8 +93,8 @@
+       <div class="upload-box"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg><label for="photos">Выбрать фотографии</label><input id="photos" name="photos" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-describedby="photo-limits photos-error"><p id="photo-limits">1–3 фото · JPEG, PNG, WebP<br> До 5 МБ каждое, 12 МБ вместе, 20 Мп</p></div><p class="field-error" id="photos-error" hidden></p><ul class="previews" id="previews" aria-label="Выбранные фотографии"></ul></fieldset>
+       <fieldset><legend><span>3</span> Как с вами связаться?</legend><div class="form-row contact-row"><div class="field"><label for="channel">Способ связи</label><select id="channel" name="channel"><option value="email">Электронная почта</option><option value="telegram">Telegram</option></select></div><div class="field"><label id="contact-label" for="contact">Тестовый email</label><input id="contact" name="contact" type="text" inputmode="email" maxlength="80" autocomplete="off" placeholder="demo@example.test" required aria-describedby="contact-hint contact-error"><p class="field-error" id="contact-error" hidden></p></div></div><p class="fine" id="contact-hint">В демо: адрес на @example.test или Telegram @demo_test.</p></fieldset>
+       <p class="fine submit-note" id="submit-note" role="status">Режим сохранения пока не определён.</p>
+-      <button class="button submit" type="submit" aria-describedby="submit-note" disabled>Сохранить тестовый запрос <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></button>
+-      <p id="js-notice" class="error-summary">Для сохранения запроса нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас отправка недоступна.</p>
++      <button class="button submit" type="submit" aria-describedby="submit-note" disabled><span id="submit-label">Подготовить демо-запрос</span> <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></button>
++      <p id="js-notice" class="error-summary">Для работы формы нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас действия формы недоступны.</p>
+       <p id="sending" class="fine" role="status" hidden>Проверяем фото и сохраняем запрос…</p>
+       <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Результат запроса</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><button type="button" id="copy-request" hidden>Скопировать текст запроса</button><p id="copy-status" role="status" hidden></p><br> <button type="button" id="return">Вернуться к форме</button></div>
+     </form>
+diff --git a/server/app.py b/server/app.py
+--- a/server/app.py
++++ b/server/app.py
+@@ -172,7 +172,17 @@
+     @site.get('/index.html')
+     async def index():
+         page = (ROOT / 'public/index.html').read_text(encoding='utf-8')
+-        return HTMLResponse(page.replace('data-form-mode="public"', 'data-form-mode="server"', 1))
++        page = page.replace('data-form-mode="public"', 'data-form-mode="server"', 1)
++        for name, text in (
++            ('demo-mode-title', 'Это локальный демонстрационный стенд.'),
++            ('storage-note', 'После сохранения заявка и обработанные фото хранятся локально на этом стенде до 24 часов.'),
++            ('aside-delivery-note', 'Доставка в тестовый Telegram и тестовую Google-таблицу.' if live
++             else 'Внешняя доставка не подключена.'),
++            ('submit-label', 'Сохранить тестовый запрос'),
++        ):
++            page = re.sub(rf'(<(?:strong|span) id="{name}">)[^<]*',
++                          lambda match: match[1] + text, page, count=1)
++        return HTMLResponse(page)
+ 
+     @site.get('/api/health')
+     async def health():
+diff --git a/tests/test_mac_demo.py b/tests/test_mac_demo.py
+--- a/tests/test_mac_demo.py
++++ b/tests/test_mac_demo.py
+@@ -157,7 +157,11 @@
+     key = str(uuid.uuid4())
+     with caplog.at_level(logging.DEBUG), TestClient(app, base_url='http://127.0.0.1') as client:
+         assert client.get('/api/health').json()['delivery'] == 'mac_demo_live'
+-        assert 'data-form-mode="server"' in client.get('/').text
++        page = client.get('/').text
++        assert 'data-form-mode="server"' in page
++        assert 'Это локальный демонстрационный стенд.' in page and 'до 24 часов.' in page
++        assert 'Доставка в тестовый Telegram и тестовую Google-таблицу.' in page
++        assert 'Сохранения на сервере нет.' not in page
+         for headers in ({}, {'X-D4-Delivery-Mode': 'closed_live'}, {'X-D4-Delivery-Mode': 'not_connected'}):
+             rejected = send(client, key, headers=headers)
+             assert rejected.status_code == 409 and rejected.json()['delivery_mode'] == 'mac_demo_live'
+diff --git a/tests/test_public_demo.py b/tests/test_public_demo.py
+--- a/tests/test_public_demo.py
++++ b/tests/test_public_demo.py
+@@ -1,5 +1,6 @@
+ """Публичная статическая форма готовит копию без backend и доставки."""
+ import json
++import re
+ import subprocess
+ 
+ from fastapi.testclient import TestClient
+@@ -10,13 +11,23 @@
+ 
+ 
+ def test_static_entry_is_public_and_backend_entry_is_explicit(tmp_path):
+-    assert 'data-form-mode="public"' in (ROOT / 'public/index.html').read_text()
++    static = (ROOT / 'public/index.html').read_text()
++    assert 'data-form-mode="public"' in static
++    assert '24 часов' not in static and 'Это локальный демонстрационный стенд.' not in static
++    assert 'только в памяти открытой страницы' in static and 'Сохранения на сервере нет.' in static
++    assert 'Для работы формы нужен JavaScript.' in static
++    assert 'id="submit-label">Подготовить демо-запрос</span>' in static
+     with TestClient(create_app(Settings(data_dir=tmp_path / 'registry', prefix='/d4')),
+                     base_url='http://127.0.0.1') as client:
+         for path in ['/d4/', '/d4/index.html']:
+             result = client.get(path)
+             assert result.status_code == 200 and 'data-form-mode="server"' in result.text
+             assert 'data-form-mode="public"' not in result.text
++            assert 'После сохранения заявка и обработанные фото хранятся локально на этом стенде до 24 часов.' in result.text
++            assert 'Это локальный демонстрационный стенд.' in result.text
++            assert 'Внешняя доставка не подключена.' in result.text
++            assert 'Сохранения на сервере нет.' not in result.text
++            assert 'id="submit-label">Сохранить тестовый запрос</span>' in result.text
+ 
+ 
+ @pytest.mark.parametrize('clipboard', ['success', 'denied'])
+@@ -49,7 +60,9 @@
+ });
+ (async()=>{
+   vm.runInContext(fs.readFileSync(process.argv[1],'utf8'),context);
+-  const before={enabled:!node('.submit').disabled,note:node('#submit-note').textContent,calls:[...calls]};
++  const before={enabled:!node('.submit').disabled,note:node('#submit-note').textContent,
++    title:node('#demo-mode-title').textContent,storage:node('#storage-note').textContent,
++    aside:node('#aside-delivery-note').textContent,label:node('#submit-label').textContent,calls:[...calls]};
+   const submit=()=>node('#lead-form').handlers.submit({preventDefault(){}});
+   await submit();
+   const invalid={focused, errors:node('ul').children.length};
+@@ -75,6 +88,11 @@
+     ui = json.loads(result.stdout)
+     assert ui['before']['enabled'] and not ui['before']['calls']
+     assert 'Публичное демо' in ui['before']['note'] and 'сохранения на сервере нет' in ui['before']['note']
++    assert '24 часов' not in ' '.join(value for value in ui['before'].values() if isinstance(value, str))
++    assert ui['before']['title'] == 'Это публичная демонстрационная форма.'
++    static = (ROOT / 'public/index.html').read_text()
++    assert ui['before']['storage'] == re.search(r'id="storage-note">([^<]+)</span>', static)[1]
++    assert ui['before']['label'] == 'Подготовить демо-запрос'
+     assert ui['invalid'] == {'focused': '#error-summary', 'errors': 6}
+     assert ui['title'] == 'Демо-запрос подготовлен'
+     assert ui['rendered'] == ui['repeated']

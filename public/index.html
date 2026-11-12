@@ -1,42 +1,83 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-form-mode="public">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Диван в порядке — демонстрационный лендинг химчистки диванов. Локальный запрос с фото, без внешней доставки.">
+  <meta name="description" content="Диван в порядке — демонстрационный лендинг химчистки диванов. Бережный подход к обивке, демонстрационные примеры и тестовый запрос с фото.">
   <meta name="robots" content="noindex,nofollow"><title>Диван в порядке — бережно к вашему дивану</title>
   <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">К содержанию</a>
-<div class="demo-bar">Демонстрационный сервис myit <span>·</span> Услуги не оказываются</div>
+<div class="demo-bar">Демонстрационный сервис <span>·</span> Услуги не оказываются</div>
 <header class="header wrap">
   <a class="brand" href="#" aria-label="Диван в порядке — в начало"><img src="assets/mark.svg" alt="" width="38" height="38"><span>Диван в порядке<small>Химчистка диванов</small></span></a>
-  <nav aria-label="Основная навигация"><a href="#approach">Как это устроено</a><a href="#request">Запрос с фото <span aria-hidden="true">↗</span></a></nav>
+  <nav aria-label="Основная навигация"><a href="#approach">Как это устроено</a><a href="#request">Запрос с фото <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></a></nav>
 </header>
 <main id="main">
 <section class="hero wrap" aria-labelledby="hero-title">
   <div class="hero-copy">
     <p class="eyebrow"><span class="dot"></span> ЗАБОТА О ТОМ, ЧТО ДОМА</p>
-    <h1 id="hero-title">Любимый диван.<br><em>Снова</em> хочется<br>остаться дома.</h1>
+    <h1 id="hero-title">Любимый диван.<br> <em>Снова</em> хочется<br> остаться дома.</h1>
     <p class="intro">Бережная химчистка диванов на дому.<br class="desktop-break"> Начнём с фото — разберёмся с обивкой<br class="desktop-break"> и обсудим, что можно сделать.</p>
-    <a class="button" href="#request">Отправить запрос с фото <span aria-hidden="true">↗</span></a>
-    <p class="fine hero-fine">Демо: только тестовые данные. Сохранение локально, без внешних отправок.</p>
-    <div class="hero-bottom"><span class="line-icon" aria-hidden="true">↳</span><p>Сначала посмотрим на диван.<br><strong>Потом — предложим подход.</strong></p></div>
+    <a class="button" href="#request">Отправить запрос с фото <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></a>
+    <p class="fine hero-fine" id="hero-delivery-note">Демо: только тестовые данные.</p>
+    <div class="hero-bottom"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#care"></use></svg><p>Сначала посмотрим на диван.<br> <strong>Потом — предложим подход.</strong></p></div>
   </div>
   <figure class="hero-photo">
     <img src="assets/sofa-1400.jpg" srcset="assets/sofa-700.jpg 700w, assets/sofa-1400.jpg 1400w" sizes="(max-width: 700px) 100vw, 52vw" width="1400" height="2100" fetchpriority="high" alt="Светлый тканевый диван с подушками и пледом в солнечной гостиной">
-    <div class="photo-tag"><span aria-hidden="true">✳</span> Больше уюта.<br>Меньше поводов для тревоги.</div>
+    <div class="photo-tag"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#home"></use></svg> Больше уюта.<br> Меньше поводов для тревоги.</div>
     <figcaption>Интерьерное стоковое фото · не результат чистки</figcaption>
   </figure>
 </section>
+<section class="examples wrap" id="examples" aria-labelledby="examples-title">
+  <div class="section-heading"><div><p class="eyebrow">ЧТО МОЖЕТ ИЗМЕНИТЬСЯ</p><h2 id="examples-title">Чище обивка.<br> Всё тот же любимый диван.</h2></div><p>Два примера, чтобы представить разницу.<br> Фактура, износ и следы времени остаются.</p></div>
+  <div class="examples-grid">
+    <article class="comparison" aria-labelledby="straight-title">
+      <h3 id="straight-title">Светлый прямой диван</h3><p>Следы чая и повседневные загрязнения</p>
+      <div class="comparison-pair">
+        <figure><img src="assets/straight-before-800.webp" srcset="assets/straight-before-480.webp 480w, assets/straight-before-800.webp 800w" sizes="(max-width:600px) calc(100vw - 48px), (max-width:900px) 44vw, 21vw" width="800" height="535" loading="lazy" decoding="async" alt="До: светлый прямой диван с пятном чая и потемнением обивки"><figcaption>До</figcaption></figure>
+        <figure><img src="assets/straight-after-800.webp" srcset="assets/straight-after-480.webp 480w, assets/straight-after-800.webp 800w" sizes="(max-width:600px) calc(100vw - 48px), (max-width:900px) 44vw, 21vw" width="800" height="535" loading="lazy" decoding="async" alt="После: тот же светлый диван в той же комнате, обивка чище, износ сохранён"><figcaption>После</figcaption></figure>
+      </div>
+      <p class="comparison-note">Чистка освежает ткань. Потёртости и повреждённый шов сохраняются.</p>
+    </article>
+    <article class="comparison" aria-labelledby="corner-title">
+      <h3 id="corner-title">Серый угловой диван</h3><p>Загрязнения на сиденьях и подлокотнике</p>
+      <div class="comparison-pair">
+        <figure><img src="assets/corner-before-800.webp" srcset="assets/corner-before-480.webp 480w, assets/corner-before-800.webp 800w" sizes="(max-width:600px) calc(100vw - 48px), (max-width:900px) 44vw, 21vw" width="800" height="535" loading="lazy" decoding="async" alt="До: серый угловой диван с загрязнениями на сиденьях"><figcaption>До</figcaption></figure>
+        <figure><img src="assets/corner-after-800.webp" srcset="assets/corner-after-480.webp 480w, assets/corner-after-800.webp 800w" sizes="(max-width:600px) calc(100vw - 48px), (max-width:900px) 44vw, 21vw" width="800" height="535" loading="lazy" decoding="async" alt="После: тот же серый угловой диван в той же комнате, очищенная обивка со следами износа"><figcaption>После</figcaption></figure>
+      </div>
+      <p class="comparison-note">Оттенок обивки сохраняется. Износ ткани остаётся частью её истории.</p>
+    </article>
+  </div>
+  <p class="examples-disclaimer">Сгенерированные примеры для демонстрации. Реальный результат зависит от ткани и загрязнения.</p>
+</section>
 <section class="approach wrap" id="approach" aria-labelledby="approach-title">
-  <div class="approach-head"><p class="eyebrow">БЕЗ ЛИШНИХ ОБЕЩАНИЙ</p><h2 id="approach-title">У каждого дивана<br>своя история.</h2></div>
-  <div class="process"><div><span>01 / РАССКАЖИТЕ</span><h3>Пятно, следы жизни<br>или просто пора освежить?</h3><p>Покажите диван целиком и обивку вблизи. Если знаете, расскажите, откуда загрязнение.</p></div><div><span>02 / ОБСУДИМ</span><h3>Материал важнее<br>громких обещаний.</h3><p>По фото нельзя гарантировать удаление пятна. Возможность чистки и стоимость требуют обсуждения.</p></div></div>
+  <div class="section-heading"><div><p class="eyebrow">ЗАБОТА ШАГ ЗА ШАГОМ</p><h2 id="approach-title">От первого фото<br> до привычного уюта.</h2></div><p>Так могла бы проходить чистка<br> в нашем вымышленном сервисе.</p></div>
+  <ol class="process">
+    <li><img src="assets/step-photo.svg" width="320" height="220" loading="lazy" alt=""><div class="step-copy"><span class="step-number">01</span><h3>Покажите диван.</h3><p>Сфотографируйте общий вид и крупный план загрязнения. Снимки помогут начать разговор об обивке.</p></div></li>
+    <li><img src="assets/step-request.svg" width="320" height="220" loading="lazy" alt=""><div class="step-copy"><span class="step-number">02</span><h3>Расскажите о задаче.</h3><p>Укажите форму дивана, число мест, обивку и описание. Если знаете происхождение пятна, расскажите о нём.</p></div></li>
+    <li><img src="assets/step-visit.svg" width="320" height="220" loading="lazy" alt=""><div class="step-copy"><span class="step-number">03</span><h3>Мастер приезжает домой.</h3><p>Осматривает ткань, проверяет реакцию на средство на незаметном участке и согласовывает подход.</p></div></li>
+    <li><img src="assets/step-care.svg" width="320" height="220" loading="lazy" alt=""><div class="step-copy"><span class="step-number">04</span><h3>Чистка и рекомендации.</h3><p>Экстрактор собирает загрязнения и лишнюю влагу. Мастер объясняет, как высушить диван и ухаживать за ним дальше.</p></div></li>
+  </ol>
+</section>
+<section class="care-section" aria-labelledby="care-title"><div class="care-layout wrap">
+  <div><p class="eyebrow">БЕРЕЖНО К ТОМУ, ЧТО ВАЖНО</p><h2 id="care-title">Сначала понять ткань.<br> Потом — чистить.</h2><p class="care-intro">У обивки есть свой характер. Поэтому начинаем с осмотра и разговора, а решение подбираем под ваш диван.</p>
+  <ul class="care-points"><li>Подбираем способ чистки под обивку.</li><li>Проверяем реакцию ткани на незаметном участке.</li><li>Работаем с пятнами с учётом их происхождения.</li><li>Удаляем загрязнения и собираем лишнюю влагу экстрактором.</li><li>Объясняем, как высушить диван и ухаживать за ним дальше.</li></ul></div>
+  <div class="questions" aria-label="Вопросы об уходе">
+    <details open><summary>А если дома дети или питомцы?</summary><p>Заранее расскажите о чувствительности к запахам и особых требованиях. Средства и порядок использования мебели после чистки согласуйте со специалистом.</p></details>
+    <details><summary>Любое пятно получится удалить?</summary><p>Результат зависит от материала, происхождения и давности загрязнения, а также от прежних попыток чистки. Возможности и ограничения специалист обсуждает после осмотра.</p></details>
+    <details><summary>Когда можно пользоваться диваном?</summary><p>Это зависит от ткани, влажности и условий в комнате. Специалист подскажет, как организовать сушку и проверить готовность обивки перед использованием.</p></details>
+  </div>
+</div></section>
+<section class="offer wrap" aria-labelledby="offer-title">
+  <img src="assets/microfiber.svg" width="320" height="240" loading="lazy" alt="Рисованный комплект мягких салфеток из микрофибры">
+  <div class="offer-copy"><span class="offer-label">Пример акции вымышленного сервиса</span><h2 id="offer-title">Для домашнего ухода</h2><p>При заказе химчистки — комплект салфеток<br class="desktop-break"> из микрофибры в подарок.</p></div>
+  <a class="button button-light" href="#request">К запросу с фото <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></a>
 </section>
 <section class="request-section" id="request" aria-labelledby="request-title">
   <div class="request-layout wrap">
-    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br>о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br>Три снимка расскажут больше,<br>чем длинное объяснение.</p><div class="request-note"><span aria-hidden="true">↗</span><p><strong>Что будет дальше</strong><br>В настоящем сервисе специалист уточнит детали и обсудит варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong>Это локальный демонстрационный стенд.</strong><br>Только вымышленные контакты и безопасные тестовые фото. Запрос хранится здесь до 24 часов. Внешняя доставка не подключена.</p></aside>
+    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br> о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br> Три снимка расскажут больше,<br> чем длинное объяснение.</p><div class="request-note"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#home"></use></svg><p><strong>Что будет дальше</strong><br> В таком сервисе специалист уточнил бы детали и обсудил варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong id="demo-mode-title">Это публичная демонстрационная форма.</strong><br> Только вымышленные контакты и безопасные тестовые фото. <span id="storage-note">Данные и фото находятся только в памяти открытой страницы и теряются при её перезагрузке. Сохранения на сервере нет.</span> <span id="aside-delivery-note">Отправок в Telegram и Google-таблицу нет.</span></p></aside>
     <form id="lead-form" novalidate>
       <div class="form-top"><h3>Запрос с фотографиями</h3><span>ДЕМО</span></div>
       <p class="fine">Все поля обязательны. Если материал неизвестен, так и укажите.</p>
@@ -48,17 +89,18 @@
         <div class="field"><label for="size">Размер</label><select id="size" name="size" required aria-describedby="size-error"><option value="">Сколько мест?</option><option>Два места</option><option>Три места</option><option>Четыре и больше</option><option>Не знаю</option></select><p class="field-error" id="size-error" hidden></p></div>
       </div><div class="field"><label for="material">Материал обивки</label><select id="material" name="material" required aria-describedby="material-error"><option value="">Выберите материал</option><option>Ткань / рогожка</option><option>Велюр / бархат</option><option>Кожа / экокожа</option><option>Не знаю</option></select><p class="field-error" id="material-error" hidden></p></div>
       <div class="field"><label for="description">Что нужно почистить?</label><textarea id="description" name="description" rows="3" maxlength="1000" required placeholder="Например: след от чая на сиденье. Диван ещё ничем не обрабатывали." aria-describedby="description-hint description-error"></textarea><div class="field-meta"><span id="description-hint">Не указывайте адрес и личные данные.</span><span id="counter">0 / 1000</span></div><p class="field-error" id="description-error" hidden></p></div></fieldset>
-      <fieldset><legend><span>2</span> Добавьте тестовые фото</legend><p class="fine photo-help">Диван целиком → обивка → пятно крупным планом.</p>
-      <div class="upload-box"><span class="upload-icon" aria-hidden="true">＋</span><label for="photos">Выбрать фотографии</label><input id="photos" name="photos" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-describedby="photo-limits photos-error"><p id="photo-limits">1–3 фото · JPEG, PNG, WebP<br>До 5 МБ каждое, 12 МБ вместе, 20 Мп</p></div><p class="field-error" id="photos-error" hidden></p><ul class="previews" id="previews" aria-label="Выбранные фотографии"></ul></fieldset>
+      <fieldset><legend><span>2</span> Добавьте тестовые фото</legend><p class="fine photo-help">Общий вид дивана, обивка и пятно крупным планом.</p>
+      <div class="upload-box"><svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg><label for="photos">Выбрать фотографии</label><input id="photos" name="photos" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-describedby="photo-limits photos-error"><p id="photo-limits">1–3 фото · JPEG, PNG, WebP<br> До 5 МБ каждое, 12 МБ вместе, 20 Мп</p></div><p class="field-error" id="photos-error" hidden></p><ul class="previews" id="previews" aria-label="Выбранные фотографии"></ul></fieldset>
       <fieldset><legend><span>3</span> Как с вами связаться?</legend><div class="form-row contact-row"><div class="field"><label for="channel">Способ связи</label><select id="channel" name="channel"><option value="email">Электронная почта</option><option value="telegram">Telegram</option></select></div><div class="field"><label id="contact-label" for="contact">Тестовый email</label><input id="contact" name="contact" type="text" inputmode="email" maxlength="80" autocomplete="off" placeholder="demo@example.test" required aria-describedby="contact-hint contact-error"><p class="field-error" id="contact-error" hidden></p></div></div><p class="fine" id="contact-hint">В демо: адрес на @example.test или Telegram @demo_test.</p></fieldset>
-      <button class="button submit" type="submit" disabled>Сохранить тестовый запрос <span aria-hidden="true">↗</span></button><p class="fine submit-note">Демо: сохранение только на этом стенде.<br>Уведомления не отправляются автоматически.</p>
-      <p id="js-notice" class="error-summary">Для сохранения запроса нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас отправка недоступна.</p>
+      <p class="fine submit-note" id="submit-note" role="status">Режим сохранения пока не определён.</p>
+      <button class="button submit" type="submit" aria-describedby="submit-note" disabled><span id="submit-label">Подготовить демо-запрос</span> <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#photo"></use></svg></button>
+      <p id="js-notice" class="error-summary">Для работы формы нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас действия формы недоступны.</p>
       <p id="sending" class="fine" role="status" hidden>Проверяем фото и сохраняем запрос…</p>
-      <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Запрос сохранён</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><br><button type="button" id="return">Вернуться к форме ↑</button></div>
+      <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Результат запроса</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><button type="button" id="copy-request" hidden>Скопировать текст запроса</button><p id="copy-status" role="status" hidden></p><br> <button type="button" id="return">Вернуться к форме</button></div>
     </form>
   </div>
 </section>
 </main>
-<footer class="wrap"><span>Диван в порядке <span aria-hidden="true">✳</span></span><p>Демонстрационный проект myit · 2026<br>Вымышленный сервис. Услуги не оказываются.</p><a href="#main">Наверх ↑</a></footer>
+<footer class="wrap"><span>Диван в порядке <svg class="icon" aria-hidden="true" width="24" height="24"><use href="assets/icons.svg#home"></use></svg></span><p>Демонстрационный сервис · 2026<br> Вымышленный сервис. Услуги не оказываются.</p><a href="#main">Наверх</a></footer>
 </body>
 </html>

@@ -57,7 +57,7 @@ def parse_config(text):
 def load_config(path: Path):
     """Вызывать только после отдельного разрешения на чтение именно этого .env."""
     try:
-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
         with os.fdopen(fd, 'rb') as file:
             meta = os.fstat(file.fileno())
             if not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.getuid() or stat.S_IMODE(meta.st_mode) not in {0o400, 0o600}:

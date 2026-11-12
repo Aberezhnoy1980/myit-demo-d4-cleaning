@@ -1,0 +1,314 @@
+{
+  "date": "2026-11-11",
+  "browser": "Chrome/157.0.8103.39",
+  "checks": [
+    {
+      "mode": "public",
+      "validation": true,
+      "photoPreviewRemove": true,
+      "keyboardPhotoFocus": true,
+      "copy": true,
+      "widths": [
+        360,
+        390,
+        768,
+        1440
+      ],
+      "apiCalls": 0
+    },
+    {
+      "mode": "ordinary",
+      "localReceipt": true,
+      "delivery": false
+    },
+    {
+      "mode": "mac_demo_live with fake transports",
+      "preActionNotice": true,
+      "modeChangeWaitsForNewClick": true,
+      "bothConfirmed": true,
+      "repeatSameId": true,
+      "quotaRejected": true
+    }
+  ],
+  "reduced": {
+    "matches": true,
+    "scroll": "auto",
+    "transition": "0s"
+  },
+  "errors": [],
+  "external": [],
+  "responses": [
+    {
+      "url": "http://127.0.0.1:4351/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/style.css",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/icons.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/app.js",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/straight-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/straight-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/corner-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/microfiber.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "blob:http://127.0.0.1:4351/21c134b0-238a-4bc8-9195-10bce0a9bcc5",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "blob:http://127.0.0.1:4351/128e36e5-7ede-489c-835f-cfd2fe9cd6d3",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4351/assets/sofa-1400.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/style.css",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/sofa-1400.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/icons.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/app.js",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/straight-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/corner-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/step-photo.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/step-request.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/straight-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/corner-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/step-care.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/step-visit.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "blob:http://127.0.0.1:4352/aba443c1-930b-4e84-874d-dbdd42259afa",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/assets/microfiber.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4352/api/submissions",
+      "status": 201
+    },
+    {
+      "url": "http://127.0.0.1:4352/api/receipts/<submission-id>",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/style.css",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/icons.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/app.js",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/straight-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/straight-after-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/mark.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/corner-before-480.webp",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/sofa-700.jpg",
+      "status": 200
+    },
+    {
+      "url": "blob:http://127.0.0.1:4353/2669279c-5152-4544-8f81-550c0aec3e5c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/microfiber.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/submissions",
+      "status": 201
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/receipts/<submission-id>",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/receipts/<submission-id>",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/submissions",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/receipts/<submission-id>",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/sofa-1400.jpg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/api/submissions",
+      "status": 409
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/step-photo.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/step-request.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/step-care.svg",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4353/assets/step-visit.svg",
+      "status": 200
+    }
+  ]
+}

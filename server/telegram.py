@@ -157,7 +157,7 @@ def prepare_photo(store, submission_id, connection):
     return PhotoRequest(submission_id, photo, caption)
 
 
-def send_one(store, submission_id, adapter):
+def send_one(store, submission_id, adapter, *, linked_live=False):
     """Один адресный claim и один вызов адаптера. Вызывающий CLI держит registry flock."""
     if not isinstance(adapter, TelegramAdapter):
         raise ConfigurationError('Нужен явный Telegram-адаптер.')
@@ -176,7 +176,10 @@ def send_one(store, submission_id, adapter):
             meta = {}
         if not isinstance(meta, dict):
             meta = {}
-        if ((job['status'] == 'not_connected' and not job['simulated'])
+        if linked_live:
+            if adapter.offline or job['status'] != 'live_queued' or job['simulated'] or job['attempts'] != 0:
+                raise Failure(409, 'Живое задание формы не готово к первой попытке.')
+        elif ((job['status'] == 'not_connected' and not job['simulated'])
                 or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
             pass
         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
@@ -199,6 +202,8 @@ def send_one(store, submission_id, adapter):
             raise Failure(409, 'Лимит попыток Telegram исчерпан.')
         attempts = job['attempts'] + 1
         meta = {'telegram_v': 1, 'binding': adapter.config.binding, 'reason': 'processing'}
+        if linked_live:
+            meta['linked'] = True
         c.execute("UPDATE deliveries SET status=?,simulated=?,attempts=?,error=? WHERE submission_id=? AND channel='telegram'",
                   (mode + '_processing', simulated, attempts, json.dumps(meta), submission_id))
     try:
@@ -207,7 +212,7 @@ def send_one(store, submission_id, adapter):
         outcome = TelegramOutcome('unknown', 'uncertain_transport')
     state = outcome.kind
     if state == 'retry':
-        state = 'pending' if job['status'] != 'mock_queued' and attempts < 3 else 'failed'
+        state = 'pending' if not linked_live and job['status'] != 'mock_queued' and attempts < 3 else 'failed'
     meta['reason'] = outcome.reason
     if outcome.message_id is not None:
         meta['message_id'] = outcome.message_id  # приватная служебная квитанция, не клиентский ответ

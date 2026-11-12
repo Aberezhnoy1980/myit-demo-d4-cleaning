@@ -12,6 +12,7 @@ import uuid
 import httpx
 
 from .model import Failure, Lead
+from .mac_auth import MacAuthorization
 from .sheets_auth import SDKAuthorization
 from .sheets_config import ConfigurationError, MAX_ROW, SheetsConfig
 from .telegram import no_http_logs
@@ -77,18 +78,24 @@ def row_for_submission(store, sid, connection):
 
 
 class SheetsAdapter:
-    def __init__(self, config: SheetsConfig, authorization, *, transport):
-        if (not isinstance(transport, httpx.MockTransport)
-                or not isinstance(authorization, (OfflineAuthorization, SDKAuthorization))
+    def __init__(self, config: SheetsConfig, authorization, *, transport=None, allow_live=False):
+        offline = isinstance(transport, httpx.MockTransport)
+        if (not isinstance(authorization, (OfflineAuthorization, SDKAuthorization, MacAuthorization))
                 or not config.spreadsheet_id or authorization.account != config.service_account):
-            raise ConfigurationError('B2 требует явные искусственную авторизацию и MockTransport согласованного ресурса.')
+            raise ConfigurationError('Нужна авторизация согласованной технической учётной записи Sheets.')
+        if offline:
+            if isinstance(authorization, (SDKAuthorization, MacAuthorization)) and not authorization.offline:
+                raise ConfigurationError('Подставному Sheets нужна подставная авторизация.')
+        elif (transport is not None or not allow_live or not config.enabled
+              or not isinstance(authorization, (SDKAuthorization, MacAuthorization)) or authorization.offline):
+            raise ConfigurationError('Живая запись Sheets выключена.')
         self.config = config
         self.authorization = authorization
         self._transport = transport
-        self.offline = True
+        self.offline = offline
 
     def __repr__(self):
-        return 'SheetsAdapter(offline=True)'
+        return f'SheetsAdapter(offline={self.offline})'
 
     def _request(self, client, token, method, cell_range, *, body=None, append=False):
         path = '/v4/spreadsheets/' + self.config.spreadsheet_id + '/values/' + quote(cell_range, safe='')
@@ -160,7 +167,8 @@ class SheetsAdapter:
                     token = self.authorization.token()
                 except Exception:
                     raise _Stop('failed', 'authorization_unavailable') from None
-                with httpx.Client(transport=self._transport, timeout=_TIMEOUT, trust_env=False,
+                transport = self._transport or httpx.HTTPTransport(retries=0, trust_env=False)
+                with httpx.Client(transport=transport, timeout=_TIMEOUT, trust_env=False,
                                   follow_redirects=False) as client:
                     if self._read(client, token, 1, 1) != [HEADERS]:
                         raise _Stop('failed', 'header_mismatch')
@@ -199,7 +207,7 @@ class SheetsAdapter:
                 return SheetsOutcome('unknown' if wrote or reconcile else 'failed', 'unconfirmed_operation')
 
 
-def send_one(store, sid, adapter, *, reconcile=False):
+def send_one(store, sid, adapter, *, reconcile=False, linked_live=False):
     """Вызывающий локальный CLI обязан держать прежний registry flock."""
     if not isinstance(adapter, SheetsAdapter):
         raise ConfigurationError('Нужен явный офлайн-адаптер Sheets.')
@@ -218,7 +226,10 @@ def send_one(store, sid, adapter, *, reconcile=False):
             meta = {}
         if not isinstance(meta, dict):
             meta = {}
-        if ((job['status'] == 'not_connected' and not job['simulated'])
+        if linked_live:
+            if adapter.offline or reconcile or job['status'] != 'live_queued' or job['simulated'] or job['attempts'] != 0:
+                raise Failure(409, 'Живое задание формы не готово к первой попытке.')
+        elif ((job['status'] == 'not_connected' and not job['simulated'])
                 or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
             if reconcile:
                 raise Failure(409, 'Сверка разрешена только для неизвестного результата Sheets.')
@@ -253,6 +264,8 @@ def send_one(store, sid, adapter, *, reconcile=False):
             if not 0 <= job['attempts'] < 3:
                 raise Failure(409, 'Лимит попыток Sheets исчерпан.')
             meta = {'sheets_v': 1, 'binding': adapter.config.binding, 'reason': 'processing', 'checks': 0}
+            if linked_live:
+                meta['linked'] = True
             c.execute("UPDATE deliveries SET status=?,simulated=?,attempts=attempts+1,error=? WHERE submission_id=? AND channel='sheets'",
                       (mode + '_processing', simulated, json.dumps(meta), sid))
     try:
@@ -260,7 +273,7 @@ def send_one(store, sid, adapter, *, reconcile=False):
     except Exception:
         outcome = SheetsOutcome('unknown', 'unconfirmed_operation')
     state = outcome.kind
-    if state == 'pending' and (job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
+    if state == 'pending' and (linked_live or job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
         state = 'failed'
     meta['reason'] = outcome.reason
     try:

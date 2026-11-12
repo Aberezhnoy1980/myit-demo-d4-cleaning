@@ -1,6 +1,7 @@
-from contextlib import closing, contextmanager
+from contextlib import closing, contextmanager, nullcontext
 from dataclasses import replace
 from pathlib import Path
+from threading import Lock
 import hashlib
 import hmac
 import json
@@ -57,9 +58,11 @@ def validate_restore_snapshot(connection):
 
 
 class Store:
-    def __init__(self, settings):
+    def __init__(self, settings, *, live_limit=None):
         self.settings = settings
         self.path = settings.data_dir / 'registry.sqlite3'
+        self._live_remaining = live_limit
+        self._save_lock = Lock() if live_limit is not None else nullcontext()
 
     @contextmanager
     def connection(self):
@@ -114,13 +117,17 @@ class Store:
             'message': channel_message(row),
         } for row in rows]
 
-    def settle_test_delivery(self, sid=None, channel=None):
-        """Под блокировкой реестра завершает прерванные тестовые задания."""
+    def settle_linked_delivery(self, sid=None, channel=None):
+        """Под блокировкой реестра завершает прерванные задания формы."""
         with self.connection() as c:
             c.execute("""
                 UPDATE deliveries
-                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed' ELSE 'mock_unknown' END
-                WHERE simulated = 1 AND status IN ('mock_queued', 'mock_processing')
+                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed'
+                    WHEN 'mock_processing' THEN 'mock_unknown'
+                    WHEN 'live_queued' THEN 'live_failed' ELSE 'live_unknown' END
+                WHERE ((simulated = 1 AND status IN ('mock_queued', 'mock_processing'))
+                    OR (simulated = 0 AND (status = 'live_queued' OR (status = 'live_processing'
+                        AND CASE WHEN json_valid(error) THEN json_extract(error, '$.linked') END = 1))))
                   AND (? IS NULL OR submission_id = ?) AND (? IS NULL OR channel = ?)
             """, (sid, sid, channel, channel))
 
@@ -132,13 +139,16 @@ class Store:
 
     def save(self, key, body_hash, lead, photos, *, test_delivery=False):
         now = self.settings.clock()
-        with self.connection() as c:
+        with self._save_lock, self.connection() as c:
             c.execute('BEGIN IMMEDIATE')
             row = c.execute('SELECT * FROM submissions WHERE request_key=?', (key,)).fetchone()
             if row:
                 if row['body_hash'] != body_hash:
                     raise Failure(409, 'Ключ повтора уже использован с другими данными.')
                 return self.acceptance(row, replay=True, channels=self.delivery_rows(c, row['id']))
+            live = self._live_remaining is not None
+            if live and self._live_remaining == 0:
+                raise Failure(409, 'Лимит новых запросов закрытого прогона исчерпан.')
             count = c.execute('SELECT count(*) FROM submissions').fetchone()[0]
             used = c.execute('SELECT coalesce(sum(length(content)),0) FROM photos').fetchone()[0]
             if count >= self.settings.record_limit or used + sum(map(len, photos)) > self.settings.storage_limit:
@@ -150,11 +160,19 @@ class Store:
             c.executemany('INSERT INTO photos VALUES(?,?,?)',
                           [(uuid.uuid4().hex + '.jpg', sid, p) for p in photos])
             status = 'mock_queued' if test_delivery else 'not_connected'
+            if live:
+                status = 'live_queued'
             c.executemany(
                 'INSERT INTO deliveries(submission_id,channel,status,simulated) VALUES(?,?,?,?)',
                 [(sid, channel, status, int(test_delivery)) for channel in ('telegram', 'sheets')],
             )
-            return self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(), channels=self.delivery_rows(c, sid))
+            accepted = self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(),
+                                       channels=self.delivery_rows(c, sid))
+            if live:
+                # Квота переживает очистку заявок и расходуется только после commit.
+                c.commit()
+                self._live_remaining -= 1
+            return accepted
 
     def receipt(self, sid, key):
         with self.connection() as c:

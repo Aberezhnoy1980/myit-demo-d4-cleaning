@@ -1,0 +1,214 @@
+[
+  {
+    "name": "straight-before",
+    "source_path": "/Users/alex/Downloads/straight-before-original.png",
+    "original": "docs/visual-12/originals/straight-before-original.png",
+    "sha256": "9036e4dc28a6c366a56c7de9678b83976110263c92ed6a398f57e9d9fddd8f6e",
+    "bytes": 8739917,
+    "width": 2560,
+    "height": 1712,
+    "derivatives": [
+      {
+        "path": "public/assets/straight-before-800.webp",
+        "sha256": "20866ae319a411ceb3e826295432b7d2d0e6bd12a9a8ec8c183a59506a152539",
+        "bytes": 78606,
+        "width": 800,
+        "height": 535,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "5/16",
+        "crop": false
+      },
+      {
+        "path": "public/assets/straight-before-480.webp",
+        "sha256": "951510495f7d980fa28238d453ba3c2539c5c0909c1e46af79a10e11b6054c46",
+        "bytes": 24652,
+        "width": 480,
+        "height": 321,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "3/16",
+        "crop": false
+      }
+    ],
+    "origin": {
+      "provider": "Runway",
+      "model": "GPT Image 2",
+      "resolution_setting": "2K",
+      "quality_setting": "High",
+      "prepared_by": "Владелец",
+      "source": "Согласованные оригиналы из Downloads, переданы владельцем 11.11.2026"
+    },
+    "prompt": {
+      "path": "docs/visual-12/prompts/straight-before.txt",
+      "sha256": "aadcc2606837fdc8f1b9fed2d007ed2bfdf52ccb497a3a430cbda7f6471233d9",
+      "text": "Photorealistic natural landscape interior photograph, 3:2 ratio, for a fictional sofa cleaning demonstration. A light oatmeal straight three-seat linen sofa with broad rounded arms and short oak legs, two seat cushions and fixed back cushions. Cozy simple room, warm ivory wall, small oak side table and ceramic vase on left, sage curtain and soft daylight on right, oak floor, cream rug. Sofa fully visible, eye-level camera slightly from left, identical soft light everywhere. BEFORE CLEANING: seats have natural uneven grey soiling and a muted brown tea stain on right seat, left arm has smudges. Permanent wear: pilling on left arm and frayed seam at front-right seat corner. No loose cushions, people, text, logos, borders, equipment or montage. One believable calm room photo.",
+      "confirmation": "Владелец подтвердил 11.11.2026 использование без изменений"
+    }
+  },
+  {
+    "name": "straight-after",
+    "source_path": "/Users/alex/Downloads/straight-after-original.png.png",
+    "original": "docs/visual-12/originals/straight-after-original.png",
+    "sha256": "55103b6d2fc8ae243ccb0bf4647cf3927971cc9bf810ce9cddd3bede77f157bc",
+    "bytes": 9491186,
+    "width": 2560,
+    "height": 1712,
+    "derivatives": [
+      {
+        "path": "public/assets/straight-after-800.webp",
+        "sha256": "c2716e7b812e1f335ec95db9d267b2e8aa879c6a7eb0d54582c003915aa09209",
+        "bytes": 84028,
+        "width": 800,
+        "height": 535,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "5/16",
+        "crop": false
+      },
+      {
+        "path": "public/assets/straight-after-480.webp",
+        "sha256": "42d70d7ccb0364673ce0bdb9ccb59ad31f1cb6a5fd7f84e895875ec273bb6875",
+        "bytes": 26292,
+        "width": 480,
+        "height": 321,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "3/16",
+        "crop": false
+      }
+    ],
+    "origin": {
+      "provider": "Runway",
+      "model": "GPT Image 2",
+      "resolution_setting": "2K",
+      "quality_setting": "High",
+      "prepared_by": "Владелец",
+      "source": "Согласованные оригиналы из Downloads, переданы владельцем 11.11.2026"
+    },
+    "prompt": {
+      "path": "docs/visual-12/prompts/straight-after.txt",
+      "sha256": "383bb13a571d84253cbb7bc52f72886f670c154b8fc3c09852903890472b6e46",
+      "text": "Edit target: the supplied before-cleaning photograph of the light straight sofa.\nOnly remove the tea stain, surface soiling, grey smudges and dark dirt from the sofa's upholstery, revealing its original oatmeal fabric colour and texture.\nPreserve the exact sofa, proportions, cushions, arms, wooden legs, all permanent pilling, wear and frayed seam at the front-right seat corner.\nPreserve the room, every background object, camera position, framing, shadows, lighting, floor, curtain, vase and rug exactly. Do not brighten the photo, change white balance, replace furniture, repair fabric, smooth away pilling, add pillows, add decorations, move anything or change the upholstery's base colour.\nA realistic after-cleaning illustration in the same 3:2 image. No text, watermark or borders.",
+      "confirmation": "Владелец подтвердил 11.11.2026 использование без изменений"
+    }
+  },
+  {
+    "name": "corner-before",
+    "source_path": "/Users/alex/Downloads/corner-before-original.png",
+    "original": "docs/visual-12/originals/corner-before-original.png",
+    "sha256": "6d3a82a4fb5057ff3b6747f8eac18751b571cd05c4ee38b5531894c1bd02c231",
+    "bytes": 7974037,
+    "width": 2560,
+    "height": 1712,
+    "derivatives": [
+      {
+        "path": "public/assets/corner-before-800.webp",
+        "sha256": "d55f7e7356bee0828c45bc7114004db6bb6c9c97b0f541a8253b3091093f57ba",
+        "bytes": 76510,
+        "width": 800,
+        "height": 535,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "5/16",
+        "crop": false
+      },
+      {
+        "path": "public/assets/corner-before-480.webp",
+        "sha256": "65bd6e71b2a0133be5948165e8ae131e2109a6254dc9926d082ec1d6f4123995",
+        "bytes": 22136,
+        "width": 480,
+        "height": 321,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "3/16",
+        "crop": false
+      }
+    ],
+    "origin": {
+      "provider": "Runway",
+      "model": "GPT Image 2",
+      "resolution_setting": "2K",
+      "quality_setting": "High",
+      "prepared_by": "Владелец",
+      "source": "Согласованные оригиналы из Downloads, переданы владельцем 11.11.2026"
+    },
+    "prompt": {
+      "path": "docs/visual-12/prompts/corner-before.txt",
+      "sha256": "56a8b8c632c5b92463f94b247167e3688e28ab1a37b4b2d01fe45be014949ac4",
+      "text": "Photorealistic natural landscape interior photograph, 3:2 ratio, for a fictional sofa cleaning demonstration. A grey medium-tone woven-fabric L-shaped corner sofa, chaise extending towards the camera on the right. Softly rounded arms, three visible seat cushions, short wooden legs. Entire sofa visible, eye-level camera slightly from the left. Calm apartment with warm milk-coloured wall, simple framed beige abstract print above the sofa, one small plant in a terracotta pot on the left, warm oak floor, plain cream rug, diffuse daylight from the left. BEFORE CLEANING: uneven dark everyday soiling on the front of the main seats and on the top of the chaise, one dull brown spill on the middle seat, a smudged left arm. Permanent wear includes visible fabric pilling on the chaise's front edge and a small worn frayed seam near the left arm. These are wear, not dirt. Natural honest texture, no dramatic lighting. No people, animals, equipment, cushions that hide the fabric, text, logos, labels, borders, collage or split panels. One consistent believable interior.",
+      "confirmation": "Владелец подтвердил 11.11.2026 использование без изменений"
+    }
+  },
+  {
+    "name": "corner-after",
+    "source_path": "/Users/alex/Downloads/corner-after-original.png",
+    "original": "docs/visual-12/originals/corner-after-original.png",
+    "sha256": "f1eef7f9cc0f88a8f326064b563d111599e73ec19753b6820f8940c1acd4b83a",
+    "bytes": 9529061,
+    "width": 2560,
+    "height": 1712,
+    "derivatives": [
+      {
+        "path": "public/assets/corner-after-800.webp",
+        "sha256": "353e1e980c3aabb1843d454a422c1dc44adc6dd2b7fee227e9f2be3ab20355ae",
+        "bytes": 81744,
+        "width": 800,
+        "height": 535,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "5/16",
+        "crop": false
+      },
+      {
+        "path": "public/assets/corner-after-480.webp",
+        "sha256": "f42c38837471ecacfa5c0fcb2bd1889b5ca7f3fdf24571da0eb2e926d4c1bae8",
+        "bytes": 23816,
+        "width": 480,
+        "height": 321,
+        "format": "WebP",
+        "quality": 85,
+        "method": 6,
+        "resize": "LANCZOS",
+        "aspect_ratio": "160:107, exact",
+        "scale": "3/16",
+        "crop": false
+      }
+    ],
+    "origin": {
+      "provider": "Runway",
+      "model": "GPT Image 2",
+      "resolution_setting": "2K",
+      "quality_setting": "High",
+      "prepared_by": "Владелец",
+      "source": "Согласованные оригиналы из Downloads, переданы владельцем 11.11.2026"
+    },
+    "prompt": {
+      "path": "docs/visual-12/prompts/corner-after.txt",
+      "sha256": "80277d77cc08fbb9bebf122003cfd83c2e982558e7f4c22df5c461bdd5627310",
+      "text": "Edit target: the supplied before-cleaning photograph of the grey corner sofa.\nChange only the removable upholstery dirt: remove the dull brown spill, grey smudges and darker soiling from the seats, chaise and left arm. Reveal the original medium-grey woven fabric underneath.\nKeep the exact corner sofa, its L shape, chaise direction, cushion count, seams, base colour, wooden legs and texture. Keep all permanent fabric pilling at the chaise's front edge and the small worn frayed seam near the left arm. Cleaning does not repair damage or restore worn fibres.\nThe room, plant, framed print, wall, oak floor, cream rug, camera position, framing, shadows, illumination and colour balance must remain identical to the reference. Do not move or replace anything, add decorations, relight the room, make the sofa new, hide the wear or add text. Same 3:2 composition. No watermark or borders.",
+      "confirmation": "Владелец подтвердил 11.11.2026 использование без изменений"
+    }
+  }
+]

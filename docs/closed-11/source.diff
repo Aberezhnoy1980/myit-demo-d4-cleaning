@@ -1,0 +1,1219 @@
+diff --git a/README.md b/README.md
+index 93a8a06..ef77540 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,7 @@
+ # D4 · «Диван в порядке»
+ 
+ Локальный стенд лендинга вымышленной химчистки диванов. Услуги не оказываются.
+-Срез `d4-divan-v-poryadke-linked-10`: форма, два канала и раздельные статусы в квитанции.
++Срез `d4-divan-v-poryadke-closed-11`: закрытый режим двух каналов, подготовленный к офлайн-ревью.
+ Имя «Диван в порядке» и дескриптор «Химчистка диванов» утверждены в срезе `d4-divan-v-poryadke-rename-09`.
+ Дизайн, пользовательский путь, SVG-знак и папка d4-cleaning сохранены. Прежнее имя «Тихий дом» и идентификаторы
+ прошлых срезов остаются историей; офлайн-код основы — принятый `d4-tihiy-dom-sheets-b2-07`.
+@@ -9,7 +9,7 @@
+ координатором в проверенном объёме. Это не приёмка всего публичного D4.
+ Telegram B1 принят в проверенном объёме, один тест проведён координатором и подтверждён владельцем
+ ([свидетельство](docs/review-coordinator/telegram-b1-06/owner-confirmation.md)). Повторять Telegram для B2 запрещено.
+-Два канала проверяются в тестовом режиме на синтетических данных. Обычный запуск сохраняет заявку локально.
++Два канала проверяются на синтетических данных и подставных ответах. Обычный запуск сохраняет заявку локально.
+ 
+ ## Запуск
+ 
+@@ -182,13 +182,38 @@ Connect/pool отказ до передачи: только ручной пов
+ Повтор формы возвращает прежний номер. При старте прерванная тестовая обработка получает неопределённый статус.
+ Сценарии и команды офлайн-проверки описаны в [протоколе связки](docs/linked-10/acceptance.md).
+ 
++### Закрытый прогон на D4-Debian12
++
++Команда ниже предназначена для отдельного согласованного живого прогона из каталога с этим срезом.
++Родительский каталог реестра должен существовать, принадлежать пользователю запуска и иметь права `0700`.
++`run-01` — новый каталог, который создаст сервер. Лимит от 1 до 200 учитывает все сохранённые за прогон заявки.
++
++```sh
++/home/d4/d4-lab/.venv/bin/python tools/run.py --closed-live --port 4344 \
++  --registry-dir /home/d4/d4-lab/closed-runs/run-01 --submission-limit 1
++```
++
++Сервер слушает `127.0.0.1` в одном процессе. Обе настройки должны быть включены в `.env` и `.env.sheets`
++среза. В `D4_SHEETS_KEY_FILE` задаётся абсолютный путь к `.secrets/sheets-service-account.json` в том же срезе.
++Файлы принадлежат пользователю запуска с правами `0600` или `0400`. Каталог `.secrets` имеет права `0700`
++или `0500`. Символические ссылки на файлы и каталог ключа отклоняются. Команда не передаёт секреты в аргументах.
++
++Форма сохраняет заявку и два задания одной транзакцией. Каждый канал получает одну попытку.
++Перед кнопкой форма показывает, какие данные получат тестовый Telegram и тестовая Google-таблица.
++В обычном режиме здесь остаётся пояснение о локальном сохранении.
++POST передаёт показанный режим в `X-D4-Delivery-Mode`. При расхождении сервер возвращает `409` до сохранения,
++а форма показывает актуальное пояснение и ждёт нового нажатия.
++При повторе формы возвращается прежний номер. Прерванные задания можно просмотреть при обычном запуске
++с тем же `--registry-dir`, без `--closed-live` и `--submission-limit`. Повторный закрытый запуск на том же каталоге
++завершается отказом. Приёмка, границы и примеры квитанций — [протокол закрытого режима](docs/closed-11/review.md).
++
+ Строка A:I: submission_id, accepted_at_utc, sofa, size, material, description, synthetic_channel,
+ synthetic_contact, photo_count. UTC берётся из сохранённой заявки, значения RAW, формульный текст не преобразуется.
+ Проверяются точная шапка Leads!A1:I1, UUID в Leads!A2:I201 и все 9 значений после append.
+ 200 строк данных — конечный предел; дубли/конфликты/дырки/переполнение требуют разбора без перестройки листа.
+ Одна полностью совпавшая строка подтверждается без POST. Чужой updatedRange не становится URL.
+ 
+-Новый адресный интерфейс на один UUID (пока даёт только безопасный отказ, **не запуск живого теста**):
++Отдельный адресный интерфейс Sheets на один UUID сохраняет безопасный отказ:
+ 
+ ```sh
+ .venv/bin/python -m server.manage sheets-send --submission-id ОДИН_СОГЛАСОВАННЫЙ_UUID --execute-live
+@@ -196,13 +221,13 @@ synthetic_contact, photo_count. UTC берётся из сохранённой 
+ ```
+ 
+ Без флага нет чтения настройки; отсутствие SDK останавливает до config/data/сети.
+-Даже установка SDK сама по себе live не включит: сначала отдельная реализация и приёмка авторизации.
+-Будущий источник — только явный service_account JSON согласованной учётной записи по фиксированному приватному пути
+-из шаблона, без ADC/окружения/Keychain fallback. Сейчас ключ и каталог `.secrets/` не создавались/не читались.
++Закрытый режим использует только service account JSON согласованной учётной записи по фиксированному приватному пути
++из шаблона. ADC, переменные окружения и Keychain не используются как источники авторизации.
+ 
+ Команды держат прежний эксклюзивный registry flock. Тестовые задания не повышаются в live, ресурс/service account
+ привязываются при первом claim; ротация ключа той же учётной записи не создаёт дубль.
+-До append сетевой отказ или явный валидный 429 допускают ручную отложенную попытку, всего до 3.
++Контракт ручной обработки допускает до трёх отложенных попыток после сетевого отказа до append или валидного 429.
++В закрытом режиме такой исход завершает задание отказом после первой попытки.
+ Явный 400/401/403/404 или истёкшая авторизация дают отказ, без автоматического refresh/replay.
+ Неопределённость после append, любой сбой подтверждающего чтения или фиксации результата → unknown, повтор записи запрещён.
+ Reconcile делает только ограниченное чтение (до 3 явных сверок): совпадение подтверждает строку,
+@@ -221,7 +246,8 @@ node --check public/app.js
+ .venv/bin/python tools/measure_http.py --base http://127.0.0.1:4344/
+ ```
+ 
+-Протокол текущего среза — [docs/linked-10/acceptance.md](docs/linked-10/acceptance.md).
++Протокол текущего среза — [docs/closed-11/review.md](docs/closed-11/review.md).
++Принятая офлайн-связка — [docs/linked-10/acceptance.md](docs/linked-10/acceptance.md).
+ Проверка переименования — [docs/rename-09/acceptance.md](docs/rename-09/acceptance.md).
+ Принятый офлайн B2 — [docs/sheets-b2/acceptance.md](docs/sheets-b2/acceptance.md),
+ независимая проверка — [docs/review-coordinator/sheets-b2/acceptance.md](docs/review-coordinator/sheets-b2/acceptance.md).
+@@ -233,7 +259,7 @@ node --check public/app.js
+ Ресурсы и минимальные доступы следующего live-этапа — [docs/live-resources.md](docs/live-resources.md).
+ Офлайн-связка использует установленные пакеты VM. Google-ресурсы, настоящая авторизация и live-тест Sheets согласуются отдельно.
+ 
+-База локального diff — `f0d3aa8dfcdf73698538a2957c89ae3260c67f68`. Git-фиксация и размещение согласуются отдельно.
++База локального diff — `8e176107f79ce7741381ce769827bddf1ca1651b`. Git-фиксация и размещение согласуются отдельно.
+ Документация и доказательства — `docs/`. Самопроверка автора не заменяет независимой приёмки.
+ 
+ ## Идентификация
+@@ -241,7 +267,8 @@ node --check public/app.js
+ `docs/manifest.sha256` охватывает public, server, tests, tools, README/.gitignore/.env.example/.env.sheets.example,
+ requirements/constraints/lock и авторские документы/снимки (включая помеченные исторические свидетельства).
+ Сам manifest исключён, равно как `.venv`, кэши, секреты, данные и вся `docs/review-coordinator/`.
+-Новые свидетельства — `docs/rename-09/`; пересмотр зависимостей — docs/sheets-deps-08;
++Новые свидетельства — `docs/closed-11/`; прежняя связка — `docs/linked-10/`; переименование — `docs/rename-09/`;
++пересмотр зависимостей — docs/sheets-deps-08;
+ предыдущие — docs/sheets-b2, docs/telegram-b1-06, docs/telegram-b1, docs/server-04, docs/server-03,
+ docs/screenshots и docs/revision-02.md. Проверка:
+ 
+diff --git a/public/app.js b/public/app.js
+index 987fbd2..ca1fa58 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -4,12 +4,37 @@ const summary = document.querySelector('#error-summary');
+ const result = document.querySelector('#result');
+ const photos = document.querySelector('#photos');
+ const previews = document.querySelector('#previews');
++const submitButton = form.querySelector('.submit');
+ let selected = [];
+ let urls = [];
+ let pending = null;
+ let receipt = null;
++let deliveryMode = null;
+ const api = path => new URL('api/' + path, document.baseURI);
+ const labels = {sofa:'Выберите форму дивана.',size:'Укажите размер дивана.',material:'Выберите материал или «Не знаю».',description:'Кратко опишите задачу.',photos:'Добавьте хотя бы одно тестовое фото.',contact:'Укажите тестовый контакт.'};
++const isDeliveryMode = mode => ['not_connected', 'test', 'closed_live'].includes(mode);
++async function readDeliveryMode() {
++  try {
++    const response = await fetch(api('health'), {cache:'no-store', signal:AbortSignal.timeout(5000)});
++    if (response.ok) {
++      const {delivery} = await response.json();
++      if (isDeliveryMode(delivery)) return delivery;
++    }
++  } catch {}
++  return null;
++}
++function showDeliveryNotice(mode) {
++  deliveryMode = mode;
++  const live = mode === 'closed_live';
++  const summary = live ? 'Доставка в тестовый Telegram и тестовую Google-таблицу.'
++    : mode ? 'Сохранение локально, без внешних отправок.' : '';
++  document.querySelector('#hero-delivery-note').textContent = ('Демо: только тестовые данные. ' + summary).trim();
++  document.querySelector('#aside-delivery-note').textContent = live ? summary : mode ? 'Внешняя доставка не подключена.' : '';
++  document.querySelector('#submit-note').textContent = live
++    ? 'После сохранения обработанное фото, номер заявки и параметры дивана уйдут в тестовый Telegram. Данные заявки с синтетическим контактом уйдут в тестовую Google-таблицу.'
++    : mode ? 'Демо: сохранение только на этом стенде. Уведомления не отправляются автоматически.'
++      : 'Не удалось определить режим сохранения. Перезагрузите страницу.';
++}
+ function showError(id, message) {
+   const field = document.getElementById(id);
+   const error = document.getElementById(id+'-error');
+@@ -59,7 +84,10 @@ document.querySelector('#channel').addEventListener('change', e => {
+   document.querySelector('#contact-label').textContent = telegram ? 'Тестовый Telegram' : 'Тестовый email'; showError('contact',''); invalidateResult();
+ });
+ form.addEventListener('submit', async e => {
+-  e.preventDefault(); invalidateResult();
++  e.preventDefault();
++  if (submitButton.disabled) return;
++  const shownMode = deliveryMode;
++  invalidateResult();
+   const errors = {};
+   ['sofa','size','material','description'].forEach(id => { const value = document.getElementById(id).value.trim(); if(!value) errors[id] = labels[id]; });
+   if (document.querySelector('#description').value.trim().length > 1000) errors.description = 'Описание должно быть не длиннее 1000 символов.';
+@@ -86,11 +114,21 @@ form.addEventListener('submit', async e => {
+   const controls = [...form.querySelectorAll('fieldset, .submit, #sample')];
+   controls.forEach(el=>el.disabled=true); form.setAttribute('aria-busy','true'); sending.hidden=false;
+   const controller = new AbortController();
+-  const timeout = setTimeout(()=>controller.abort(),30000);
++  let timeout;
+   try {
+-    const response = await fetch(api('submissions'), {method:'POST',body,headers:{'Idempotency-Key':pending.key},signal:controller.signal});
++    const mode = await readDeliveryMode();
++    if (mode !== shownMode) {
++      showDeliveryNotice(mode);
++      requestError(mode ? 'Режим сохранения изменился. Прочитайте пояснение перед кнопкой и нажмите её ещё раз.'
++        : 'Не удалось определить режим сохранения. Запрос не отправлен.');
++      return;
++    }
++    timeout = setTimeout(()=>controller.abort(),30000);
++    const response = await fetch(api('submissions'), {method:'POST', body, signal:controller.signal,
++      headers:{'Idempotency-Key':pending.key, 'X-D4-Delivery-Mode':shownMode}});
+     const data = await response.json();
+     if (!response.ok) {
++      if (response.status === 409 && isDeliveryMode(data.delivery_mode)) showDeliveryNotice(data.delivery_mode);
+       Object.entries(data.fields || {}).forEach(([id,message])=>{if (Object.hasOwn(labels,id)) showError(id,message);});
+       requestError(data.message || 'Не удалось подтвердить сохранение. Повторите запрос.');
+       return;
+@@ -100,7 +138,7 @@ form.addEventListener('submit', async e => {
+   } catch {
+     requestError('Не удалось получить ответ. Запрос мог сохраниться. Поля и фото остались: повторите тот же запрос — сохранённая заявка не продублируется.');
+   } finally {
+-    clearTimeout(timeout);controls.forEach(el=>el.disabled=false);form.removeAttribute('aria-busy');sending.hidden=true;
++    clearTimeout(timeout);controls.forEach(el=>el.disabled=false);submitButton.disabled=!deliveryMode;form.removeAttribute('aria-busy');sending.hidden=true;
+   }
+ });
+ function requestError(message) {
+@@ -154,6 +192,9 @@ document.querySelector('#sample').addEventListener('click',async e=>{
+ });
+ document.querySelector('#return').addEventListener('click', () => {result.hidden = true;document.querySelector('#sofa').focus();});
+ window.addEventListener('pagehide', () => urls.forEach(URL.revokeObjectURL));
+-document.querySelector('.submit').disabled=false;
+ document.querySelector('#sample').disabled=false;
+ document.querySelector('#js-notice').hidden=true;
++readDeliveryMode().then(mode => {
++  showDeliveryNotice(mode);
++  submitButton.disabled = !mode;
++});
+diff --git a/public/index.html b/public/index.html
+index ec91765..a319a9a 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -21,7 +21,7 @@
+     <h1 id="hero-title">Любимый диван.<br><em>Снова</em> хочется<br>остаться дома.</h1>
+     <p class="intro">Бережная химчистка диванов на дому.<br class="desktop-break"> Начнём с фото — разберёмся с обивкой<br class="desktop-break"> и обсудим, что можно сделать.</p>
+     <a class="button" href="#request">Отправить запрос с фото <span aria-hidden="true">↗</span></a>
+-    <p class="fine hero-fine">Демо: только тестовые данные. Сохранение локально, без внешних отправок.</p>
++    <p class="fine hero-fine" id="hero-delivery-note">Демо: только тестовые данные.</p>
+     <div class="hero-bottom"><span class="line-icon" aria-hidden="true">↳</span><p>Сначала посмотрим на диван.<br><strong>Потом — предложим подход.</strong></p></div>
+   </div>
+   <figure class="hero-photo">
+@@ -36,7 +36,7 @@
+ </section>
+ <section class="request-section" id="request" aria-labelledby="request-title">
+   <div class="request-layout wrap">
+-    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br>о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br>Три снимка расскажут больше,<br>чем длинное объяснение.</p><div class="request-note"><span aria-hidden="true">↗</span><p><strong>Что будет дальше</strong><br>В настоящем сервисе специалист уточнит детали и обсудит варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong>Это локальный демонстрационный стенд.</strong><br>Только вымышленные контакты и безопасные тестовые фото. Запрос хранится здесь до 24 часов. Внешняя доставка не подключена.</p></aside>
++    <aside class="request-copy"><p class="eyebrow">НАЧНЁМ С ВАШЕГО ДИВАНА</p><h2 id="request-title">Покажите,<br>о чём позаботиться.</h2><p>Общий вид, обивка и проблемное место.<br>Три снимка расскажут больше,<br>чем длинное объяснение.</p><div class="request-note"><span aria-hidden="true">↗</span><p><strong>Что будет дальше</strong><br>В настоящем сервисе специалист уточнит детали и обсудит варианты. Цена и время выезда не назначаются автоматически.</p></div><p class="demo-note"><strong>Это локальный демонстрационный стенд.</strong><br>Только вымышленные контакты и безопасные тестовые фото. Запрос хранится здесь до 24 часов. <span id="aside-delivery-note"></span></p></aside>
+     <form id="lead-form" novalidate>
+       <div class="form-top"><h3>Запрос с фотографиями</h3><span>ДЕМО</span></div>
+       <p class="fine">Все поля обязательны. Если материал неизвестен, так и укажите.</p>
+@@ -51,7 +51,8 @@
+       <fieldset><legend><span>2</span> Добавьте тестовые фото</legend><p class="fine photo-help">Диван целиком → обивка → пятно крупным планом.</p>
+       <div class="upload-box"><span class="upload-icon" aria-hidden="true">＋</span><label for="photos">Выбрать фотографии</label><input id="photos" name="photos" type="file" multiple accept="image/jpeg,image/png,image/webp" aria-describedby="photo-limits photos-error"><p id="photo-limits">1–3 фото · JPEG, PNG, WebP<br>До 5 МБ каждое, 12 МБ вместе, 20 Мп</p></div><p class="field-error" id="photos-error" hidden></p><ul class="previews" id="previews" aria-label="Выбранные фотографии"></ul></fieldset>
+       <fieldset><legend><span>3</span> Как с вами связаться?</legend><div class="form-row contact-row"><div class="field"><label for="channel">Способ связи</label><select id="channel" name="channel"><option value="email">Электронная почта</option><option value="telegram">Telegram</option></select></div><div class="field"><label id="contact-label" for="contact">Тестовый email</label><input id="contact" name="contact" type="text" inputmode="email" maxlength="80" autocomplete="off" placeholder="demo@example.test" required aria-describedby="contact-hint contact-error"><p class="field-error" id="contact-error" hidden></p></div></div><p class="fine" id="contact-hint">В демо: адрес на @example.test или Telegram @demo_test.</p></fieldset>
+-      <button class="button submit" type="submit" disabled>Сохранить тестовый запрос <span aria-hidden="true">↗</span></button><p class="fine submit-note">Демо: сохранение только на этом стенде.<br>Уведомления не отправляются автоматически.</p>
++      <p class="fine submit-note" id="submit-note" role="status">Режим сохранения пока не определён.</p>
++      <button class="button submit" type="submit" aria-describedby="submit-note" disabled>Сохранить тестовый запрос <span aria-hidden="true">↗</span></button>
+       <p id="js-notice" class="error-summary">Для сохранения запроса нужен JavaScript. Если форма не включилась, перезагрузите страницу или проверьте настройки браузера. Сейчас отправка недоступна.</p>
+       <p id="sending" class="fine" role="status" hidden>Проверяем фото и сохраняем запрос…</p>
+       <div id="result" class="result" tabindex="-1" role="status" hidden><strong id="result-title">Запрос сохранён</strong><div id="receipt-details"></div><button type="button" id="refresh-receipt">Проверить квитанцию</button><br><button type="button" id="return">Вернуться к форме ↑</button></div>
+diff --git a/server/app.py b/server/app.py
+index eca58de..09b5e3b 100644
+--- a/server/app.py
++++ b/server/app.py
+@@ -82,41 +82,56 @@ async def bounded_form(request):
+     return await parsed.form(max_files=3, max_fields=6, max_part_size=8192)
+ 
+ 
+-def deliver_test_submission(store, sid, adapters):
++def deliver_submission(store, sid, adapters, *, live):
+     for channel, send, adapter in (
+         ('telegram', send_telegram, adapters[0]),
+         ('sheets', send_sheet, adapters[1]),
+     ):
+         try:
+-            send(store, sid, adapter)
++            send(store, sid, adapter, linked_live=live)
+         except Exception:
+             # Ошибка канала не меняет ответ о сохранении и не прерывает второй канал.
+             pass
+         try:
+-            store.settle_test_delivery(sid, channel)
++            store.settle_linked_delivery(sid, channel)
+         except (sqlite3.Error, OSError):
+             # Следующий запуск завершит оставшийся processing как unknown.
+             pass
+ 
+ 
+-def create_app(settings=None, *, test_delivery=None):
+-    if test_delivery is not None:
+-        telegram, sheets = test_delivery
+-        if (not isinstance(telegram, TelegramAdapter) or not telegram.offline
+-                or not isinstance(sheets, SheetsAdapter) or not sheets.offline
+-                or not isinstance(sheets.authorization, SDKAuthorization)):
+-            raise ValueError('Для связанного прогона нужны подставные Telegram, Sheets и OAuth-транспорты.')
+-        test_delivery = (telegram, sheets)
++def create_app(settings=None, *, test_delivery=None, closed_delivery=None, live_limit=None):
++    live = closed_delivery is not None
++    if live:
++        if test_delivery is not None or type(live_limit) is not int or not 1 <= live_limit <= 200:
++            raise ValueError('Закрытому прогону нужен отдельный режим и лимит от 1 до 200 заявок.')
++        if settings is None or settings.data_dir.is_relative_to(ROOT):
++            raise ValueError('Закрытому прогону нужен новый каталог реестра вне исходников D4.')
++    elif live_limit is not None:
++        raise ValueError('Лимит закрытого прогона требует два живых адаптера.')
++    adapters = closed_delivery if live else test_delivery
++    if adapters is not None:
++        telegram, sheets = adapters
++        if (not isinstance(telegram, TelegramAdapter) or telegram.offline == live
++                or not isinstance(sheets, SheetsAdapter) or sheets.offline == live
++                or not isinstance(sheets.authorization, SDKAuthorization) or sheets.authorization.offline == live):
++            raise ValueError('Telegram, Sheets и OAuth должны работать в одном режиме прогона.')
++        adapters = (telegram, sheets)
+     settings = settings or Settings()
+-    store = Store(settings)
++    store = Store(settings, live_limit=live_limit)
+ 
+     @asynccontextmanager
+     async def lifespan(app):
+-        settings.data_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
++        if live:
++            try:
++                settings.data_dir.mkdir(mode=0o700)
++            except OSError:
++                raise RuntimeError('Нужен новый каталог реестра в существующем приватном каталоге.') from None
++        else:
++            settings.data_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
+         with (settings.data_dir / '.server.lock').open('a') as lock:
+             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+             store.initialize()
+-            store.settle_test_delivery()
++            store.settle_linked_delivery()
+             store.cleanup(apply=True)
+             async def cleanup_loop():
+                 while True:
+@@ -139,6 +154,7 @@ def create_app(settings=None, *, test_delivery=None):
+     site = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+     app.state.store = store
+     slots = asyncio.Semaphore(2)
++    delivery_mode = 'closed_live' if live else ('test' if test_delivery else 'not_connected')
+ 
+     @site.exception_handler(HTTPException)
+     async def http_error(request, error):
+@@ -146,11 +162,16 @@ def create_app(settings=None, *, test_delivery=None):
+ 
+     @site.get('/api/health')
+     async def health():
+-        return {'mode': 'local-synthetic', 'storage': 'sqlite',
+-                'delivery': 'test' if test_delivery else 'not_connected'}
++        return {'mode': 'local-synthetic', 'storage': 'sqlite', 'delivery': delivery_mode}
+ 
+     @site.post('/api/submissions')
+     async def submit(request: Request):
++        shown_modes = request.headers.getlist('x-d4-delivery-mode')
++        if (live or shown_modes) and shown_modes != [delivery_mode]:
++            return JSONResponse({
++                'message': 'Режим сохранения изменился. Прочитайте пояснение перед кнопкой и нажмите её ещё раз.',
++                'delivery_mode': delivery_mode,
++            }, status_code=409)
+         acquired = False
+         try:
+             key = request.headers.get('idempotency-key', '')
+@@ -197,8 +218,8 @@ def create_app(settings=None, *, test_delivery=None):
+                     **({'test_delivery': True} if test_delivery else {}),
+                 )
+                 background = None
+-                if test_delivery and not accepted['replayed']:
+-                    background = BackgroundTask(deliver_test_submission, store, accepted['submission_id'], test_delivery)
++                if adapters and not accepted['replayed']:
++                    background = BackgroundTask(deliver_submission, store, accepted['submission_id'], adapters, live=live)
+                 return JSONResponse(accepted, status_code=200 if accepted['replayed'] else 201,
+                                     background=background)
+             finally:
+diff --git a/server/delivery.py b/server/delivery.py
+index f15202c..56bf9d0 100644
+--- a/server/delivery.py
++++ b/server/delivery.py
+@@ -75,12 +75,14 @@ def delivery_message(jobs):
+         return 'Сохранено в демо-реестре, доставка не подключена.'
+     messages = {
+         'telegram': {
++            'live_queued': 'Telegram ожидает отправки.',
+             'live_delivered': 'Telegram подтвердил создание сообщения; прочтение человеком не подтверждено.',
+             'live_unknown': 'Результат отправки в Telegram неизвестен; не повторяйте её без проверки.',
+             'live_processing': 'Результат отправки в Telegram неизвестен; не повторяйте её без проверки.',
+             'live_pending': 'Telegram пока не принял сообщение; разрешён только ограниченный ручной повтор.',
+             'live_failed': 'Отправка в Telegram завершилась отказом.'},
+         'sheets': {
++            'live_queued': 'Google Sheets ожидает записи.',
+             'live_delivered': 'Строка Google Sheets подтверждена чтением всех девяти значений.',
+             'live_unknown': 'Результат записи Google Sheets неизвестен; повтор append запрещён, доступна только сверка чтением.',
+             'live_processing': 'Результат записи Google Sheets неизвестен; повтор append запрещён, доступна только сверка чтением.',
+diff --git a/server/sheets.py b/server/sheets.py
+index bbad89a..f442add 100644
+--- a/server/sheets.py
++++ b/server/sheets.py
+@@ -77,18 +77,24 @@ def row_for_submission(store, sid, connection):
+ 
+ 
+ class SheetsAdapter:
+-    def __init__(self, config: SheetsConfig, authorization, *, transport):
+-        if (not isinstance(transport, httpx.MockTransport)
+-                or not isinstance(authorization, (OfflineAuthorization, SDKAuthorization))
++    def __init__(self, config: SheetsConfig, authorization, *, transport=None, allow_live=False):
++        offline = isinstance(transport, httpx.MockTransport)
++        if (not isinstance(authorization, (OfflineAuthorization, SDKAuthorization))
+                 or not config.spreadsheet_id or authorization.account != config.service_account):
+-            raise ConfigurationError('B2 требует явные искусственную авторизацию и MockTransport согласованного ресурса.')
++            raise ConfigurationError('Нужна авторизация согласованной технической учётной записи Sheets.')
++        if offline:
++            if isinstance(authorization, SDKAuthorization) and not authorization.offline:
++                raise ConfigurationError('Подставному Sheets нужна подставная авторизация.')
++        elif (transport is not None or not allow_live or not config.enabled
++              or not isinstance(authorization, SDKAuthorization) or authorization.offline):
++            raise ConfigurationError('Живая запись Sheets выключена.')
+         self.config = config
+         self.authorization = authorization
+         self._transport = transport
+-        self.offline = True
++        self.offline = offline
+ 
+     def __repr__(self):
+-        return 'SheetsAdapter(offline=True)'
++        return f'SheetsAdapter(offline={self.offline})'
+ 
+     def _request(self, client, token, method, cell_range, *, body=None, append=False):
+         path = '/v4/spreadsheets/' + self.config.spreadsheet_id + '/values/' + quote(cell_range, safe='')
+@@ -160,7 +166,8 @@ class SheetsAdapter:
+                     token = self.authorization.token()
+                 except Exception:
+                     raise _Stop('failed', 'authorization_unavailable') from None
+-                with httpx.Client(transport=self._transport, timeout=_TIMEOUT, trust_env=False,
++                transport = self._transport or httpx.HTTPTransport(retries=0, trust_env=False)
++                with httpx.Client(transport=transport, timeout=_TIMEOUT, trust_env=False,
+                                   follow_redirects=False) as client:
+                     if self._read(client, token, 1, 1) != [HEADERS]:
+                         raise _Stop('failed', 'header_mismatch')
+@@ -199,7 +206,7 @@ class SheetsAdapter:
+                 return SheetsOutcome('unknown' if wrote or reconcile else 'failed', 'unconfirmed_operation')
+ 
+ 
+-def send_one(store, sid, adapter, *, reconcile=False):
++def send_one(store, sid, adapter, *, reconcile=False, linked_live=False):
+     """Вызывающий локальный CLI обязан держать прежний registry flock."""
+     if not isinstance(adapter, SheetsAdapter):
+         raise ConfigurationError('Нужен явный офлайн-адаптер Sheets.')
+@@ -218,7 +225,10 @@ def send_one(store, sid, adapter, *, reconcile=False):
+             meta = {}
+         if not isinstance(meta, dict):
+             meta = {}
+-        if ((job['status'] == 'not_connected' and not job['simulated'])
++        if linked_live:
++            if adapter.offline or reconcile or job['status'] != 'live_queued' or job['simulated'] or job['attempts'] != 0:
++                raise Failure(409, 'Живое задание формы не готово к первой попытке.')
++        elif ((job['status'] == 'not_connected' and not job['simulated'])
+                 or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
+             if reconcile:
+                 raise Failure(409, 'Сверка разрешена только для неизвестного результата Sheets.')
+@@ -253,6 +263,8 @@ def send_one(store, sid, adapter, *, reconcile=False):
+             if not 0 <= job['attempts'] < 3:
+                 raise Failure(409, 'Лимит попыток Sheets исчерпан.')
+             meta = {'sheets_v': 1, 'binding': adapter.config.binding, 'reason': 'processing', 'checks': 0}
++            if linked_live:
++                meta['linked'] = True
+             c.execute("UPDATE deliveries SET status=?,simulated=?,attempts=attempts+1,error=? WHERE submission_id=? AND channel='sheets'",
+                       (mode + '_processing', simulated, json.dumps(meta), sid))
+     try:
+@@ -260,7 +272,7 @@ def send_one(store, sid, adapter, *, reconcile=False):
+     except Exception:
+         outcome = SheetsOutcome('unknown', 'unconfirmed_operation')
+     state = outcome.kind
+-    if state == 'pending' and (job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
++    if state == 'pending' and (linked_live or job['status'] == 'mock_queued' or job['attempts'] + 1 >= 3):
+         state = 'failed'
+     meta['reason'] = outcome.reason
+     try:
+diff --git a/server/sheets_auth.py b/server/sheets_auth.py
+index 59a93f9..a0d0892 100644
+--- a/server/sheets_auth.py
++++ b/server/sheets_auth.py
+@@ -1,5 +1,6 @@
+-"""Офлайн-авторизация Sheets через официальный Google SDK."""
++"""Авторизация Sheets через Google SDK и ограниченный обмен OAuth."""
+ import re
++import time
+ 
+ import httpx
+ 
+@@ -7,9 +8,10 @@ from .sheets_config import ConfigurationError, SCOPE, TOKEN_URI, validate_servic
+ 
+ 
+ class SDKAuthorization:
+-    def __init__(self, config, info, *, transport):
+-        if not isinstance(transport, httpx.MockTransport):
+-            raise ConfigurationError('Для проверки SDK требуется подставной OAuth-транспорт.')
++    def __init__(self, config, info, *, transport=None, allow_live=False):
++        self.offline = isinstance(transport, httpx.MockTransport)
++        if not self.offline and (transport is not None or not allow_live or not config.enabled):
++            raise ConfigurationError('Живая авторизация Sheets выключена.')
+         validate_service_account(info, config)
+         try:
+             from google.oauth2 import service_account
+@@ -26,17 +28,25 @@ class SDKAuthorization:
+         """Один обмен для операции Sheets. SDK подписывает assertion сам."""
+         attempted = False
+         try:
+-            with httpx.Client(transport=self._transport, timeout=5, trust_env=False,
++            transport = self._transport or httpx.HTTPTransport(retries=0, trust_env=False)
++            with httpx.Client(transport=transport, timeout=5, trust_env=False,
+                               follow_redirects=False) as client:
+                 def request(url, method, body, headers, **kwargs):
+                     nonlocal attempted
+                     if attempted or url != TOKEN_URI or method != 'POST':
+                         raise ConfigurationError('OAuth-запрос отклонён.')
+                     attempted = True
+-                    response = client.post(url, content=body, headers=headers)
+-                    if response.status_code != 200 or len(response.content) > 65536:
+-                        raise ConfigurationError('Не удалось получить токен Sheets.')
+-                    return _TokenResponse(response.content)
++                    deadline = time.monotonic() + 15
++                    with client.stream(method, url, content=body, headers=headers | {'Accept-Encoding': 'identity'}) as response:
++                        if (response.status_code != 200
++                                or response.headers.get('content-encoding', 'identity').lower() != 'identity'):
++                            raise ConfigurationError('Не удалось получить токен Sheets.')
++                        data = bytearray()
++                        for chunk in response.iter_bytes():
++                            if len(data) + len(chunk) > 65536 or time.monotonic() > deadline:
++                                raise ConfigurationError('Ответ OAuth превышает лимит.')
++                            data.extend(chunk)
++                        return _TokenResponse(bytes(data))
+ 
+                 self._credentials.refresh(request)
+             token = self._credentials.token
+diff --git a/server/sheets_config.py b/server/sheets_config.py
+index 95ec3e4..4e297b7 100644
+--- a/server/sheets_config.py
++++ b/server/sheets_config.py
+@@ -65,10 +65,10 @@ def parse_config(text):
+                         values.get('D4_SHEETS_KEY_FILE', ''), values.get('D4_SHEETS_SHEET', 'Leads'), live == '1')
+ 
+ 
+-def read_private(path, limit=4096):
+-    """Только будущий явно разрешённый файл. В B2 вызывается на временных искусственных файлах."""
++def read_private(path, limit=4096, *, dir_fd=None):
++    """Читает только заданный приватный обычный файл."""
+     try:
+-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=dir_fd)
+         with os.fdopen(fd, 'rb') as file:
+             meta = os.fstat(file.fileno())
+             if (not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.getuid()
+diff --git a/server/store.py b/server/store.py
+index 7dcf30b..5da1d96 100644
+--- a/server/store.py
++++ b/server/store.py
+@@ -1,6 +1,7 @@
+-from contextlib import closing, contextmanager
++from contextlib import closing, contextmanager, nullcontext
+ from dataclasses import replace
+ from pathlib import Path
++from threading import Lock
+ import hashlib
+ import hmac
+ import json
+@@ -57,9 +58,11 @@ def validate_restore_snapshot(connection):
+ 
+ 
+ class Store:
+-    def __init__(self, settings):
++    def __init__(self, settings, *, live_limit=None):
+         self.settings = settings
+         self.path = settings.data_dir / 'registry.sqlite3'
++        self._live_remaining = live_limit
++        self._save_lock = Lock() if live_limit is not None else nullcontext()
+ 
+     @contextmanager
+     def connection(self):
+@@ -114,13 +117,17 @@ class Store:
+             'message': channel_message(row),
+         } for row in rows]
+ 
+-    def settle_test_delivery(self, sid=None, channel=None):
+-        """Под блокировкой реестра завершает прерванные тестовые задания."""
++    def settle_linked_delivery(self, sid=None, channel=None):
++        """Под блокировкой реестра завершает прерванные задания формы."""
+         with self.connection() as c:
+             c.execute("""
+                 UPDATE deliveries
+-                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed' ELSE 'mock_unknown' END
+-                WHERE simulated = 1 AND status IN ('mock_queued', 'mock_processing')
++                SET status = CASE status WHEN 'mock_queued' THEN 'mock_failed'
++                    WHEN 'mock_processing' THEN 'mock_unknown'
++                    WHEN 'live_queued' THEN 'live_failed' ELSE 'live_unknown' END
++                WHERE ((simulated = 1 AND status IN ('mock_queued', 'mock_processing'))
++                    OR (simulated = 0 AND (status = 'live_queued' OR (status = 'live_processing'
++                        AND CASE WHEN json_valid(error) THEN json_extract(error, '$.linked') END = 1))))
+                   AND (? IS NULL OR submission_id = ?) AND (? IS NULL OR channel = ?)
+             """, (sid, sid, channel, channel))
+ 
+@@ -132,13 +139,16 @@ class Store:
+ 
+     def save(self, key, body_hash, lead, photos, *, test_delivery=False):
+         now = self.settings.clock()
+-        with self.connection() as c:
++        with self._save_lock, self.connection() as c:
+             c.execute('BEGIN IMMEDIATE')
+             row = c.execute('SELECT * FROM submissions WHERE request_key=?', (key,)).fetchone()
+             if row:
+                 if row['body_hash'] != body_hash:
+                     raise Failure(409, 'Ключ повтора уже использован с другими данными.')
+                 return self.acceptance(row, replay=True, channels=self.delivery_rows(c, row['id']))
++            live = self._live_remaining is not None
++            if live and self._live_remaining == 0:
++                raise Failure(409, 'Лимит новых запросов закрытого прогона исчерпан.')
+             count = c.execute('SELECT count(*) FROM submissions').fetchone()[0]
+             used = c.execute('SELECT coalesce(sum(length(content)),0) FROM photos').fetchone()[0]
+             if count >= self.settings.record_limit or used + sum(map(len, photos)) > self.settings.storage_limit:
+@@ -150,11 +160,19 @@ class Store:
+             c.executemany('INSERT INTO photos VALUES(?,?,?)',
+                           [(uuid.uuid4().hex + '.jpg', sid, p) for p in photos])
+             status = 'mock_queued' if test_delivery else 'not_connected'
++            if live:
++                status = 'live_queued'
+             c.executemany(
+                 'INSERT INTO deliveries(submission_id,channel,status,simulated) VALUES(?,?,?,?)',
+                 [(sid, channel, status, int(test_delivery)) for channel in ('telegram', 'sheets')],
+             )
+-            return self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(), channels=self.delivery_rows(c, sid))
++            accepted = self.acceptance(c.execute('SELECT * FROM submissions WHERE id=?', (sid,)).fetchone(),
++                                       channels=self.delivery_rows(c, sid))
++            if live:
++                # Квота переживает очистку заявок и расходуется только после commit.
++                c.commit()
++                self._live_remaining -= 1
++            return accepted
+ 
+     def receipt(self, sid, key):
+         with self.connection() as c:
+diff --git a/server/telegram.py b/server/telegram.py
+index 3c6bc0e..d37802e 100644
+--- a/server/telegram.py
++++ b/server/telegram.py
+@@ -157,7 +157,7 @@ def prepare_photo(store, submission_id, connection):
+     return PhotoRequest(submission_id, photo, caption)
+ 
+ 
+-def send_one(store, submission_id, adapter):
++def send_one(store, submission_id, adapter, *, linked_live=False):
+     """Один адресный claim и один вызов адаптера. Вызывающий CLI держит registry flock."""
+     if not isinstance(adapter, TelegramAdapter):
+         raise ConfigurationError('Нужен явный Telegram-адаптер.')
+@@ -176,7 +176,10 @@ def send_one(store, submission_id, adapter):
+             meta = {}
+         if not isinstance(meta, dict):
+             meta = {}
+-        if ((job['status'] == 'not_connected' and not job['simulated'])
++        if linked_live:
++            if adapter.offline or job['status'] != 'live_queued' or job['simulated'] or job['attempts'] != 0:
++                raise Failure(409, 'Живое задание формы не готово к первой попытке.')
++        elif ((job['status'] == 'not_connected' and not job['simulated'])
+                 or (adapter.offline and job['status'] == 'mock_queued' and job['simulated'])):
+             pass
+         elif job['status'].startswith(mode + '_') and job['simulated'] == simulated:
+@@ -199,6 +202,8 @@ def send_one(store, submission_id, adapter):
+             raise Failure(409, 'Лимит попыток Telegram исчерпан.')
+         attempts = job['attempts'] + 1
+         meta = {'telegram_v': 1, 'binding': adapter.config.binding, 'reason': 'processing'}
++        if linked_live:
++            meta['linked'] = True
+         c.execute("UPDATE deliveries SET status=?,simulated=?,attempts=?,error=? WHERE submission_id=? AND channel='telegram'",
+                   (mode + '_processing', simulated, attempts, json.dumps(meta), submission_id))
+     try:
+@@ -207,7 +212,7 @@ def send_one(store, submission_id, adapter):
+         outcome = TelegramOutcome('unknown', 'uncertain_transport')
+     state = outcome.kind
+     if state == 'retry':
+-        state = 'pending' if job['status'] != 'mock_queued' and attempts < 3 else 'failed'
++        state = 'pending' if not linked_live and job['status'] != 'mock_queued' and attempts < 3 else 'failed'
+     meta['reason'] = outcome.reason
+     if outcome.message_id is not None:
+         meta['message_id'] = outcome.message_id  # приватная служебная квитанция, не клиентский ответ
+diff --git a/server/telegram_config.py b/server/telegram_config.py
+index 866bdff..2e3b3c1 100644
+--- a/server/telegram_config.py
++++ b/server/telegram_config.py
+@@ -57,7 +57,7 @@ def parse_config(text):
+ def load_config(path: Path):
+     """Вызывать только после отдельного разрешения на чтение именно этого .env."""
+     try:
+-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+         with os.fdopen(fd, 'rb') as file:
+             meta = os.fstat(file.fileno())
+             if not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.getuid() or stat.S_IMODE(meta.st_mode) not in {0o400, 0o600}:
+diff --git a/tools/run.py b/tools/run.py
+index 6fd82bd..8a5b7aa 100644
+--- a/tools/run.py
++++ b/tools/run.py
+@@ -1,17 +1,52 @@
+ """Запуск D4 только на loopback; один процесс, без reload и access log."""
+ from pathlib import Path
+ import argparse
++import os
++import stat
+ import sys
+ 
+ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ from server.app import create_app
+-from server.model import Settings
++from server.closed import build_closed_delivery
++from server.model import ROOT, Settings
++from server.telegram_config import ConfigurationError
+ import uvicorn
+ 
+-if __name__ == '__main__':
++
++def main(argv=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--port', type=int, default=4344)
+     parser.add_argument('--prefix', default='')
+-    args = parser.parse_args()
+-    uvicorn.run(create_app(Settings(prefix=args.prefix)), host='127.0.0.1', port=args.port,
++    parser.add_argument('--registry-dir', type=Path, help='Абсолютный путь к каталогу реестра')
++    parser.add_argument('--closed-live', action='store_true', help='Явно включить закрытый прогон двух каналов')
++    parser.add_argument('--submission-limit', type=int, help='Максимум новых заявок закрытого прогона, от 1 до 200')
++    args = parser.parse_args(argv)
++    if args.registry_dir is not None and not args.registry_dir.is_absolute():
++        parser.error('Путь к реестру должен быть абсолютным.')
++    settings = Settings(prefix=args.prefix, **({'data_dir': args.registry_dir} if args.registry_dir else {}))
++    if args.closed_live:
++        if not args.registry_dir or args.submission_limit is None or not 1 <= args.submission_limit <= 200:
++            parser.error('Нужны --registry-dir и --submission-limit от 1 до 200.')
++        if (settings.data_dir.is_relative_to(ROOT) or args.registry_dir.is_symlink() or settings.data_dir.exists()):
++            parser.error('Закрытому прогону нужен новый каталог реестра вне исходников D4.')
++        try:
++            parent = settings.data_dir.parent.stat()
++            if (not stat.S_ISDIR(parent.st_mode) or stat.S_IMODE(parent.st_mode) != 0o700
++                    or parent.st_uid != os.getuid()):
++                raise OSError()
++        except OSError:
++            parser.error('Родительскому каталогу реестра нужны текущий владелец и права 0700.')
++        try:
++            app = create_app(settings, closed_delivery=build_closed_delivery(), live_limit=args.submission_limit)
++        except ConfigurationError as error:
++            parser.error(str(error))
++    else:
++        if args.submission_limit is not None:
++            parser.error('--submission-limit используется только с --closed-live.')
++        app = create_app(settings)
++    uvicorn.run(app, host='127.0.0.1', port=args.port, workers=1, proxy_headers=False,
+                 access_log=False, log_level='warning', server_header=False)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/server/closed.py b/server/closed.py
+new file mode 100644
+index 0000000..489aa8e
+--- /dev/null
++++ b/server/closed.py
+@@ -0,0 +1,44 @@
++"""Подготовка двух каналов для явно включённого закрытого прогона."""
++import json
++import os
++import platform
++import socket
++import stat
++
++from . import sheets_config, telegram_config
++from .model import ROOT
++from .sheets import SheetsAdapter
++from .sheets_auth import SDKAuthorization
++from .telegram import TelegramAdapter
++from .telegram_config import ConfigurationError
++
++
++def build_closed_delivery():
++    try:
++        release = platform.freedesktop_os_release() if platform.system() == 'Linux' else {}
++    except OSError:
++        release = {}
++    if (release.get('ID') != 'debian' or release.get('VERSION_ID') != '12'
++            or socket.gethostname().lower() != 'd4-debian12'):
++        raise ConfigurationError('Закрытый прогон разрешён только в D4-Debian12.')
++
++    telegram = telegram_config.load_config(ROOT / '.env')
++    sheets = sheets_config.load_config(ROOT / '.env.sheets')
++    if not telegram.enabled or not sheets.enabled:
++        raise ConfigurationError('Для закрытого прогона оба переключателя live должны быть включены.')
++
++    key = sheets_config.KEY_FILE
++    try:
++        directory = os.open(key.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
++        try:
++            meta = os.fstat(directory)
++            if meta.st_uid != os.getuid() or stat.S_IMODE(meta.st_mode) not in {0o700, 0o500}:
++                raise ConfigurationError('Каталогу ключа Sheets нужны текущий владелец и права 0700/0500.')
++            info = json.loads(sheets_config.read_private(key.name, limit=16384, dir_fd=directory))
++        finally:
++            os.close(directory)
++    except (OSError, ValueError):
++        raise ConfigurationError('Не удалось прочитать согласованный приватный ключ Sheets.') from None
++
++    authorization = SDKAuthorization(sheets, info, allow_live=True)
++    return TelegramAdapter(telegram, allow_live=True), SheetsAdapter(sheets, authorization, allow_live=True)
+diff --git a/tests/test_closed_delivery.py b/tests/test_closed_delivery.py
+new file mode 100644
+index 0000000..6530603
+--- /dev/null
++++ b/tests/test_closed_delivery.py
+@@ -0,0 +1,429 @@
++"""Закрытый запуск через штатные загрузчики и подставной HTTPS-транспорт."""
++from concurrent.futures import ThreadPoolExecutor
++from email import policy
++from email.parser import BytesParser
++import json
++import logging
++import socket
++import subprocess
++from urllib.parse import parse_qs
++import uuid
++
++from fastapi.testclient import TestClient
++import httpx
++import pytest
++
++from server import closed, sheets_config
++from server.model import Failure, Lead, ROOT, Settings
++from server.sheets import row_for_submission, send_one as send_sheets
++from server.sheets_config import SCOPE, TOKEN_URI
++from server.store import Store
++from server.telegram import send_one as send_telegram
++from tools import run
++from test_linked_delivery import sdk_key, states, write_examples
++from test_server import fields, get_receipt, picture, send
++from test_sheets import ACCOUNT, MARKER, SHEET_ID, Table, error
++from test_telegram import CHAT, TOKEN, config_text, response
++
++CLOSED_MODE_HEADER = {'X-D4-Delivery-Mode': 'closed_live'}
++
++
++@pytest.fixture(autouse=True)
++def no_network(monkeypatch):
++    def deny(*args, **kwargs):
++        raise AssertionError('External sockets forbidden')
++    monkeypatch.setattr(socket, 'getaddrinfo', deny)
++    monkeypatch.setattr(socket.socket, 'connect', deny)
++    monkeypatch.setattr(httpx, 'HTTPTransport', deny)
++
++
++def private_file(path, text):
++    path.write_text(text, encoding='utf-8')
++    path.chmod(0o600)
++
++
++@pytest.fixture
++def local_files(tmp_path, monkeypatch):
++    root = tmp_path / 'private-config'
++    secrets = root / '.secrets'
++    secrets.mkdir(parents=True, mode=0o700)
++    key = secrets / 'sheets-service-account.json'
++    private_file(root / '.env', config_text(True))
++    private_file(root / '.env.sheets', f'D4_SHEETS_SPREADSHEET_ID={SHEET_ID}\n'
++                 f'D4_SHEETS_SERVICE_ACCOUNT={ACCOUNT}\nD4_SHEETS_KEY_FILE={key}\nD4_SHEETS_LIVE=1\n')
++    monkeypatch.setattr(closed, 'ROOT', root)
++    monkeypatch.setattr(sheets_config, 'KEY_FILE', key)
++    monkeypatch.setattr(closed.platform, 'system', lambda: 'Linux')
++    monkeypatch.setattr(closed.platform, 'freedesktop_os_release', lambda: {'ID': 'debian', 'VERSION_ID': '12'})
++    monkeypatch.setattr(closed.socket, 'gethostname', lambda: 'd4-debian12')
++    return root, key
++
++
++@pytest.fixture
++def launch(monkeypatch):
++    calls = []
++
++    def capture(app, **options):
++        assert options['host'] == '127.0.0.1'
++        assert options['workers'] == 1
++        assert options['proxy_headers'] is False and options['access_log'] is False
++        calls.append(app)
++
++    monkeypatch.setattr(run.uvicorn, 'run', capture)
++
++    def start(args):
++        run.main(args)
++        return calls[-1]
++
++    return start
++
++
++def closed_args(registry, limit=1):
++    return ['--closed-live', '--registry-dir', str(registry), '--submission-limit', str(limit)]
++
++
++def client_for(app):
++    return TestClient(app, base_url='http://127.0.0.1')
++
++
++@pytest.fixture
++def providers(local_files, sdk_key, monkeypatch):
++    from google.auth import jwt
++
++    private_file(local_files[1], json.dumps({'type': 'service_account', 'client_email': ACCOUNT,
++                 'token_uri': TOKEN_URI, 'private_key_id': 'd4-closed', 'private_key': sdk_key[0]}))
++    table = Table()
++    messages, assertions = [], []
++    faults = {}
++
++    def route(request):
++        if str(request.url) == TOKEN_URI:
++            assert request.method == 'POST'
++            form = parse_qs(request.content.decode('ascii'))
++            assert form['grant_type'] == ['urn:ietf:params:oauth:grant-type:jwt-bearer']
++            assertion, = form['assertion']
++            assertions.append(assertion)
++            claims = jwt.decode(assertion, {'d4-closed': sdk_key[1]}, audience=TOKEN_URI)
++            assert claims['iss'] == ACCOUNT and claims['scope'] == SCOPE
++            logging.getLogger('httpx').warning('Synthetic OAuth assertion %s', assertion)
++            return httpx.Response(200, json={'access_token': MARKER, 'expires_in': 3600})
++        if request.url.host == 'api.telegram.org':
++            assert request.method == 'POST' and request.url.path == '/bot' + TOKEN + '/sendPhoto'
++            parts = BytesParser(policy=policy.default).parsebytes(
++                b'MIME-Version: 1.0\r\nContent-Type: ' + request.headers['content-type'].encode('ascii')
++                + b'\r\n\r\n' + request.content)
++            form = {part.get_param('name', header='content-disposition'): part.get_payload(decode=True)
++                    for part in parts.iter_parts()}
++            assert form['chat_id'].decode() == CHAT
++            messages.append((form['caption'].decode(), form['photo']))
++            logging.getLogger('httpx').warning('Synthetic Telegram URL %s', request.url)
++            if faults.get('telegram') == 'timeout':
++                raise httpx.ReadTimeout('Synthetic response lost after sendPhoto: ' + TOKEN)
++            return response(faults.get('telegram', 200))
++        return table(request)
++
++    def transport(**options):
++        assert options == {'retries': 0, 'trust_env': False}
++        return httpx.MockTransport(route)
++
++    monkeypatch.setattr(httpx, 'HTTPTransport', transport)
++    return table, messages, assertions, faults
++
++
++@pytest.mark.parametrize(('fault', 'telegram_state', 'sheets_state', 'writes'), [
++    ('success', 'live_delivered', 'live_delivered', 1),
++    ('telegram_rejected', 'live_failed', 'live_delivered', 1),
++    ('sheets_rejected', 'live_delivered', 'live_failed', 0),
++    ('telegram_429', 'live_failed', 'live_delivered', 1),
++    ('sheets_429', 'live_delivered', 'live_failed', 0),
++    ('telegram_timeout', 'live_unknown', 'live_delivered', 1),
++    ('sheets_timeout_after_append', 'live_delivered', 'live_unknown', 1),
++    ('sheets_readback_mismatch', 'live_delivered', 'live_unknown', 1),
++])
++def test_closed_form_outcomes(tmp_path, providers, launch, sdk_key, caplog, capsys,
++                              fault, telegram_state, sheets_state, writes):
++    table, messages, assertions, faults = providers
++    if fault.startswith('telegram_'):
++        faults['telegram'] = {'telegram_rejected': 403, 'telegram_429': 429, 'telegram_timeout': 'timeout'}[fault]
++    if fault == 'sheets_rejected':
++        table.faults['header'] = error(403)
++    if fault == 'sheets_429':
++        table.faults['header'] = error(429, retry=45)
++    if fault == 'sheets_timeout_after_append':
++        def timeout(request, sheet):
++            assert len(sheet.rows) == 1
++            raise httpx.ReadTimeout('Synthetic response lost after append: ' + MARKER)
++        table.faults['append'] = timeout
++    if fault == 'sheets_readback_mismatch':
++        def different_contact(request, sheet):
++            row = sheet.rows[-1].copy()
++            row[7] = 'other@example.test'
++            return httpx.Response(200, json={'range': 'Leads!A2:I2', 'majorDimension': 'ROWS', 'values': [row]})
++        table.faults['readback'] = different_contact
++
++    registry = tmp_path / 'run'
++    app = launch(closed_args(registry))
++    key = str(uuid.uuid4())
++    original = [('photos', ('original.png', picture(exif=True), 'image/png'))]
++    lead = fields(description='=SUM(1,2)')
++    with caplog.at_level(logging.DEBUG), client_for(app) as client:
++        assert client.get('/api/health').json()['delivery'] == 'closed_live'
++        assert not messages and not assertions and not table.calls
++        posted = send(client, key, data=lead, photos=original, headers=CLOSED_MODE_HEADER)
++        assert posted.status_code == 201
++        accepted = posted.json()
++        assert set(states(accepted).values()) == {'live_queued'}
++        receipt = get_receipt(client, accepted).json()
++        assert states(receipt) == {'telegram': telegram_state, 'sheets': sheets_state}
++        replay = send(client, key, data=lead, photos=original, headers=CLOSED_MODE_HEADER)
++        assert replay.status_code == 200 and replay.json()['replayed']
++        assert replay.json()['submission_id'] == accepted['submission_id']
++
++    with pytest.raises(SystemExit) as rejected:
++        launch(closed_args(registry))
++    assert rejected.value.code == 2
++    ordinary = launch(['--registry-dir', str(registry)])
++    with client_for(ordinary) as client:
++        assert client.get('/api/health').json()['delivery'] == 'not_connected'
++        assert send(client, key, data=lead, photos=original).json()['submission_id'] == accepted['submission_id']
++        assert get_receipt(client, accepted).json() == receipt
++
++    sid = accepted['submission_id']
++    (caption, photo), = messages
++    assert sid in caption and all(lead[field] in caption for field in ('sofa', 'size', 'material'))
++    assert lead['contact'] not in caption and lead['description'] not in caption
++    with app.state.store.connection() as connection:
++        assert photo == connection.execute('SELECT content FROM photos').fetchone()[0] and photo.startswith(b'\xff\xd8')
++        assert table.rows == ([row_for_submission(app.state.store, sid, connection)] if writes else [])
++        jobs = connection.execute('SELECT attempts,simulated FROM deliveries').fetchall()
++        assert [tuple(job) for job in jobs] == [(1, 0), (1, 0)]
++    assert len(assertions) == 1 and table.append_count == writes
++    if sheets_state == 'live_delivered':
++        assert table.calls == ['header', 'scan', 'append', 'readback']
++        assert len(table.rows[0]) == 9 and table.rows[0][5:8] == ['=SUM(1,2)', 'email', 'demo@example.test']
++    output = capsys.readouterr()
++    visible = caplog.text + output.out + output.err + json.dumps([accepted, receipt, replay.json()])
++    assert not any(value in visible for value in (TOKEN, CHAT, MARKER, ACCOUNT, SHEET_ID, sdk_key[0], *assertions))
++    assert accepted['receipt_key'] not in json.dumps(receipt) + caplog.text + output.err + output.out
++    examples = {fault: receipt}
++    if fault == 'success':
++        examples['awaiting'] = {name: accepted[name] for name in ('submission_id', 'receipt_expires', 'channels')}
++    write_examples(tmp_path, **examples)
++
++
++@pytest.mark.parametrize(('fault', 'reason'), [
++    ('wrong_host', 'только в D4-Debian12'),
++    ('missing_limit', 'Нужны --registry-dir и --submission-limit'),
++    ('missing_config', 'Приватный файл Sheets недоступен'),
++    ('disabled_channel', 'оба переключателя live должны быть включены'),
++    ('symlink_key', 'Не удалось прочитать согласованный приватный ключ Sheets'),
++])
++def test_invalid_start_stops_before_registry_and_transport(tmp_path, local_files, monkeypatch, fault, reason, capsys):
++    root, key = local_files
++    registry = tmp_path / 'run'
++    args = closed_args(registry)
++    if fault == 'wrong_host':
++        monkeypatch.setattr(closed.socket, 'gethostname', lambda: 'different-host')
++        monkeypatch.setattr(closed.telegram_config, 'load_config', lambda *args: pytest.fail('Read before host gate'))
++    if fault == 'missing_limit':
++        args = args[:-2]
++    if fault == 'missing_config':
++        (root / '.env.sheets').unlink()
++    if fault == 'disabled_channel':
++        private_file(root / '.env', config_text(False))
++    if fault == 'symlink_key':
++        target = root / 'synthetic-key'
++        private_file(target, 'unused synthetic key')
++        key.symlink_to(target)
++    monkeypatch.setattr(run.uvicorn, 'run', lambda *args, **kwargs: pytest.fail('Server started'))
++    with pytest.raises(SystemExit) as rejected:
++        run.main(args)
++    assert rejected.value.code == 2 and not registry.exists()
++    captured = capsys.readouterr().err
++    assert reason in captured and not any(value in captured for value in (TOKEN, CHAT, MARKER))
++
++
++def test_closed_quota_is_atomic_and_cleanup_does_not_restore_it(tmp_path, providers, launch):
++    table, messages, assertions, _ = providers
++    app = launch(closed_args(tmp_path / 'run'))
++    store = app.state.store
++    clock = [1_800_000_000.0]
++    store.settings.clock = lambda: clock[0]
++    with client_for(app) as client, ThreadPoolExecutor(2) as pool:
++        keys = [str(uuid.uuid4()), str(uuid.uuid4())]
++        responses = list(pool.map(lambda key: send(client, key, headers=CLOSED_MODE_HEADER), keys))
++        assert sorted(result.status_code for result in responses) == [201, 409]
++        assert 'Лимит новых запросов' in next(result for result in responses if result.status_code == 409).text
++        winner = next(i for i, result in enumerate(responses) if result.status_code == 201)
++        replay = send(client, keys[winner], headers=CLOSED_MODE_HEADER)
++        assert replay.status_code == 200 and replay.json()['submission_id'] == responses[winner].json()['submission_id']
++        clock[0] += store.settings.retention + 1
++        assert store.cleanup(apply=True) == 1
++        assert send(client, headers=CLOSED_MODE_HEADER).status_code == 409
++    assert len(messages) == len(assertions) == table.append_count == 1
++
++
++def test_closed_restart_settles_interrupted_jobs_without_sending(tmp_path, providers, launch):
++    table, messages, assertions, _ = providers
++    registry = tmp_path / 'run'
++    app = launch(closed_args(registry))
++    store = app.state.store
++    with client_for(app):
++        accepted = store.save(str(uuid.uuid4()), 'synthetic', Lead.model_validate(fields()), [picture('JPEG')])
++        with store.connection() as connection:
++            connection.execute("UPDATE deliveries SET status='live_processing', attempts=1, error=? WHERE channel='telegram'",
++                               (json.dumps({'linked': True, 'reason': 'processing'}),))
++    with pytest.raises(RuntimeError, match='новый каталог'):
++        with client_for(app):
++            pass
++    with client_for(launch(['--registry-dir', str(registry)])) as client:
++        receipt = get_receipt(client, accepted).json()
++    assert states(receipt) == {'telegram': 'live_unknown', 'sheets': 'live_failed'}
++    assert not messages and not assertions and not table.calls
++    write_examples(tmp_path, interrupted=receipt)
++
++
++def test_ordinary_launch_and_test_jobs_never_send_live(tmp_path, providers, launch, monkeypatch):
++    table, messages, assertions, _ = providers
++    adapters = closed.build_closed_delivery()
++    registry = tmp_path / 'existing'
++    store = Store(Settings(data_dir=registry))
++    store.initialize()
++    accepted = store.save(str(uuid.uuid4()), 'synthetic', Lead.model_validate(fields()), [picture('JPEG')], test_delivery=True)
++    for send_one, adapter in zip((send_telegram, send_sheets), adapters):
++        with pytest.raises(Failure) as rejected:
++            send_one(store, accepted['submission_id'], adapter, linked_live=True)
++        assert rejected.value.status == 409
++
++    def deny_load():
++        pytest.fail('Unexpected credential loading')
++    monkeypatch.setattr(run, 'build_closed_delivery', deny_load)
++    with pytest.raises(SystemExit) as rejected:
++        launch(closed_args(registry))
++    assert rejected.value.code == 2
++    with client_for(launch(['--registry-dir', str(registry)])) as client:
++        assert set(states(get_receipt(client, accepted).json()).values()) == {'mock_failed'}
++        assert set(states(send(client).json()).values()) == {'not_connected'}
++    assert not messages and not assertions and not table.calls
++
++
++@pytest.mark.parametrize('mode', ['not_connected', 'closed_live'])
++def test_post_rejects_stale_delivery_mode_before_saving(tmp_path, launch, request, mode):
++    registry = tmp_path / 'run'
++    live = mode == 'closed_live'
++    if live:
++        table, messages, assertions, _ = request.getfixturevalue('providers')
++    app = launch(closed_args(registry) if live else ['--registry-dir', str(registry)])
++    stale = 'not_connected' if live else 'closed_live'
++    key = str(uuid.uuid4())
++    with client_for(app) as client:
++        assert client.get('/api/health').json()['delivery'] == mode
++        early = client.post('/api/submissions', headers={'X-D4-Delivery-Mode': stale}, content=b'invalid body')
++        assert early.status_code == 409 and early.json()['delivery_mode'] == mode
++        rejected = send(client, key, headers={'X-D4-Delivery-Mode': stale})
++        assert rejected.status_code == 409 and rejected.json() == early.json()
++        if live:
++            missing = send(client, key)
++            assert missing.status_code == 409 and missing.json() == early.json()
++            assert not messages and not assertions and not table.calls
++        with app.state.store.connection() as connection:
++            for name in ('submissions', 'photos', 'deliveries', 'rate_events'):
++                assert connection.execute(f'SELECT count(*) FROM {name}').fetchone()[0] == 0
++        posted = send(client, key, headers={'X-D4-Delivery-Mode': mode})
++        assert posted.status_code == 201 and not posted.json()['replayed']
++    if live:
++        assert len(messages) == len(assertions) == table.append_count == 1
++
++
++@pytest.mark.parametrize('mode', ['not_connected', 'closed_live'])
++def test_form_explains_delivery_before_submit(tmp_path, launch, request, mode):
++    registry = tmp_path / 'run'
++    if mode == 'closed_live':
++        request.getfixturevalue('providers')
++        args = closed_args(registry)
++    else:
++        args = ['--registry-dir', str(registry)]
++    with client_for(launch(args + ['--prefix', '/d4'])) as client:
++        health = client.get('/d4/api/health').json()
++        page = client.get('/d4/').text
++    assert health['delivery'] == mode
++    assert page.index('id="submit-note"') < page.index('type="submit" aria-describedby="submit-note" disabled')
++
++    script = r'''
++const fs = require('node:fs');
++const vm = require('node:vm');
++const health = JSON.parse(fs.readFileSync(0, 'utf8'));
++const nodes = new Map();
++function node(id) {
++  if (!nodes.has(id)) nodes.set(id, {
++    disabled: id === '.submit', hidden: true, textContent: '', value: '', handlers: {},
++    querySelector: node, querySelectorAll() { return [node('.submit')]; },
++    addEventListener(event, fn) { this.handlers[event] = fn; },
++    setAttribute() {}, removeAttribute() {}, replaceChildren() {}, append() {}, focus() {},
++  });
++  return nodes.get(id);
++}
++const calls = [];
++let responseMode = health.delivery;
++const context = vm.createContext({
++  document: {baseURI: 'http://127.0.0.1/d4/', querySelector: node, getElementById: id => node('#' + id),
++             createElement: tag => node('new:' + tag)},
++  window: {addEventListener() {}}, URL, AbortSignal, AbortController, FormData, setTimeout, clearTimeout,
++  crypto: require('node:crypto').webcrypto,
++  async fetch(url, options) {
++    if (options.method !== 'POST') {
++      calls.push([url.pathname, options.cache]);
++      return {ok: true, json: async () => health};
++    }
++    const mode = options.headers['X-D4-Delivery-Mode'];
++    calls.push([url.pathname, mode, options.headers['Idempotency-Key']]);
++    if (mode !== responseMode) {
++      return {ok: false, status: 409, json: async () => ({delivery_mode: responseMode, message: 'Режим изменился.'})};
++    }
++    return {ok: true, status: 201, json: async () => ({submission_id: 'synthetic', receipt_expires: 1800000000})};
++  },
++});
++function notice() {
++  return ['#submit-note', '#hero-delivery-note', '#aside-delivery-note'].map(id => node(id).textContent);
++}
++(async () => {
++  const ready = vm.runInContext(fs.readFileSync(process.argv[1], 'utf8'), context);
++  const disabledBefore = node('.submit').disabled;
++  await ready;
++  const initial = notice();
++  const enabled = !node('.submit').disabled;
++  for (const id of ['sofa', 'size', 'material', 'description', 'channel']) node('#' + id).value = 'demo';
++  node('#contact').value = 'demo@example.test';
++  vm.runInContext('selected = ["test-photo"]', context);
++  const click = () => node('#lead-form').handlers.submit({preventDefault() {}});
++  health.delivery = health.delivery === 'closed_live' ? 'not_connected' : 'closed_live';
++  await click();
++  const changed = notice();
++  await click();
++  const afterConflict = notice();
++  const requestsAfterConflict = calls.length;
++  const resultHidden = node('#result').hidden;
++  health.delivery = responseMode;
++  await click();
++  process.stdout.write(JSON.stringify({disabledBefore, enabled, initial, changed, afterConflict,
++    requestsAfterConflict, resultHidden, receiptShown: !node('#result').hidden, calls}));
++})().catch(error => { console.error(error); process.exitCode = 1; });
++'''
++    result = subprocess.run(['node', '-e', script, str(ROOT / 'public/app.js')], input=json.dumps(health),
++                            text=True, capture_output=True, check=True, timeout=10)
++    ui = json.loads(result.stdout)
++    assert ui['disabledBefore'] and ui['enabled']
++    stale = 'not_connected' if mode == 'closed_live' else 'closed_live'
++    posts = [call for call in ui['calls'] if call[0] == '/d4/api/submissions']
++    assert ui['calls'] == [['/d4/api/health', 'no-store']] * 3 + [posts[0], ['/d4/api/health', 'no-store'], posts[1]]
++    assert [call[1] for call in posts] == [stale, mode]
++    assert posts[0][2] == posts[1][2]
++    assert ui['afterConflict'] == ui['initial'] and ui['requestsAfterConflict'] == 4
++    assert ui['resultHidden'] and ui['receiptShown']
++    ordinary, live = (ui['initial'], ui['changed']) if mode == 'not_connected' else (ui['changed'], ui['initial'])
++    assert ordinary == ['Демо: сохранение только на этом стенде. Уведомления не отправляются автоматически.',
++                        'Демо: только тестовые данные. Сохранение локально, без внешних отправок.',
++                        'Внешняя доставка не подключена.']
++    assert 'обработанное фото, номер заявки и параметры дивана уйдут в тестовый Telegram' in live[0]
++    assert 'Данные заявки с синтетическим контактом уйдут в тестовую Google-таблицу' in live[0]
++    assert all('тестовый Telegram и тестовую Google-таблицу' in note for note in live[1:])

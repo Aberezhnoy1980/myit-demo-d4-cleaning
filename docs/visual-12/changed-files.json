@@ -1,0 +1,87 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "f4508fbf5d83fca292d72b9740faf4a0a9d74c45aa61ee684e5aa4d2997c1448",
+    "kind": "modified"
+  },
+  {
+    "path": "public/index.html",
+    "sha256": "bed8508b94263f9dc7b91da4d593052dd46cbc7fd34784ff83c8af62e929233c",
+    "kind": "modified"
+  },
+  {
+    "path": "public/style.css",
+    "sha256": "5be001d2c39565e8b6364a7d1419dafba71694be4bd5d742e96818a29864f94e",
+    "kind": "modified"
+  },
+  {
+    "path": "public/assets/step-visit.svg",
+    "sha256": "af3484f120c971af9950d69a260a6ebaf71c918c9e1d82bc2f7ea61a4d25921e",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/corner-after-480.webp",
+    "sha256": "f42c38837471ecacfa5c0fcb2bd1889b5ca7f3fdf24571da0eb2e926d4c1bae8",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/microfiber.svg",
+    "sha256": "2f98b01c4eed504cccfd3d19eab736bfd4f3cb16d01c446ae9428db7c0099ebf",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/step-photo.svg",
+    "sha256": "aa5409b00eee8ab7d5a28f273eb6d5d0c4efb366bc5d264bc1c935229da5745e",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/corner-before-480.webp",
+    "sha256": "65bd6e71b2a0133be5948165e8ae131e2109a6254dc9926d082ec1d6f4123995",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/straight-after-480.webp",
+    "sha256": "42d70d7ccb0364673ce0bdb9ccb59ad31f1cb6a5fd7f84e895875ec273bb6875",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/straight-before-480.webp",
+    "sha256": "951510495f7d980fa28238d453ba3c2539c5c0909c1e46af79a10e11b6054c46",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/step-request.svg",
+    "sha256": "f6d5b0501ba01d38cca13471e713d36791cb7e77b2b96d4d7cab2889d8d0c480",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/corner-before-800.webp",
+    "sha256": "d55f7e7356bee0828c45bc7114004db6bb6c9c97b0f541a8253b3091093f57ba",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/straight-after-800.webp",
+    "sha256": "c2716e7b812e1f335ec95db9d267b2e8aa879c6a7eb0d54582c003915aa09209",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/straight-before-800.webp",
+    "sha256": "20866ae319a411ceb3e826295432b7d2d0e6bd12a9a8ec8c183a59506a152539",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/step-care.svg",
+    "sha256": "2dab63f8348638ec90940fa484eb3576cf992802b6ffb8d7ff9f777c5b5d7d9d",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/icons.svg",
+    "sha256": "36b1fd151cb638680748ed7f058831ba2edf09874742b25b4ab6e95c44ad24ab",
+    "kind": "added"
+  },
+  {
+    "path": "public/assets/corner-after-800.webp",
+    "sha256": "353e1e980c3aabb1843d454a422c1dc44adc6dd2b7fee227e9f2be3ab20355ae",
+    "kind": "added"
+  }
+]

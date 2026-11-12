@@ -1,0 +1,46 @@
+[
+  {
+    "formWidth": 320,
+    "headingFont": "Georgia, \"Times New Roman\", serif",
+    "headingWeight": "400",
+    "height": 844,
+    "inputFont": "16px",
+    "overflow": [],
+    "pageWidth": 360,
+    "smallText": "14px",
+    "width": 360
+  },
+  {
+    "formWidth": 350,
+    "headingFont": "Georgia, \"Times New Roman\", serif",
+    "headingWeight": "400",
+    "height": 844,
+    "inputFont": "16px",
+    "overflow": [],
+    "pageWidth": 390,
+    "smallText": "14px",
+    "width": 390
+  },
+  {
+    "formWidth": 720,
+    "headingFont": "Georgia, \"Times New Roman\", serif",
+    "headingWeight": "400",
+    "height": 1000,
+    "inputFont": "16px",
+    "overflow": [],
+    "pageWidth": 768,
+    "smallText": "14px",
+    "width": 768
+  },
+  {
+    "formWidth": 647.90625,
+    "headingFont": "Georgia, \"Times New Roman\", serif",
+    "headingWeight": "400",
+    "height": 1000,
+    "inputFont": "16px",
+    "overflow": [],
+    "pageWidth": 1440,
+    "smallText": "14px",
+    "width": 1440
+  }
+]

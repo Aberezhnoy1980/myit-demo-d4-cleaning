@@ -1,0 +1,112 @@
+## main...origin/main [ahead 1]
+ M README.md
+ M docs/manifest.sha256
+ M public/app.js
+ M public/index.html
+ M public/style.css
+ M server/app.py
+ M server/delivery.py
+ M server/sheets.py
+ M server/sheets_auth.py
+ M server/sheets_config.py
+ M server/store.py
+ M server/telegram.py
+ M server/telegram_config.py
+ M tools/run.py
+ M tools/serve.py
+?? docs/closed-11/receipt-examples.json
+?? docs/closed-11/review.md
+?? docs/closed-11/source.diff
+?? docs/closed-11/vm-results.txt
+?? docs/mac-demo-13/baseline/snapshot.json
+?? docs/mac-demo-13/baseline/status-before.txt
+?? docs/mac-demo-13/baseline/visual-12-accepted.tar.gz
+?? docs/mac-demo-13/browser-adapters.json
+?? docs/mac-demo-13/browser-check.mjs
+?? docs/mac-demo-13/browser-harness.py
+?? docs/mac-demo-13/browser-results.json
+?? docs/mac-demo-13/changed-files.json
+?? docs/mac-demo-13/environment.json
+?? docs/mac-demo-13/receipt-examples.json
+?? docs/mac-demo-13/recording-plan.md
+?? docs/mac-demo-13/review.md
+?? docs/mac-demo-13/screenshots/mac-before-action-390.jpg
+?? docs/mac-demo-13/screenshots/mac-offline-receipt-1440.jpg
+?? docs/mac-demo-13/screenshots/mac-offline-receipt-390.jpg
+?? docs/mac-demo-13/screenshots/ordinary-receipt-390.jpg
+?? docs/mac-demo-13/screenshots/public-result-1440.jpg
+?? docs/mac-demo-13/screenshots/public-result-360.jpg
+?? docs/mac-demo-13/screenshots/public-result-390.jpg
+?? docs/mac-demo-13/screenshots/public-result-768.jpg
+?? docs/mac-demo-13/screenshots/public-short-result-1440.jpg
+?? docs/mac-demo-13/screenshots/public-short-result-390.jpg
+?? docs/mac-demo-13/source.diff
+?? docs/mac-demo-13/status-after.txt
+?? docs/mac-demo-13/test-results.txt
+?? docs/mac-demo-13/tested-files.json
+?? docs/mac-demo-13/tests.xml
+?? docs/visual-12/baseline/closed-11-revision-3.tar.gz
+?? docs/visual-12/baseline/snapshot.json
+?? docs/visual-12/baseline/status-before.txt
+?? docs/visual-12/browser-checks.json
+?? docs/visual-12/browser-widths.json
+?? docs/visual-12/changed-files.json
+?? docs/visual-12/gallery-browser-results.json
+?? docs/visual-12/gallery-check.mjs
+?? docs/visual-12/materials.json
+?? docs/visual-12/originals/corner-after-original.png
+?? docs/visual-12/originals/corner-before-original.png
+?? docs/visual-12/originals/straight-after-original.png
+?? docs/visual-12/originals/straight-before-original.png
+?? docs/visual-12/photo-files.json
+?? docs/visual-12/prompts/corner-after.txt
+?? docs/visual-12/prompts/corner-before.txt
+?? docs/visual-12/prompts/straight-after.txt
+?? docs/visual-12/prompts/straight-before.txt
+?? docs/visual-12/review.md
+?? docs/visual-12/screenshots/care-390.jpg
+?? docs/visual-12/screenshots/error-1440.jpg
+?? docs/visual-12/screenshots/error-390.jpg
+?? docs/visual-12/screenshots/gallery-1440.jpg
+?? docs/visual-12/screenshots/gallery-360.jpg
+?? docs/visual-12/screenshots/gallery-390.jpg
+?? docs/visual-12/screenshots/gallery-768.jpg
+?? docs/visual-12/screenshots/hero-1440.jpg
+?? docs/visual-12/screenshots/hero-360.jpg
+?? docs/visual-12/screenshots/hero-390.jpg
+?? docs/visual-12/screenshots/hero-768.jpg
+?? docs/visual-12/screenshots/note-closed-390.jpg
+?? docs/visual-12/screenshots/page-final-1440.jpg
+?? docs/visual-12/screenshots/page-final-360.jpg
+?? docs/visual-12/screenshots/page-final-390.jpg
+?? docs/visual-12/screenshots/page-final-768.jpg
+?? docs/visual-12/screenshots/receipt-closed-390.jpg
+?? docs/visual-12/screenshots/receipt-local-1440.jpg
+?? docs/visual-12/screenshots/receipt-local-360.jpg
+?? docs/visual-12/screenshots/receipt-local-390.jpg
+?? docs/visual-12/screenshots/receipt-local-768.jpg
+?? docs/visual-12/screenshots/steps-1440.jpg
+?? docs/visual-12/source.diff
+?? docs/visual-12/tested-files-final.json
+?? docs/visual-12/tested-files.json
+?? docs/visual-12/vm-results-final.txt
+?? docs/visual-12/vm-results.txt
+?? public/assets/corner-after-480.webp
+?? public/assets/corner-after-800.webp
+?? public/assets/corner-before-480.webp
+?? public/assets/corner-before-800.webp
+?? public/assets/icons.svg
+?? public/assets/microfiber.svg
+?? public/assets/step-care.svg
+?? public/assets/step-photo.svg
+?? public/assets/step-request.svg
+?? public/assets/step-visit.svg
+?? public/assets/straight-after-480.webp
+?? public/assets/straight-after-800.webp
+?? public/assets/straight-before-480.webp
+?? public/assets/straight-before-800.webp
+?? server/closed.py
+?? server/mac_auth.py
+?? tests/test_closed_delivery.py
+?? tests/test_mac_demo.py
+?? tests/test_public_demo.py

@@ -1,0 +1,24 @@
+.venv/bin/python -B -m pytest -q -rs -p no:cacheprovider --basetemp /private/tmp/d4-mac-demo-revision2-02 --junitxml docs/mac-demo-13/revision-2/tests.xml
+
+ssssssss.....sss.s.ssssssssss........................................... [ 24%]
+........................................................................ [ 49%]
+........................................................................ [ 73%]
+........................................................................ [ 98%]
+.....                                                                    [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/alex/myit/demo/Landing/d4-cleaning/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [8] tests/test_closed_delivery.py:133: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_closed_delivery.py:246: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_closed_delivery.py:266: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_closed_delivery.py:286: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_closed_delivery.py:310: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_closed_delivery.py:338: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_linked_delivery.py:106: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [7] tests/test_linked_delivery.py:151: could not import 'google.oauth2.service_account': No module named 'google'
+SKIPPED [1] tests/test_linked_delivery.py:203: could not import 'google.oauth2.service_account': No module named 'google'
+271 passed, 22 skipped, 1 warning in 22.52s

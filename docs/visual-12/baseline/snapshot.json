@@ -1,0 +1,12 @@
+{
+  "base": "8e176107f79ce7741381ce769827bddf1ca1651b",
+  "manifest_sha256": "bf3bfb4bc13abd7824981a847147009a7a0e561b52284abfc4e6a393f9775b4e",
+  "files": 133,
+  "archive_sha256": "5feb8148df16f4b4c3228973fb0b8680fb4ed50281b24b2bc90bc8b6b92fa327",
+  "historical_closed_11": {
+    "docs/closed-11/receipt-examples.json": "6e21fab44572fdc7cab66d0fb12ff143eccf912b8f302d0080c3eafcab2b7eb1",
+    "docs/closed-11/review.md": "f10284799c726be2e709ac48bc11060890b9ba94890d4e6133e8a271fa199836",
+    "docs/closed-11/source.diff": "a8fd35a6d2cd4e079c9e2ac4af95a41014f508e2d319b7153a1cba1eea6960c3",
+    "docs/closed-11/vm-results.txt": "33eb031fac46adbc749048131a5522cdada70113dd5f106f210b653931a209a1"
+  }
+}

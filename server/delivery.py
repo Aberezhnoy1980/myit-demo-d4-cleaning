@@ -75,12 +75,14 @@ def delivery_message(jobs):
         return 'Сохранено в демо-реестре, доставка не подключена.'
     messages = {
         'telegram': {
+            'live_queued': 'Telegram ожидает отправки.',
             'live_delivered': 'Telegram подтвердил создание сообщения; прочтение человеком не подтверждено.',
             'live_unknown': 'Результат отправки в Telegram неизвестен; не повторяйте её без проверки.',
             'live_processing': 'Результат отправки в Telegram неизвестен; не повторяйте её без проверки.',
             'live_pending': 'Telegram пока не принял сообщение; разрешён только ограниченный ручной повтор.',
             'live_failed': 'Отправка в Telegram завершилась отказом.'},
         'sheets': {
+            'live_queued': 'Google Sheets ожидает записи.',
             'live_delivered': 'Строка Google Sheets подтверждена чтением всех девяти значений.',
             'live_unknown': 'Результат записи Google Sheets неизвестен; повтор append запрещён, доступна только сверка чтением.',
             'live_processing': 'Результат записи Google Sheets неизвестен; повтор append запрещён, доступна только сверка чтением.',

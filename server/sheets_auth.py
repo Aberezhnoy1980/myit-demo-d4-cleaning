@@ -1,5 +1,6 @@
-"""Офлайн-авторизация Sheets через официальный Google SDK."""
+"""Авторизация Sheets через Google SDK и ограниченный обмен OAuth."""
 import re
+import time
 
 import httpx
 
@@ -7,9 +8,10 @@ from .sheets_config import ConfigurationError, SCOPE, TOKEN_URI, validate_servic
 
 
 class SDKAuthorization:
-    def __init__(self, config, info, *, transport):
-        if not isinstance(transport, httpx.MockTransport):
-            raise ConfigurationError('Для проверки SDK требуется подставной OAuth-транспорт.')
+    def __init__(self, config, info, *, transport=None, allow_live=False):
+        self.offline = isinstance(transport, httpx.MockTransport)
+        if not self.offline and (transport is not None or not allow_live or not config.enabled):
+            raise ConfigurationError('Живая авторизация Sheets выключена.')
         validate_service_account(info, config)
         try:
             from google.oauth2 import service_account
@@ -26,17 +28,25 @@ class SDKAuthorization:
         """Один обмен для операции Sheets. SDK подписывает assertion сам."""
         attempted = False
         try:
-            with httpx.Client(transport=self._transport, timeout=5, trust_env=False,
+            transport = self._transport or httpx.HTTPTransport(retries=0, trust_env=False)
+            with httpx.Client(transport=transport, timeout=5, trust_env=False,
                               follow_redirects=False) as client:
                 def request(url, method, body, headers, **kwargs):
                     nonlocal attempted
                     if attempted or url != TOKEN_URI or method != 'POST':
                         raise ConfigurationError('OAuth-запрос отклонён.')
                     attempted = True
-                    response = client.post(url, content=body, headers=headers)
-                    if response.status_code != 200 or len(response.content) > 65536:
-                        raise ConfigurationError('Не удалось получить токен Sheets.')
-                    return _TokenResponse(response.content)
+                    deadline = time.monotonic() + 15
+                    with client.stream(method, url, content=body, headers=headers | {'Accept-Encoding': 'identity'}) as response:
+                        if (response.status_code != 200
+                                or response.headers.get('content-encoding', 'identity').lower() != 'identity'):
+                            raise ConfigurationError('Не удалось получить токен Sheets.')
+                        data = bytearray()
+                        for chunk in response.iter_bytes():
+                            if len(data) + len(chunk) > 65536 or time.monotonic() > deadline:
+                                raise ConfigurationError('Ответ OAuth превышает лимит.')
+                            data.extend(chunk)
+                        return _TokenResponse(bytes(data))
 
                 self._credentials.refresh(request)
             token = self._credentials.token

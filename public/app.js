@@ -4,12 +4,72 @@ const summary = document.querySelector('#error-summary');
 const result = document.querySelector('#result');
 const photos = document.querySelector('#photos');
 const previews = document.querySelector('#previews');
+const submitButton = form.querySelector('.submit');
+const publicForm = document.querySelector('html')?.dataset?.formMode === 'public';
 let selected = [];
 let urls = [];
 let pending = null;
 let receipt = null;
+let deliveryMode = null;
+let publicDraft = '';
 const api = path => new URL('api/' + path, document.baseURI);
 const labels = {sofa:'Выберите форму дивана.',size:'Укажите размер дивана.',material:'Выберите материал или «Не знаю».',description:'Кратко опишите задачу.',photos:'Добавьте хотя бы одно тестовое фото.',contact:'Укажите тестовый контакт.'};
+const isDeliveryMode = mode => ['not_connected', 'test', 'closed_live', 'mac_demo_live'].includes(mode);
+async function readDeliveryMode() {
+  try {
+    const response = await fetch(api('health'), {cache:'no-store', signal:AbortSignal.timeout(5000)});
+    if (response.ok) {
+      const {delivery} = await response.json();
+      if (isDeliveryMode(delivery)) return delivery;
+    }
+  } catch {}
+  return null;
+}
+function showDeliveryNotice(mode) {
+  deliveryMode = mode;
+  document.querySelector('#demo-mode-title').textContent = 'Это локальный демонстрационный стенд.';
+  document.querySelector('#storage-note').textContent = 'После сохранения заявка и обработанные фото хранятся локально на этом стенде до 24 часов.';
+  document.querySelector('#submit-label').textContent = 'Сохранить тестовый запрос';
+  const live = mode === 'closed_live' || mode === 'mac_demo_live';
+  const summary = live ? 'Доставка в тестовый Telegram и тестовую Google-таблицу.'
+    : mode ? 'Сохранение локально, без внешних отправок.' : '';
+  document.querySelector('#hero-delivery-note').textContent = ('Демо: только тестовые данные. ' + summary).trim();
+  document.querySelector('#aside-delivery-note').textContent = live ? summary : mode ? 'Внешняя доставка не подключена.' : '';
+  document.querySelector('#submit-note').textContent = live
+    ? 'После сохранения обработанное фото, номер заявки и параметры дивана уйдут в тестовый Telegram. Данные заявки с синтетическим контактом уйдут в тестовую Google-таблицу.'
+    : mode ? 'Демо: сохранение только на этом стенде. Уведомления не отправляются автоматически.'
+      : 'Не удалось определить режим сохранения. Перезагрузите страницу.';
+}
+function showPublicNotice() {
+  document.querySelector('#demo-mode-title').textContent = 'Это публичная демонстрационная форма.';
+  document.querySelector('#storage-note').textContent = 'Данные и фото находятся только в памяти открытой страницы и теряются при её перезагрузке. Сохранения на сервере нет.';
+  document.querySelector('#hero-delivery-note').textContent = 'Демо: запрос можно подготовить в браузере. Отправок в Telegram и Google-таблицу нет.';
+  document.querySelector('#aside-delivery-note').textContent = 'Отправок в Telegram и Google-таблицу нет. Текст обращения можно скопировать.';
+  document.querySelector('#submit-note').textContent = 'Публичное демо. Нажатие подготовит текст обращения только в браузере. Отправок в Telegram или Google-таблицу и сохранения на сервере нет. Фото остаются в открытой странице.';
+  document.querySelector('#submit-label').textContent = 'Подготовить демо-запрос';
+  document.getElementById('refresh-receipt').hidden = true;
+  document.querySelector('#copy-request').hidden = false;
+}
+function renderPublicRequest(values) {
+  publicDraft = ['Демо-запрос — копия для просмотра',
+    'Форма дивана: ' + values.sofa, 'Число мест: ' + values.size,
+    'Обивка: ' + values.material, 'Описание: ' + values.description,
+    'Способ связи: ' + (values.channel === 'telegram' ? 'Telegram' : 'Электронная почта'),
+    'Вымышленный контакт: ' + values.contact,
+    'Тестовых фотографий: ' + selected.length,
+    'Обращение не отправлялось. Фотографии остаются в браузере и не входят в текстовую копию.'].join('\n');
+  document.querySelector('#result-title').textContent = 'Демо-запрос подготовлен';
+  const details = document.querySelector('#receipt-details');
+  details.replaceChildren();
+  for (const line of publicDraft.split('\n')) {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = line;
+    details.append(paragraph);
+  }
+  document.querySelector('#copy-status').hidden = true;
+  result.hidden = false;
+  result.focus();
+}
 function showError(id, message) {
   const field = document.getElementById(id);
   const error = document.getElementById(id+'-error');
@@ -59,7 +119,10 @@ document.querySelector('#channel').addEventListener('change', e => {
   document.querySelector('#contact-label').textContent = telegram ? 'Тестовый Telegram' : 'Тестовый email'; showError('contact',''); invalidateResult();
 });
 form.addEventListener('submit', async e => {
-  e.preventDefault(); invalidateResult();
+  e.preventDefault();
+  if (submitButton.disabled) return;
+  const shownMode = deliveryMode;
+  invalidateResult();
   const errors = {};
   ['sofa','size','material','description'].forEach(id => { const value = document.getElementById(id).value.trim(); if(!value) errors[id] = labels[id]; });
   if (document.querySelector('#description').value.trim().length > 1000) errors.description = 'Описание должно быть не длиннее 1000 символов.';
@@ -75,6 +138,10 @@ form.addEventListener('submit', async e => {
   summary.hidden = !Object.keys(errors).length;
   if (!summary.hidden) {summary.focus();return;}
   const values = Object.fromEntries(['sofa','size','material','description','channel','contact'].map(id=>[id,document.getElementById(id).value.trim()]));
+  if (publicForm) {
+    renderPublicRequest(values);
+    return;
+  }
   const signature = JSON.stringify(values);
   if (!pending || pending.signature !== signature || selected.length !== pending.files.length || selected.some((f,i)=>f !== pending.files[i])) {
     pending = {signature, files:[...selected], key:crypto.randomUUID()};
@@ -86,11 +153,21 @@ form.addEventListener('submit', async e => {
   const controls = [...form.querySelectorAll('fieldset, .submit, #sample')];
   controls.forEach(el=>el.disabled=true); form.setAttribute('aria-busy','true'); sending.hidden=false;
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(),30000);
+  let timeout;
   try {
-    const response = await fetch(api('submissions'), {method:'POST',body,headers:{'Idempotency-Key':pending.key},signal:controller.signal});
+    const mode = await readDeliveryMode();
+    if (mode !== shownMode) {
+      showDeliveryNotice(mode);
+      requestError(mode ? 'Режим сохранения изменился. Прочитайте пояснение перед кнопкой и нажмите её ещё раз.'
+        : 'Не удалось определить режим сохранения. Запрос не отправлен.');
+      return;
+    }
+    timeout = setTimeout(()=>controller.abort(),30000);
+    const response = await fetch(api('submissions'), {method:'POST', body, signal:controller.signal,
+      headers:{'Idempotency-Key':pending.key, 'X-D4-Delivery-Mode':shownMode}});
     const data = await response.json();
     if (!response.ok) {
+      if (response.status === 409 && isDeliveryMode(data.delivery_mode)) showDeliveryNotice(data.delivery_mode);
       Object.entries(data.fields || {}).forEach(([id,message])=>{if (Object.hasOwn(labels,id)) showError(id,message);});
       requestError(data.message || 'Не удалось подтвердить сохранение. Повторите запрос.');
       return;
@@ -100,7 +177,7 @@ form.addEventListener('submit', async e => {
   } catch {
     requestError('Не удалось получить ответ. Запрос мог сохраниться. Поля и фото остались: повторите тот же запрос — сохранённая заявка не продублируется.');
   } finally {
-    clearTimeout(timeout);controls.forEach(el=>el.disabled=false);form.removeAttribute('aria-busy');sending.hidden=true;
+    clearTimeout(timeout);controls.forEach(el=>el.disabled=false);submitButton.disabled=!deliveryMode;form.removeAttribute('aria-busy');sending.hidden=true;
   }
 });
 function requestError(message) {
@@ -137,6 +214,16 @@ document.querySelector('#refresh-receipt').addEventListener('click',async e=>{
   } catch {requestError('Квитанция временно недоступна. Это не подтверждение доставки. Повторите проверку позже.');}
   finally{e.target.disabled=false;}
 });
+document.querySelector('#copy-request').addEventListener('click', async () => {
+  const status = document.querySelector('#copy-status');
+  try {
+    await navigator.clipboard.writeText(publicDraft);
+    status.textContent = 'Текст скопирован. Фотографии остаются в браузере.';
+  } catch {
+    status.textContent = 'Копирование недоступно. Выделите текст результата и скопируйте его вручную.';
+  }
+  status.hidden = false;
+});
 document.querySelector('#sample').addEventListener('click',async e=>{
   e.target.disabled=true;invalidateResult();
   try {
@@ -154,6 +241,14 @@ document.querySelector('#sample').addEventListener('click',async e=>{
 });
 document.querySelector('#return').addEventListener('click', () => {result.hidden = true;document.querySelector('#sofa').focus();});
 window.addEventListener('pagehide', () => urls.forEach(URL.revokeObjectURL));
-document.querySelector('.submit').disabled=false;
 document.querySelector('#sample').disabled=false;
 document.querySelector('#js-notice').hidden=true;
+if (publicForm) {
+  showPublicNotice();
+  submitButton.disabled = false;
+} else {
+  readDeliveryMode().then(mode => {
+    showDeliveryNotice(mode);
+    submitButton.disabled = !mode;
+  });
+}

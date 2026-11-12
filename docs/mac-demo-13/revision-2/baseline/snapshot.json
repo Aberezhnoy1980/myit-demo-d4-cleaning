@@ -1,0 +1,14 @@
+{
+  "slice": "d4-divan-v-poryadke-mac-demo-13-revision-1",
+  "manifest_files": 222,
+  "manifest_sha256": "bb5c0578ad3149a2ad75bab6ede1b38486fe33903336fb1c75c43ff4ae76db5b",
+  "source_archive_sha256": "152accb495483933b9af76cebc9e73fa6c7c6a645aad643ad88560356bcd80d2",
+  "source_files": [
+    "README.md",
+    "public/app.js",
+    "public/index.html",
+    "server/app.py",
+    "tests/test_mac_demo.py",
+    "tests/test_public_demo.py"
+  ]
+}

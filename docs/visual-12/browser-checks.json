@@ -1,0 +1,73 @@
+{
+  "mode": "QA loopback preview with synthetic HTTP responses, no delivery",
+  "keyboardTrace": [
+    {
+      "id": "size",
+      "outline": "solid",
+      "uploadOutline": "none"
+    },
+    {
+      "id": "material",
+      "outline": "solid",
+      "uploadOutline": "none"
+    },
+    {
+      "id": "description",
+      "outline": "solid",
+      "uploadOutline": "none"
+    },
+    {
+      "id": "photos",
+      "outline": "solid",
+      "uploadOutline": "solid"
+    },
+    {
+      "id": "",
+      "outline": "solid",
+      "uploadOutline": "none"
+    }
+  ],
+  "receiptChecks": [
+    {
+      "contact": 80,
+      "description": 1000,
+      "pageWidth": 360,
+      "resultRight": 321,
+      "resultWidth": 282,
+      "width": 360
+    },
+    {
+      "contact": 80,
+      "description": 1000,
+      "pageWidth": 390,
+      "resultRight": 351,
+      "resultWidth": 312,
+      "width": 390
+    },
+    {
+      "contact": 80,
+      "description": 1000,
+      "pageWidth": 768,
+      "resultRight": 713,
+      "resultWidth": 658,
+      "width": 768
+    },
+    {
+      "contact": 80,
+      "description": 1000,
+      "pageWidth": 1440,
+      "resultRight": 1311,
+      "resultWidth": 581.90625,
+      "width": 1440
+    }
+  ],
+  "motionCheck": {
+    "animations": 0,
+    "reducedMotion": false,
+    "rules": [
+      "@media (prefers-reduced-motion: reduce) {\n  html { scroll-behavior: auto; }\n  *, ::before, ::after { transition: none !important; animation: auto ease 0s 1 normal none running none !important; }\n}"
+    ]
+  },
+  "faqKeyboard": "Enter collapses and expands, solid focus outline",
+  "gallery": "photos pending, not verified"
+}

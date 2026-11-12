@@ -1,0 +1,21 @@
+## main...origin/main [ahead 1]
+ M README.md
+ M docs/manifest.sha256
+ M public/app.js
+ M public/index.html
+ M server/app.py
+ M server/delivery.py
+ M server/sheets.py
+ M server/sheets_auth.py
+ M server/sheets_config.py
+ M server/store.py
+ M server/telegram.py
+ M server/telegram_config.py
+ M tools/run.py
+?? docs/closed-11/receipt-examples.json
+?? docs/closed-11/review.md
+?? docs/closed-11/source.diff
+?? docs/closed-11/vm-results.txt
+?? docs/visual-12/baseline/closed-11-revision-3.tar.gz
+?? server/closed.py
+?? tests/test_closed_delivery.py
